@@ -69,17 +69,17 @@ ALFM is designed to primarily focus on alerting you to real-time anomalies withi
 
 First you will need a working environment in which to get your data ready for ALFM, this can be done locally with Excel but many customers enjoy using Python and tools like Pandas, so here we will start by deploying a CloudFormation Template that will provision an environment for your work going forward.  
 
-This file should have been either included in or sent along with a zip file, in the zip file there will be a CloudFormation template named `LookoutForMetricsNotebookSetup.YAML`, deploy it into your AWS account. This will create both a Notebook Instance as well as an IAM role for the service to use.
+In this repository there is a CloudFormation template named `LookoutForMetricsNotebookSetup.YAML`, deploy it into your AWS account. This will create both a Notebook Instance as well as an IAM role for the service to use.
 
 Once that has completed, open the SageMaker Notebook Instance(via Jupyter Lab) and upload the zip file into the first folder open on the instance.
 
 From there select `File`, then `New` -> `Terminal` and then enter the following commands:
 
 ```
-cd ~/SageMaker
-unzip ALFM_starter.zip
+cd ~/SageMaker/amazon-lookout-for-metrics-samples
+
 ```
-Now you should see a folder in the file browser to your left, open that folder and proceed to `0.SettingUpALFMPackages.ipynb` this will setup the rest of the things needed to interact with ALFM within your SageMaker Environment. You can also follow the guide below for how to setup a local environment on MacOS that will also work with the SDK. A similar process will work for Linux or Windows installations as well.
+Now you should see a folder `getting_started` in the file browser to your left, open that folder and proceed to `0.SettingUpALFMPackages.ipynb` this will setup the rest of the things needed to interact with ALFM within your SageMaker Environment. You can also follow the guide below for how to setup a local environment on MacOS that will also work with the SDK. A similar process will work for Linux or Windows installations as well.
 
 ## Paths Forward
 
@@ -92,7 +92,7 @@ Both paths are supported within this onboarding guide!
 
 ### Option 1: Live Detection
 
-To continue in a Jupyter environment open `0.SettingUpALFMPackages.ipynb`. From there you can open and run `1.GettingStartedWithALFM.ipynb` to configure a project with ALFM. After you have completed that notebook you can simulate future data using `2.GenerateDataForALFM.ipynb`. At this, point the detector will be configured for you along with synthetic data for the future and you can track the anomalies that are reported against those that you generated.
+After completing `0.SettingUpALFMPackages.ipynb` you can open and run `1.GettingStartedWithALFM.ipynb` to configure a project with ALFM. After you have completed that notebook you can simulate future data using `2.GenerateDataForALFM.ipynb`. At this, point the detector will be configured for you along with synthetic data for the future and you can track the anomalies that are reported against those that you generated.
 
 
 ### Option 2: Back Testing
