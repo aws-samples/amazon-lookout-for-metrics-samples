@@ -26,7 +26,7 @@ ALFM is designed to primarily focus on alerting you to real-time anomalies withi
 
 ### Continous Data Architecture
 
-![Continuous Data Arch](static/imgs/readme/ALFM-Continous.png)
+![Continuous Data Arch](static/imgs/readme/ALFM-Continous(v1).png)
 
 #### Continuous Mode:
 
@@ -47,7 +47,7 @@ ALFM is designed to primarily focus on alerting you to real-time anomalies withi
 
 ### Backtesting Data Architecture
 
-![Backtesting Data Arch](static/imgs/readme/ALFM-Backtesting.png)
+![Backtesting Data Arch](static/imgs/readme/ALFM-Backtesting(v1).png)
 
 #### Backtesting Mode:
 
