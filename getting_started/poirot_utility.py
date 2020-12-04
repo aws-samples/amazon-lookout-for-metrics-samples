@@ -22,7 +22,7 @@ def wait_anomaly_detector( poirot_client, arn ):
             sys.stdout.flush()
             prev_status = status
 
-        if status in ( "PENDING", "CREATING" ):
+        if status in ( "ACTIVATING", ):
             sys.stdout.write(".")
             sys.stdout.flush()
             time.sleep(5)
