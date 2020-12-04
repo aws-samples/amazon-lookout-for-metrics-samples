@@ -67,19 +67,56 @@ ALFM is designed to primarily focus on alerting you to real-time anomalies withi
 
 ## Initial Setup
 
-First you will need a working environment in which to get your data ready for ALFM, this can be done locally with Excel but many customers enjoy using Python and tools like Pandas, so here we will start by deploying a CloudFormation Template that will provision an environment for your work going forward.  
+You will need a working environment in which to get your data ready for ALFM, this can be done locally with Excel but many customers enjoy using Python and tools like Pandas, so here we will start by deploying a CloudFormation Template that will provision an environment for your work going forward. 
 
-In this repository there is a CloudFormation template named `LookoutForMetricsNotebookSetup.YAML`, deploy it into your AWS account. This will create both a Notebook Instance as well as an IAM role for the service to use.
+The first step is to deploy a CloudFormation template that will perform much of the initial setup for you. In another browser window login to your AWS account. Once you have done that open the link below in a new tab to start the process of deploying the items you need via CloudFormation.
 
-Once that has completed, open the SageMaker Notebook Instance(via Jupyter Lab) and upload the zip file into the first folder open on the instance.
+[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=ALFMDemo&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/LookoutForMetricsNotebookSetup.YAML)
 
-From there select `File`, then `New` -> `Terminal` and then enter the following commands:
+### Cloud Formation Wizard
 
-```
-cd ~/SageMaker/amazon-lookout-for-metrics-samples
+Start by clicking `Next` at the bottom like shown:
 
-```
-Now you should see a folder `getting_started` in the file browser to your left, open that folder and proceed to `0.SettingUpALFMPackages.ipynb` this will setup the rest of the things needed to interact with ALFM within your SageMaker Environment. You can also follow the guide below for how to setup a local environment on MacOS that will also work with the SDK. A similar process will work for Linux or Windows installations as well.
+![StackWizard](static/imgs/readme/img1.png)
+
+All of the default options here are fine, click next:
+
+![StackWizard2](static/imgs/readme/img2.png)
+
+This page is a bit longer so scroll to the bottom to click `Next`.
+
+![StackWizard3](static/imgs/readme/img3.png)
+
+Again scroll to the bottom, check the box to enable the template to create new IAM resources and then click `Create Stack`.
+
+![StackWizard4](static/imgs/readme/img4.png)
+
+For a few minutes CloudFormation will be creating the resources described above on your behalf it will look like this while it is provisioning:
+
+![StackWizard5](static/imgs/readme/img5.png)
+
+Once it has completed you'll see green text like below indicating that the work has been completed:
+
+![StackWizard5](static/imgs/readme/img6.png)
+
+Now that you have your environment created, you need to save the name of your S3 bucket for future use, you can find it by clicking on the `Outputs` tab and then looking for the resource `S3Bucket`, once you find it copy and paste it to a text file for the time being.
+
+### Using the Notebooks
+
+## Using the Notebooks
+
+Start by navigating to the Amazon SageMaker landing [page](https://console.aws.amazon.com/sagemaker/home?region=us-east-1#/). From the service page click the `Notebook Instances` link on the far left menu bar.
+
+![StackWizard5](static/imgs/readme/img7.png)
+
+To get to the Jupyter interface, simply click `Open JupyterLab` on the far right next to your notebook instance.
+
+![StackWizard5](static/imgs/readme/img8.png)
+
+Clicking the open link will take a few seconds to redirect you to the Jupyter system but once there you should see a collection of files on your left. 
+
+To get started navigate to the first notebook you should see a folder `getting_started` in the file browser to your left, open that folder and proceed to `0.SettingUpALFMPackages.ipynb` this will setup the rest of the things needed to interact with ALFM within your SageMaker Environment. You can also follow the guide below for how to setup a local environment on MacOS that will also work with the SDK. A similar process will work for Linux or Windows installations as well.
+
 
 ## Paths Forward
 
