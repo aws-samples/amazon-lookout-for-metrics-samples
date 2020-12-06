@@ -130,9 +130,11 @@ dmypy.json
 
 # AWS Files
 39.zip
+48.zip
 awsconfig
 
 # Project things
 backtestdata.csv
-
+.sdk
+.DS_store
 
