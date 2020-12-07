@@ -1,6 +1,7 @@
 import sys
 import time
 import json
+import pathlib
 
 import boto3
 from botocore.exceptions import ClientError
@@ -186,7 +187,7 @@ class DisplayablePath(object):
     display_parent_prefix_last = '│   '
 
     def __init__(self, path, parent_path, is_last):
-        self.path = Path(str(path))
+        self.path = pathlib.Path(str(path))
         self.parent = parent_path
         self.is_last = is_last
         if self.parent:
@@ -202,7 +203,7 @@ class DisplayablePath(object):
 
     @classmethod
     def make_tree(cls, root, parent=None, is_last=False, criteria=None):
-        root = Path(str(root))
+        root = pathlib.Path(str(root))
         criteria = criteria or cls._default_criteria
 
         displayable_root = cls(root, parent, is_last)

@@ -139,3 +139,4 @@ backtestdata.csv
 .DS_store
 
 /sdk
+/getting_started/data
