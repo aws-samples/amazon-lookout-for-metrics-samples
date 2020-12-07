@@ -45,7 +45,7 @@ Resources:
             Statement: 
               - 
                 Effect: "Allow"
-                Action: "poirot:*"
+                Action: "lookoutmetrics:*"
                 Resource: "*"
 
   # SageMaker notebook
