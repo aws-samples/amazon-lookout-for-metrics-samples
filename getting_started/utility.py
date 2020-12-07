@@ -1,7 +1,7 @@
 import sys
 import time
 import json
-import requests
+
 import boto3
 from botocore.exceptions import ClientError
 
@@ -152,11 +152,6 @@ def get_account_id():
     return identity['Account']
 
 # -----
-
-def send_slack_message( text ):
-    print( "sending message:", text )
-    slack_webhook_url = "https://hooks.slack.com/services/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"
-    requests.post( slack_webhook_url, json={ "text" : text } )
 
 def create_bucket(bucket_name, region=None):
     """Create an S3 bucket in a specified region
