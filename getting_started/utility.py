@@ -23,7 +23,7 @@ def wait_anomaly_detector( lookoutformetrics_client, arn ):
             sys.stdout.flush()
             prev_status = status
 
-        if status in ( "ACTIVATING", "BACK_TEST_ACTIVATING", "BACK_TEST_IN_PROGRESS" ):
+        if status in ( "ACTIVATING", "BACK_TEST_ACTIVATING", "BACK_TEST_ACTIVE" ):
             sys.stdout.write(".")
             sys.stdout.flush()
             time.sleep(5)
@@ -39,10 +39,11 @@ def wait_delete_anomaly_detector( lookoutformetrics_client, arn ):
     prev_status = None
     while True:
     
-        # FIXME : should catch "NotExist" exception and exit the loop
-
-        response = lookoutformetrics_client.describe_anomaly_detector( AnomalyDetectorArn = arn )
-        status = response["Status"]
+        try:
+            response = lookoutformetrics_client.describe_anomaly_detector( AnomalyDetectorArn = arn )
+            status = response["Status"]
+        except lookoutformetrics_client.exceptions.ResourceNotFoundException:
+            break
 
         if status != prev_status:
             if prev_status:
@@ -58,8 +59,6 @@ def wait_delete_anomaly_detector( lookoutformetrics_client, arn ):
             continue
 
         break
-
-    return response
 
 # -----
 
