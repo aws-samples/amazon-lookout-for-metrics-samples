@@ -8,12 +8,12 @@ from botocore.exceptions import ClientError
 
 # -----
 
-def wait_anomaly_detector( lookoutformetrics_client, arn ):
+def wait_anomaly_detector( lookoutmetrics_client, arn ):
     
     prev_status = None
     while True:
 
-        response = lookoutformetrics_client.describe_anomaly_detector( AnomalyDetectorArn = arn )
+        response = lookoutmetrics_client.describe_anomaly_detector( AnomalyDetectorArn = arn )
         status = response["Status"]
 
         if status != prev_status:
@@ -34,15 +34,15 @@ def wait_anomaly_detector( lookoutformetrics_client, arn ):
     return response
 
 
-def wait_delete_anomaly_detector( lookoutformetrics_client, arn ):
+def wait_delete_anomaly_detector( lookoutmetrics_client, arn ):
     
     prev_status = None
     while True:
     
         try:
-            response = lookoutformetrics_client.describe_anomaly_detector( AnomalyDetectorArn = arn )
+            response = lookoutmetrics_client.describe_anomaly_detector( AnomalyDetectorArn = arn )
             status = response["Status"]
-        except lookoutformetrics_client.exceptions.ResourceNotFoundException:
+        except lookoutmetrics_client.exceptions.ResourceNotFoundException:
             break
 
         if status != prev_status:
@@ -78,7 +78,7 @@ def get_or_create_iam_role( role_name ):
             {
                 "Effect": "Allow",
                 "Principal": {
-                    "Service": "lookoutformetrics.amazonaws.com"
+                    "Service": "lookoutmetrics.amazonaws.com"
                 },
                 "Action": "sts:AssumeRole"
             },
