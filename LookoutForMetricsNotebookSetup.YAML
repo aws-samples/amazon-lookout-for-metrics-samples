@@ -1,7 +1,7 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
 
-Description: IAM Policies, and SageMaker Notebook to work with Poirot.
+Description: IAM Policies, and SageMaker Notebook to work with Amazon Lookout For Metrics.
 
 Parameters:
 
