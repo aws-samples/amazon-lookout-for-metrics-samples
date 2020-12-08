@@ -1,24 +1,24 @@
-# Amazon Lookout for Metrics README.md
+# Amazon Lookout for Metrics
 
-Amazon Lookout for Metrics(ALFM) is a new service that detects outliers in your time-series data, determines their root causes, and
-enables you to quickly take action. Built from the same technology used by Amazon.com, ALFM reﬂects
+Amazon Lookout for Metrics is a new service that detects outliers in your time-series data, determines their root causes, and
+enables you to quickly take action. Built from the same technology used by Amazon.com, Amazon Lookout for Metrics reﬂects
 20 years of expertise in outlier detection and machine learning.
 
 
-With ALFM, you can build highly-accurate, machine learning models (called detectors) to ﬁnd outliers
-in your data, without any machine learning expertise. ALFM detects outliers on live or real-time data. If
-you have historical data, ALFM will use it to train a model which will then detect outliers on live data. If
-you do not have historical data then ALFM will train a model on-the-go. Using the ALFM console or SDK,
-you simply provide ALFM with the location and scope of your data. This includes the measures, which
+With Amazon Lookout for Metrics, you can build highly-accurate, machine learning models (called detectors) to ﬁnd outliers
+in your data, without any machine learning expertise. Amazon Lookout for Metrics detects outliers on live or real-time data. If
+you have historical data, Amazon Lookout for Metrics will use it to train a model which will then detect outliers on live data. If
+you do not have historical data then Amazon Lookout for Metrics will train a model on-the-go. Using the Amazon Lookout for Metrics console or SDK,
+you simply provide Amazon Lookout for Metrics with the location and scope of your data. This includes the measures, which
 are the variables that you want to investigate (like revenue), and dimensions, which are the categorical
 variables that correspond to a measure (revenue can have dimensions such region and product category).
-ALFM then automatically chooses the best machine learning algorithm to optimize performance for
-your outlier detection use case and begins training a detector. ALFM uses this custom-trained detector
+Amazon Lookout for Metrics then automatically chooses the best machine learning algorithm to optimize performance for
+your outlier detection use case and begins training a detector. Amazon Lookout for Metrics uses this custom-trained detector
 to monitor your chosen metrics for outliers, allowing you to quickly identify and resolve issues that are
-likely to impact your business. ALFM can also integrate with Amazon SNS to alert you when the service
+likely to impact your business. Amazon Lookout for Metrics can also integrate with Amazon SNS to alert you when the service
 detects important outliers.
 
-This guide will walk you through the steps needed to configure local or SageMaker environment for working with Amazon Lookout For Metrics(ALFM). At the end of this guide, move on to the Jupyter notebooks to explore the service in more detail.
+This guide will walk you through the steps needed to configure local or SageMaker environment for working with Amazon Lookout For Metrics. At the end of this guide, move on to the Jupyter notebooks to explore the service in more detail.
 
 ## Preview
 
@@ -26,7 +26,7 @@ The service is available in preview. To find out more, go to https://aws.amazon.
 
 ## Reference Architecture
 
-ALFM is designed to primarily focus on alerting you to real-time anomalies within your data(Continuous), however there is a secondary mode for backtesting to help you explore historical items and to learn what ALFM may be able to help you react to in the future(Backtesting). Both architectures are illustrated below:
+Amazon Lookout for Metrics is designed to primarily focus on alerting you to real-time anomalies within your data(Continuous), however there is a secondary mode for backtesting to help you explore historical items and to learn what Amazon Lookout for Metrics may be able to help you react to in the future(Backtesting). Both architectures are illustrated below:
 
 ### Continous Data Architecture
 
@@ -71,7 +71,7 @@ ALFM is designed to primarily focus on alerting you to real-time anomalies withi
 
 ## Initial Setup
 
-You will need a working environment in which to get your data ready for ALFM, this can be done locally with Excel but many customers enjoy using Python and tools like Pandas, so here we will start by deploying a CloudFormation Template that will provision an environment for your work going forward. 
+You will need a working environment in which to get your data ready for Amazon Lookout for Metrics, this can be done locally with Excel but many customers enjoy using Python and tools like Pandas, so here we will start by deploying a CloudFormation Template that will provision an environment for your work going forward. 
 
 The first step is to deploy a CloudFormation template that will perform much of the initial setup for you. In another browser window login to your AWS account. Once you have done that open the link below in a new tab to start the process of deploying the items you need via CloudFormation.
 
@@ -119,21 +119,21 @@ To get to the Jupyter interface, simply click `Open JupyterLab` on the far right
 
 Clicking the open link will take a few seconds to redirect you to the Jupyter system but once there you should see a collection of files on your left. 
 
-To get started navigate to the first notebook you should see a folder `getting_started` in the file browser to your left, open that folder and proceed to `0.SettingUpALFMPackages.ipynb` this will setup the rest of the things needed to interact with ALFM within your SageMaker Environment. You can also follow the guide below for how to setup a local environment on MacOS that will also work with the SDK. A similar process will work for Linux or Windows installations as well.
+To get started navigate to the first notebook you should see a folder `getting_started` in the file browser to your left, open that folder and proceed to `0.SettingUpALFMPackages.ipynb` this will setup the rest of the things needed to interact with Amazon Lookout for Metrics within your SageMaker Environment. You can also follow the guide below for how to setup a local environment on MacOS that will also work with the SDK. A similar process will work for Linux or Windows installations as well.
 
 
 ## Paths Forward
 
-There are afew ways to work with Amazon Lookout for Metrics(ALFM):
+There are afew ways to work with Amazon Lookout for Metrics:
 
 1. A live on demand detector for alerting when suspected anomalous events occur.
-1. A backtest on historical data to determine which events would have been identified if ALFM was activated on that data stream.
+1. A backtest on historical data to determine which events would have been identified if Amazon Lookout for Metrics was activated on that data stream.
 
 Both paths are supported within this onboarding guide!
 
 ### Option 1: Live Detection
 
-After completing `0.SettingUpALFMPackages.ipynb` you can open and run `1.GettingStartedWithALFM.ipynb` to configure a project with ALFM. After you have completed that notebook you can simulate future data using `2.GenerateDataForALFM.ipynb`. At this, point the detector will be configured for you along with synthetic data for the future and you can track the anomalies that are reported against those that you generated.
+After completing `0.SettingUpALFMPackages.ipynb` you can open and run `1.GettingStartedWithALFM.ipynb` to configure a project with Amazon Lookout for Metrics. After you have completed that notebook you can simulate future data using `2.GenerateDataForALFM.ipynb`. At this, point the detector will be configured for you along with synthetic data for the future and you can track the anomalies that are reported against those that you generated.
 
 
 ### Option 2: Back Testing
