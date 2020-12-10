@@ -124,7 +124,7 @@ To get started navigate to the first notebook you should see a folder `getting_s
 
 ## Paths Forward
 
-There are afew ways to work with Amazon Lookout for Metrics:
+There are a few ways to work with Amazon Lookout for Metrics:
 
 1. A live on demand detector for alerting when suspected anomalous events occur.
 1. A backtest on historical data to determine which events would have been identified if Amazon Lookout for Metrics was activated on that data stream.
@@ -135,11 +135,11 @@ In order to proceed, first we must setup our data. Open and run `2.PrereqSetupDa
 
 ### Option 1: Live Detection
 
-After completing `2.PrereqSetupData.ipynb` you can open and run `3.GettingStartedWithLiveData.ipynb` to configure a project with Amazon Lookout for Metrics. At this, point the detector will be configured for you along with the provided Live data.
+After completing `2.PrereqSetupData.ipynb` you can open and run `3.GettingStartedWithLiveData.ipynb` to configure a Live Detection project with Amazon Lookout for Metrics for the included ecommerce example.
 
 ### Option 2: Back Testing
 
-In this case, we will aslo need to complete setting up our data in the `2.PrereqSetupData.ipynb` notebook before we can proceed with the demonstration of the backtesting functionality in the `4.BacktestingWithHistoricalData.ipynb `
+In this case, we will also need to complete setting up our data in the `2.PrereqSetupData.ipynb` notebook and run `4.BacktestingWithHistoricalData.ipynb` to proceed with the Backtesting project.
 
 
 ## Security
