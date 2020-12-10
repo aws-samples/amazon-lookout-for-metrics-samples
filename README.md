@@ -117,28 +117,29 @@ To get to the Jupyter interface, simply click `Open JupyterLab` on the far right
 
 ![StackWizard5](static/imgs/readme/img8.png)
 
-Clicking the open link will take a few seconds to redirect you to the Jupyter system but once there you should see a collection of files on your left. 
+Clicking the open link will take a few seconds to redirect you to the Jupyter system but once there you should see a collection of files on your left.
 
-To get started navigate to the first notebook you should see a folder `getting_started` in the file browser to your left, open that folder and proceed to `0.SettingUpALFMPackages.ipynb` this will setup the rest of the things needed to interact with Amazon Lookout for Metrics within your SageMaker Environment. You can also follow the guide below for how to setup a local environment on MacOS that will also work with the SDK. A similar process will work for Linux or Windows installations as well.
+To get started navigate to the first notebook you should see a folder `getting_started` in the file browser to your left, open that folder and proceed to `1.PrereqSetupPackages.ipynb` this will setup the rest of the things needed to interact with Amazon Lookout for Metrics within your SageMaker Environment.
 
 
 ## Paths Forward
 
-There are afew ways to work with Amazon Lookout for Metrics:
+There are a few ways to work with Amazon Lookout for Metrics:
 
 1. A live on demand detector for alerting when suspected anomalous events occur.
 1. A backtest on historical data to determine which events would have been identified if Amazon Lookout for Metrics was activated on that data stream.
 
 Both paths are supported within this onboarding guide!
 
+In order to proceed, first we must setup our data. Open and run `2.PrereqSetupData.ipynb`.
+
 ### Option 1: Live Detection
 
-After completing `0.SettingUpALFMPackages.ipynb` you can open and run `1.GettingStartedWithALFM.ipynb` to configure a project with Amazon Lookout for Metrics. After you have completed that notebook you can simulate future data using `2.GenerateDataForALFM.ipynb`. At this, point the detector will be configured for you along with synthetic data for the future and you can track the anomalies that are reported against those that you generated.
-
+After completing `2.PrereqSetupData.ipynb` you can open and run `3.GettingStartedWithLiveData.ipynb` to configure a Live Detection project with Amazon Lookout for Metrics for the included ecommerce example.
 
 ### Option 2: Back Testing
 
-In this case we will start with a notebook to generate the dataset and upload it to s3, the rest of the tutorial will rely on you creating the resources needed within the console. You can work through that project in `3.GenerateBacktestDataForALFM.ipynb`
+In this case, we will also need to complete setting up our data in the `2.PrereqSetupData.ipynb` notebook and run `4.BacktestingWithHistoricalData.ipynb` to proceed with the Backtesting project.
 
 
 ## Security
