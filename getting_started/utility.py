@@ -81,26 +81,6 @@ def get_or_create_iam_role( role_name ):
                     "Service": "lookoutmetrics.amazonaws.com"
                 },
                 "Action": "sts:AssumeRole"
-            },
-
-            # FIXME : for alpha
-            {
-                "Effect": "Allow",
-                "Principal": {
-                    "AWS": "arn:aws:iam::036918044585:root"
-                },
-                "Action": "sts:AssumeRole",
-                "Condition": {}
-            },
-
-            # FIXME : for beta
-            {
-                "Effect": "Allow",
-                "Principal": {
-                    "AWS": "arn:aws:iam::458402630025:root"
-                },
-                "Action": "sts:AssumeRole",
-                "Condition": {}
             }
         ]
     }
