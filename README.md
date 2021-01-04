@@ -5,11 +5,11 @@ enables you to quickly take action. Built from the same technology used by Amazo
 20 years of expertise in outlier detection and machine learning.
 
 
-With Amazon Lookout for Metrics, you can build highly-accurate, machine learning models (called detectors) to ﬁnd outliers
+With Amazon Lookout for Metrics, you can build highly-accurate, machine learning models (called **Detectors**) to ﬁnd outliers
 in your data, without any machine learning expertise. Amazon Lookout for Metrics detects outliers on live or real-time data. If
 you have historical data, Amazon Lookout for Metrics will use it to train a model which will then detect outliers on live data. If
 you do not have historical data then Amazon Lookout for Metrics will train a model on-the-go. Using the Amazon Lookout for Metrics console or SDK,
-you simply provide Amazon Lookout for Metrics with the location and scope of your data. This includes the measures, which
+you simply provide Amazon Lookout for Metrics with the location and scope of your data. This includes the **Measures**, which
 are the variables that you want to investigate (like revenue), and dimensions, which are the categorical
 variables that correspond to a measure (revenue can have dimensions such region and product category).
 Amazon Lookout for Metrics then automatically chooses the best machine learning algorithm to optimize performance for
@@ -26,7 +26,7 @@ The service is available in preview. To find out more, go to https://aws.amazon.
 
 ## Reference Architecture
 
-Amazon Lookout for Metrics is designed to primarily focus on alerting you to real-time anomalies within your data(Continuous), however there is a secondary mode for backtesting to help you explore historical items and to learn what Amazon Lookout for Metrics may be able to help you react to in the future(Backtesting). Both architectures are illustrated below:
+Amazon Lookout for Metrics is designed to primarily focus on alerting you to real-time anomalies within your data(**Continuous**), however there is a secondary mode for backtesting to help you explore historical items and to learn what Amazon Lookout for Metrics may be able to help you identify in the future(**Backtesting**). Both architectures are illustrated below:
 
 ### Continous Data Architecture
 
