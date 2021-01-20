@@ -26,11 +26,11 @@ To detect outliers, Amazon Lookout for Metrics builds a machine learning model t
 
 To get started, first in a new window login to your AWS Account and then visit: https://us-west-2.console.aws.amazon.com/lookoutmetrics/home?region=us-west-2#landing
 
-![Welcome Dashboard](static/imgs/img1.png)
+![Welcome Dashboard](static/imgs/backtest/img1.png)
 
 Click the `Create detector` button to continue.
 
-![Create_detector_backtest](static/imgs/img2.png)
+![Create_detector_backtest](static/imgs/backtest/img2.png)
 
 In the first cell you must give your `Detector` a name, anything that matches the validation check will do. Also add a description and select `1 hour intervals` at step 3 in order to work with the sample data provided. You can optionally modify encryption settings if needed, but otherwise clicking `Create` will progress you to the next step where you define your dataset and metrics.
 
@@ -55,13 +55,13 @@ Amazon Lookout for Metrics detects anomalies at the most granular level so you a
 
 Measures, dimensions and metrics map to `datasets`, which also contain the Amazon S3 locations of your source data, an IAM role that has both read and write permissions to those Amazon S3 locations, and the rate at which data should be ingested from the source location (the upload frequency and data ingestion delay).
 
-![Initial Detector_Screen](static/imgs/img3.png)
+![Initial Detector_Screen](static/imgs/backtest/img3.png)
 
 Click the `Add a dataset` button to continue.
 
 In the next screen fill out the fields for `Name`, `Description`, and `Timezone` as shown and then click the drop down for the `Datasource`, select `Amazon S3`
 
-![Initial Datasource_Screen](static/imgs/img4.png)
+![Initial Datasource_Screen](static/imgs/backtest/img4.png)
 
 
 After selecting S3, select the `Backtest` option:
@@ -72,7 +72,7 @@ After selecting S3, select the `Backtest` option:
 
 Example: 
 
-![Second Datasource_Screen](static/imgs/img5.png)
+![Second Datasource_Screen](static/imgs/backtest/img5.png)
 
 **NOTE** In the console you should have seen something like this:
 
@@ -86,27 +86,27 @@ This is important! It will update you to the real date ranges that are available
 
 Again click `Next` after filling in the ARN for the IAM role:
 
-![Final Datasource_Screen](static/imgs/img6.png)
+![Final Datasource_Screen](static/imgs/backtest/img6.png)
 
 The service will validate your data, click `OK` to proceed to the next screen.
 
 Fill out the next page as shown here: 
 
-![Mapping_fields_screen](static/imgs/img7.png)
+![Mapping_fields_screen](static/imgs/backtest/img7.png)
 
 This will define your metrics to be views and revenue, as well as your domains to be platform and marketplace, leaving the timestamp column to be the timestamp. You can obtian the formatting for it from the first example on the console page where it can be copied and pasted. This is just the default time format for 24 hour time in Python's Pandas Package.
 
 After updating these fields, simply scroll to the bottom and click `Next`:
 
-![final_Mapping_fields_screen](static/imgs/img8.png)
+![final_Mapping_fields_screen](static/imgs/backtest/img8.png)
 
 Then scroll to the bottom of that page and click `Save and activate`
 
-![final_final_Mapping_fields_screen](static/imgs/img9.png)
+![final_final_Mapping_fields_screen](static/imgs/backtest/img9.png)
 
 Click `Activate` on the pop-up that is shown, you will be taken back to the main `Detector` page where you can see that the job has been started:
 
-![backtest_start_screen](static/imgs/img10.png)
+![backtest_start_screen](static/imgs/backtest/img10.png)
 
 This process will take 20 to 25 minutes to complete so it would be a good time to grab a coffee or checkup on any emails while it continues.
 
@@ -114,19 +114,19 @@ This process will take 20 to 25 minutes to complete so it would be a good time t
 
 Once the backtest job has completed it will notify you on the `Detector` console page that you left above, you should see something like this:
 
-![backtest_finished_screen](static/imgs/img11.png)
+![backtest_finished_screen](static/imgs/backtest/img11.png)
 
 Once you see that it has completed you can click on the `Anomalies` link on the left, that will enable you to browse what was found:
 
-![anomalies_start_screen](static/imgs/img12.png)
+![anomalies_start_screen](static/imgs/backtest/img12.png)
 
 From here you can adjust the slider at the top to browse more or less severe anomalies. You can also click any of the anomalies shown at the bottom to learn more:
 
-[anomalies_loading_screen](static/imgs/img13.png)
+![anomalies_loading_screen](static/imgs/backtest/img13.png)
 
 After clicking you can understand more by viewing the page:
 
-[anomalies_loading_screen](static/imgs/img14.png)
+![anomalies_loading_screen](static/imgs/backtest/img14.png)
 
 ## Cleanup
 
