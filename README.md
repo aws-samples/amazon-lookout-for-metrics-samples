@@ -4,7 +4,6 @@ Amazon Lookout for Metrics is a new service that detects outliers in your time-s
 enables you to quickly take action. Built from the same technology used by Amazon.com, Amazon Lookout for Metrics reﬂects
 20 years of expertise in outlier detection and machine learning.
 
-
 With Amazon Lookout for Metrics, you can build highly-accurate, machine learning models (called **Detectors**) to ﬁnd outliers
 in your data, without any machine learning expertise. Amazon Lookout for Metrics detects outliers on live or real-time data. If
 you have historical data, Amazon Lookout for Metrics will use it to train a model which will then detect outliers on live data. If
@@ -23,6 +22,9 @@ This guide will walk you through the steps needed to configure local or SageMake
 ## Preview
 
 The service is available in preview. To find out more, go to https://aws.amazon.com/lookout-for-metrics
+
+**PROTIP**: At present when you start a `Continous` detector it needs 100 data points in order to start detecting anomalies. If you start with ANY system other than S3 you are unable to specify historical data to bootstrap this process. For that reason it is advisable to use S3. Otherwise you will need to wait for 100 intervals of your given time in order for Lookout for Metrics to have enough data.**/END_PROTIP**
+
 
 ## Reference Architecture
 
@@ -71,7 +73,7 @@ Amazon Lookout for Metrics is designed to primarily focus on alerting you to rea
 
 ## Initial Setup
 
-You will need a working environment in which to get your data ready for Amazon Lookout for Metrics, this can be done locally with Excel but many customers enjoy using Python and tools like Pandas, so here we will start by deploying a CloudFormation Template that will provision an environment for your work going forward. 
+You will need a working environment in which to get your data ready for Amazon Lookout for Metrics, this can be done locally with Excel but many customers enjoy using Python and tools like Pandas, so here you will start by deploying a CloudFormation Template that will provision an environment for your work going forward. 
 
 The first step is to deploy a CloudFormation template that will perform much of the initial setup for you. In another browser window login to your AWS account. Once you have done that open the link below in a new tab to start the process of deploying the items you need via CloudFormation.
 
@@ -122,25 +124,21 @@ Clicking the open link will take a few seconds to redirect you to the Jupyter sy
 To get started navigate to the first notebook you should see a folder `getting_started` in the file browser to your left, open that folder and proceed to `1.PrereqSetupPackages.ipynb` this will setup the rest of the things needed to interact with Amazon Lookout for Metrics within your SageMaker Environment.
 
 
-## Paths Forward
+## Getting Started
 
-There are a few ways to work with Amazon Lookout for Metrics:
+As mentioned above there are two methods of working with Lookout for Metrics, `Backtesting`, and `Continous`, though it is worth noting, only S3 can be used for `Backtesting`. For that reason we advise you to work with your data first in `Backtesting` mode in order to validate your use case, then progress onto `Continous` mode. 
 
-1. A live on demand detector for alerting when suspected anomalous events occur.
-1. A backtest on historical data to determine which events would have been identified if Amazon Lookout for Metrics was activated on that data stream.
+**PROTIP**: At present when you start a `Continous` detector it needs 100 data points in order to start detecting anomalies. If you start with ANY system other than S3 you are unable to specify historical data to bootstrap this process. For that reason it is advisable to use S3. Otherwise you will need to wait for 100 intervals of your given time in order for Lookout for Metrics to have enough data.**/END_PROTIP** This is important enough that it was mentioned twice.
 
-Both paths are supported within this onboarding guide!
+After completing `1.PrereqSetupPackages.ipynb` proceed onto setting up your data in `2.PrereqSetupData.ipynb`, this will provision an e-commerce dataset for educational purposes as well as create an IAM role for LookoutForMetrics to use to access your information in S3.
 
-In order to proceed, first we must setup our data. Open and run `2.PrereqSetupData.ipynb`.
 
-### Option 1: Live Detection
+From there you are ready to create your first detectors with the service, this repository has a few resources to guide you further:
 
-After completing `2.PrereqSetupData.ipynb` you can open and run `3.GettingStartedWithLiveData.ipynb` to configure a Live Detection project with Amazon Lookout for Metrics for the included ecommerce example.
-
-### Option 2: Back Testing
-
-In this case, we will also need to complete setting up our data in the `2.PrereqSetupData.ipynb` notebook and run `4.BacktestingWithHistoricalData.ipynb` to proceed with the Backtesting project.
-
+1. `3.BacktestingWithHistoricalData.ipynb` - Use the APIs to build a `Backtesting` detector.
+1. `4.GettingStartedWithLiveData.ipynb` - Use the APIs to build a `Continous` detector.
+1. `BacktestingWithTheConsole.md` - Use the Console to build a `Backtesting` detector.
+1. `ContinousDetectionWithTheConsole.md` - Use the Console to build a `Continous` detector.
 
 ## Security
 
