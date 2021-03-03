@@ -23,14 +23,14 @@ This guide will walk you through the steps needed to configure local or SageMake
 
 The service is available in preview. To find out more, go to https://aws.amazon.com/lookout-for-metrics
 
-**PROTIP**: At present when you start a `Continous` detector it needs 100 data points in order to start detecting anomalies. If you start with ANY system other than S3 you are unable to specify historical data to bootstrap this process. For that reason it is advisable to use S3. Otherwise you will need to wait for 100 intervals of your given time in order for Lookout for Metrics to have enough data.**/END_PROTIP**
+**PROTIP**: At present when you start a `Continuous` detector it needs 100 data points in order to start detecting anomalies. If you start with ANY system other than S3 you are unable to specify historical data to bootstrap this process. For that reason it is advisable to use S3. Otherwise you will need to wait for 100 intervals of your given time in order for Lookout for Metrics to have enough data.**/END_PROTIP**
 
 
 ## Reference Architecture
 
 Amazon Lookout for Metrics is designed to primarily focus on alerting you to real-time anomalies within your data(**Continuous**), however there is a secondary mode for backtesting to help you explore historical items and to learn what Amazon Lookout for Metrics may be able to help you identify in the future(**Backtesting**). Both architectures are illustrated below:
 
-### Continous Data Architecture
+### Continuous Data Architecture
 
 ![Continuous Data Arch](static/imgs/readme/ALFM-Continous(v1).png)
 
@@ -126,9 +126,9 @@ To get started navigate to the first notebook you should see a folder `getting_s
 
 ## Getting Started
 
-As mentioned above there are two methods of working with Lookout for Metrics, `Backtesting`, and `Continous`, though it is worth noting, only S3 can be used for `Backtesting`. For that reason we advise you to work with your data first in `Backtesting` mode in order to validate your use case, then progress onto `Continous` mode. 
+As mentioned above there are two methods of working with Lookout for Metrics, `Backtesting`, and `Continuous`, though it is worth noting, only S3 can be used for `Backtesting`. For that reason we advise you to work with your data first in `Backtesting` mode in order to validate your use case, then progress onto `Continious` mode. 
 
-**PROTIP**: At present when you start a `Continous` detector it needs 100 data points in order to start detecting anomalies. If you start with ANY system other than S3 you are unable to specify historical data to bootstrap this process. For that reason it is advisable to use S3. Otherwise you will need to wait for 100 intervals of your given time in order for Lookout for Metrics to have enough data.**/END_PROTIP** This is important enough that it was mentioned twice.
+**PROTIP**: At present when you start a `Continuous` detector it needs 100 data points in order to start detecting anomalies. If you start with ANY system other than S3 you are unable to specify historical data to bootstrap this process. For that reason it is advisable to use S3. Otherwise you will need to wait for 100 intervals of your given time in order for Lookout for Metrics to have enough data.**/END_PROTIP** This is important enough that it was mentioned twice.
 
 After completing `1.PrereqSetupPackages.ipynb` proceed onto setting up your data in `2.PrereqSetupData.ipynb`, this will provision an e-commerce dataset for educational purposes as well as create an IAM role for LookoutForMetrics to use to access your information in S3.
 
@@ -136,9 +136,9 @@ After completing `1.PrereqSetupPackages.ipynb` proceed onto setting up your data
 From there you are ready to create your first detectors with the service, this repository has a few resources to guide you further:
 
 1. `3.BacktestingWithHistoricalData.ipynb` - Use the APIs to build a `Backtesting` detector.
-1. `4.GettingStartedWithLiveData.ipynb` - Use the APIs to build a `Continous` detector.
+1. `4.GettingStartedWithLiveData.ipynb` - Use the APIs to build a `Continuous` detector.
 1. `BacktestingWithTheConsole.md` - Use the Console to build a `Backtesting` detector.
-1. `ContinousDetectionWithTheConsole.md` - Use the Console to build a `Continous` detector.
+1. `ContinuousDetectionWithTheConsole.md` - Use the Console to build a `Continuous` detector.
 
 ## Security
 
