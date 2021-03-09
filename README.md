@@ -77,6 +77,8 @@ You will need a working environment in which to get your data ready for Amazon L
 
 The first step is to deploy a CloudFormation template that will perform much of the initial setup for you. In another browser window login to your AWS account. Once you have done that open the link below in a new tab to start the process of deploying the items you need via CloudFormation.
 
+*Note: This material is designed to work in US-West-2 during Preview* Using other regions may cause issues or the service may not be available at this time.
+
 [![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=ALFMDemo&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/LookoutForMetricsNotebookSetup.YAML)
 
 ### Cloud Formation Wizard
@@ -105,9 +107,6 @@ Once it has completed you'll see green text like below indicating that the work 
 
 ![StackWizard5](static/imgs/readme/img6.png)
 
-Now that you have your environment created, you need to save the name of your S3 bucket for future use, you can find it by clicking on the `Outputs` tab and then looking for the resource `S3Bucket`, once you find it copy and paste it to a text file for the time being.
-
-### Using the Notebooks
 
 ## Using the Notebooks
 
@@ -122,6 +121,8 @@ To get to the Jupyter interface, simply click `Open JupyterLab` on the far right
 Clicking the open link will take a few seconds to redirect you to the Jupyter system but once there you should see a collection of files on your left.
 
 To get started navigate to the first notebook you should see a folder `getting_started` in the file browser to your left, open that folder and proceed to `1.PrereqSetupPackages.ipynb` this will setup the rest of the things needed to interact with Amazon Lookout for Metrics within your SageMaker Environment.
+
+*Note* If you are not familiar with Jupyter Notebooks, watch this YouTube video for a quick introduction to some basics: https://www.youtube.com/watch?v=jZ952vChhuI
 
 
 ## Getting Started
