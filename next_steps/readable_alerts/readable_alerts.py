@@ -44,6 +44,7 @@ def create_anomaly_string(input_json):
     runtime_region = os.environ['AWS_REGION']
     url = "https://" + runtime_region + ".console.aws.amazon.com/lookoutmetrics/home?region=" + runtime_region + "#"
     url += str(input_json['anomalyDetectorArn'])
+    url += "/detectorDetails"
     response += "To learn more visit the Lookout for Metrics console at: " + url + " \n"
     return response
 
