@@ -176,3 +176,60 @@ That's it! You can continue on below to epxlore more advanced options.
 ## Extending The Solution
 
 Clicking the `Launch Stack` button above will quickly deploy a working solution for you, but it is not the limits of what can be done, the sections below will highlight how you can customize this approach to better fit your needs.
+
+The logic that transforms the JSON response into plain text can be found in `readable_alerts.py`, when the solution is deployed, the CloudFormation template has a copy of it pasted inside the template for an easy deployment. If you make ANY changes to the python file, simply copy all the content into the YAML file and deploy via your own template not the link provided in the above section. 
+
+There are a couple of sections worth exploring though, the first is pretty simple and provided you are simply sending a text alert, it should suffice for all use cases:
+
+```python
+def send_to_sns(message):
+    # This takes in a string and simply sends it onto SNS as a message, subject provided for Email clients
+    sns = boto3.client("sns")
+    sns.publish(TopicArn=topic_arn, 
+            Message=message, 
+            Subject="Lookout for Metrics Alert Update")
+```
+
+You can update the Subject to be more descriptive of course.
+
+The meat of the work is inside this function:
+
+```python
+def create_anomaly_string(input_json):
+    """
+    This function does most of the work, it takes in the entire message of the alert from Lookout for Metrics, then converts it into a readable and actionable message. Steps are commented below, feel free to update as needed.
+    """
+    # The time is a critical bit of informatin to sort first, this obtains the time and gets it ready for the message
+    timestamp = parse(input_json['timestamp'], fuzzy_with_tokens=True)[0]
+    timestamp1 = timestamp.strftime("%B %d %Y")
+    timestamp2 = timestamp.strftime("%H:%M")
+    # Write the first bit about the anomaly, what happened and when.
+    response = "An anomaly in " + str(input_json['impactedMetric']['metricName']) + " was detected on " + timestamp1 + ' at ' + timestamp2 + ".\n"
+    # Next grab the list of impacted time series
+    num_of_time_series = len(input_json['impactedMetric']['relevantTimeSeries'])
+    # Report the number of impacted time series to your user
+    response += str(num_of_time_series) + " time series was impacted.\n\n"
+
+    # Iterate over each time series, listing the dimensions and their value
+    for ts in range(num_of_time_series):
+        response += "TimeSeries: " + str(num_of_time_series) + " was impacted on the following dimensions and values:\n"
+        for item in input_json['impactedMetric']['relevantTimeSeries'][ts]['dimensions']:
+            response += "\t" + item['dimensionName'] + " - " + item['dimensionValue'] + "\n"
+            
+    # Report the anomaly score
+    response += "\nThe Anomaly  score was: " + str(input_json['anomalyScore']) + "\n"
+    
+    # Generate a link to the console for the user to learn more
+    runtime_region = os.environ['AWS_REGION']
+    url = "https://" + runtime_region + ".console.aws.amazon.com/lookoutmetrics/home?region=" + runtime_region + "#"
+    url += str(input_json['anomalyDetectorArn'])
+    url += "/detectorDetails"
+    response += "To learn more visit the Lookout for Metrics console at: " + url + " \n"
+    return response
+```
+
+Comments were provided inline to explain it, but really you can just change this to be whatever you like in order to deliver something more meaningful. 
+
+Inside this directory there is also a file `input.json` it provides a sample JSON response that is delivered to the Lambda for testing. 
+
+Good luck! 

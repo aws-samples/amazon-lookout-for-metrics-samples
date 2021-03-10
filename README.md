@@ -141,6 +141,14 @@ From there you are ready to create your first detectors with the service, this r
 1. `BacktestingWithTheConsole.md` - Use the Console to build a `Backtesting` detector.
 1. `ContinuousDetectionWithTheConsole.md` - Use the Console to build a `Continuous` detector.
 
+## Next Steps
+
+The `next_steps` directory houses additional resources for learning more about Lookout for Metrics or for more advanced solutions that work with the service.
+
+### Solutions:
+
+* [next_steps/readable_alerts/](next_steps/readable_alerts/) folder contains a CloudFormation template that will deploy a solution to convert JSON alert responses into human readable plain text.
+
 ## Security
 
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
