@@ -1,0 +1,74 @@
+{
+  "alertName": "CanaryAlert-009a9443-d34a-41af-b782-f6e409db55c2",
+  "alertEventId": "arn:aws:lookoutmetrics:us-east-1:246405784697:Alert:CanaryAlert-009a9443-d34a-41af-b782-f6e409db55c2:event/3bf090ef-5437-4262-920c-512d311c1503",
+  "anomalyDetectorArn": "arn:aws:lookoutmetrics:us-east-1:246405784697:AnomalyDetector:CanaryAD-BackTest-PT1H-RCF-LOW_VOL-12768b4f-8636-4089-b",
+  "alertArn": "arn:aws:lookoutmetrics:us-east-1:246405784697:Alert:CanaryAlert-009a9443-d34a-41af-b782-f6e409db55c2",
+  "alertDescription": null,
+  "impactedMetric": {
+    "metricName": "revenue",
+    "dimensionContribution": [
+      {
+        "dimensionName": "colorCode",
+        "dimensionValueContributions": [
+          {
+            "dimensionValue": "blue",
+            "valueContribution": 100
+          }
+        ]
+      },
+      {
+        "dimensionName": "deviceType",
+        "dimensionValueContributions": [
+          {
+            "dimensionValue": "tablet",
+            "valueContribution": 100
+          }
+        ]
+      },
+      {
+        "dimensionName": "marketplace",
+        "dimensionValueContributions": [
+          {
+            "dimensionValue": "CANADA",
+            "valueContribution": 100
+          }
+        ]
+      },
+      {
+        "dimensionName": "platform",
+        "dimensionValueContributions": [
+          {
+            "dimensionValue": "windows",
+            "valueContribution": 100
+          }
+        ]
+      }
+    ],
+    "relevantTimeSeries": [
+      {
+        "timeSeriesId": "04c628cd2f2d71dde555db5ffd3a98251d2fb027f1a88718bbf94efe26e22ed9f2e5fa9e25367f179ffe4457d38c4153f1c111bde700213d631f1684cfba59b9",
+        "dimensions": [
+          {
+            "dimensionName": "colorCode",
+            "dimensionValue": "blue"
+          },
+          {
+            "dimensionName": "deviceType",
+            "dimensionValue": "tablet"
+          },
+          {
+            "dimensionName": "marketplace",
+            "dimensionValue": "CANADA"
+          },
+          {
+            "dimensionName": "platform",
+            "dimensionValue": "windows"
+          }
+        ],
+        "metricValue": 721501.084
+      }
+    ]
+  },
+  "timestamp": "2021-02-17T11:00Z[UTC]",
+  "anomalyScore": 28.29
+}
