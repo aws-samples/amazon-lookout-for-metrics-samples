@@ -4,10 +4,9 @@ Amazon Lookout for Metrics supports continuous detection against your streaming 
 
 Once the detector is active you will be able to view anomalies in the console and create alerts that notify you via SNS when an anomaly has been completed. Though the setup of the alert is outside of the scope of this guide. You can learn more here: https://docs.aws.amazon.com/lookoutmetrics/latest/dev/detectors-alerts.html or in `4.GettingStartedWithLiveData.ipynb`
 
-Before continuing, please complete the following notebooks:
+Before continuing, please complete the following notebook:
 
-1. `1.PrereqSetupPackages.ipynb` - Not Strictly Needed
-1. `2.PrereqSetupData.ipynb` - Absolutely Needed (Sets up data, and an IAM role)
+1. `1.PrereqSetupData.ipynb` - Absolutely Needed (Sets up data, and an IAM role)
 
 ## Prework 
 

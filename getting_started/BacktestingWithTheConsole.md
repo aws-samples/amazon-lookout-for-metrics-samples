@@ -2,10 +2,9 @@
 
 Amazon Lookout for Metrics supports backtesting against your historical information and in this doc you will demonstrate this functionality on the same dataset you just prepped. Once the backtesting job has completed you can see all of the anomalies that Amazon Lookout for Metrics detected in the last 30% of your historical data. From here you can begin to unpack the kinds of results you will see from Amazon Lookout for Metrics in the future when you start streaming in new data. **NOTE YOU MUST CREATE A NEW DETECTOR TO LEVERAGE REAL TIME DATA. BACKTESTING IS ONLY FOR EXPLORATION.**
 
-Before continuing, please complete the following notebooks:
+Before continuing, please complete the following notebook:
 
-1. `1.PrereqSetupPackages.ipynb` - Not Strictly Needed
-1. `2.PrereqSetupData.ipynb` - Absolutely Needed (Sets up data, and an IAM role)
+1. `1.PrereqSetupData.ipynb` - Absolutely Needed (Sets up data, and an IAM role)
 
 ## Prework 
 
