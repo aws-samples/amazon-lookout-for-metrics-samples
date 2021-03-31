@@ -1,6 +1,6 @@
 # Human Readable Alerts
 
-By default the alerts that are delivered from Lookout for Metrics contain a great deal of information via a JSON response, however these are not consumable to the average human, for example:
+By default the alerts that are delivered from Amazon Lookout for Metrics contain a great deal of information via a JSON response, however these are not consumable to the average human, for example:
 
 ```JSON
 {
