@@ -141,3 +141,6 @@ backtestdata.csv
 
 /sdk
 /getting_started/data
+
+# AWS Stuff
+.awsconfig
