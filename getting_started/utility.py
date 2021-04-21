@@ -4,6 +4,7 @@ import json
 import pathlib
 
 import boto3
+from botocore.config import Config
 from botocore.exceptions import ClientError
 
 # -----
@@ -145,9 +146,21 @@ def create_bucket(bucket_name, region=None):
     """
 
     # Create bucket
+    if region:
+        config = Config(
+            region_name = region,
+            signature_version = 'v4',
+            retries = {
+                'max_attempts': 10,
+                'mode': 'standard'
+            }
+        )
     try:
         if region is None:
             s3_client = boto3.client('s3')
+            s3_client.create_bucket(Bucket=bucket_name)
+        elif region == "us-east-1":
+            s3_client = boto3.client('s3', config)
             s3_client.create_bucket(Bucket=bucket_name)
         else:
             s3_client = boto3.client('s3', region_name=region)
