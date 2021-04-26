@@ -52,7 +52,7 @@ The included CloudFormation template will create the following resources for you
 1. An IAM Role for Lambda to deliver notifications to ONLY the newly created topic.
 1. A Lambda function to actually perform the work
 
-When this compeltes it will look like this:
+When this completes it will look like this:
 
 ![Reference](static/imgs/ReferenceArch.png)
 
@@ -170,7 +170,7 @@ It should look something like this:
 
 ![Email Preview](static/imgs/img18.png)
 
-That's it! You can continue on below to epxlore more advanced options.
+That's it! You can continue on below to explore more advanced options.
 
 
 ## Extending The Solution
