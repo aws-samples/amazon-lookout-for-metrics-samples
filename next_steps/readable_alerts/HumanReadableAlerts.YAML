@@ -64,7 +64,7 @@ Resources:
           - HumanReadableAlertLambdaRole
           - Arn
       Runtime: python3.8
-      Handler: index.my_handler
+      Handler: index.lambda_handler
       Environment:
         Variables:
           topic_arn: !Ref SNSTopic
