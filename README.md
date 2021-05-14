@@ -13,6 +13,8 @@ Your first stop should be this folder: [getting_started/](getting_started/) it i
 1. Walkthroughs for the console and Jupyter notebooks for interacting with the service.
 1. A CloudFormation template for deploying all resources into a SageMaker Notebook Instance to explore the material in your own account.
 
+If you have a specific question, check out the [Cheat Sheet](LookoutForMetricsCheatSheet.md). If you still have a question or encounter an error, please open and issue in this repository so we can address it!
+
 ## What Next?
 
 The [next_steps/](next_steps/) directory houses additional resources for learning more about Lookout for Metrics. 
