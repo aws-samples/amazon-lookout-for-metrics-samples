@@ -18,7 +18,7 @@ Amazon Lookout for Metrics is a great platform for general purpose anomaly detec
 
 Unlike other AI services within AWS you can get started with 0 data points with Lookout for Metrics, that does not mean that you can detect anomalies immediately, or that your model will be incredibly performant but that you can build a solution and it will grow and improve over time as data collects.
 
-That said if you start with no information the service will cold start for various periods ranging from 25 for daily to 50 for smaller intervals. As your detector collects more data, the addition will be used to retrain your models improving them more and more over time. 
+That said if you start with no information the service will cold start for various periods ranging from 14 for daily to 300 for smaller intervals. As your detector collects more data, the addition will be used to retrain your models improving them more and more over time. 
 
 ## Use Cases Explained 
 
