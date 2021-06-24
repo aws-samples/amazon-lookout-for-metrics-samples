@@ -15,12 +15,12 @@ We use following resources/services in this solution:
 
 The Lambda function receives contents of the alert as Lambda input event. But the alert contains only up to 3 relevant (contributed) time series, and doesn't contain URL to Anomaly detail page on Console.
 
-In order to overcome this limitation, this solution uses Lookout for Metrics API in Lambda function, to look up the Anomaly Group which triggered the alert, and get full details.
+In order to overcome these limitations, this solution uses Lookout for Metrics API in Lambda function to look up the Anomaly Group which originated the alert, and get full details.
 
 
 ## Getting Started
 
-The simplest possible option is to simply deploy the existing template and answer a few questions, to do that click the link below and follow along with the screenshots provided. At the end of it, the human readable alerts will arrive in your inbox automatically!
+The simplest possible option is to simply deploy the existing template and answer a few questions, to do that click the link below and follow along with the screenshots provided. At the end of it, the HTML email formatted human readable alerts will arrive in your inbox automatically!
 
 [![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=HumanReadableAlertsRich&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/HumanReadableAlertsRich.YAML)
 
@@ -31,7 +31,7 @@ Start by clicking `Next` at the bottom like shown:
 
 <img alt="StackWizard_Step1" src="static/imgs/img1.png" width=600>
 
-In this screen be sure to update sender email address and receiver email address, then click `Next`:
+In this screen be sure to update sender/receiver email addresses, then click `Next`:
 
 <img alt="StackWizard_Step2" src="static/imgs/img2.png" width=550>
 
@@ -54,10 +54,10 @@ When it is finished you will see:
 You have successfully deployed the solution! There are 2 steps remaining:
 
 1. Validating sender / receiver email addresses in SES.
-1. Integrating the Lambda function as an Alert in Lookout for Metrics
+1. Creating an Alert under the detector, and associate the Lambda function with it.
 
 
-### Validating email addresses in SES
+### Validating Email Addresses in SES
 
 SES requires you to validate email addresses (both sender address and receiver address) you specified. 
 
@@ -66,10 +66,10 @@ Please follow the verification steps reading this document.
 [Verifying an email address](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/verify-email-addresses-procedure.html)
 
 
-### Creating The Alert
+### Creating the Alert
 
-The last thing to do in this process is to create an Alert in Lookout for Metrics, to do that open your AWS Console and visit the Lookout for Metrics page, if you are in `us-west-2` the url is: 
-https://us-west-2.console.aws.amazon.com/lookoutmetrics/home?region=us-west-2#
+The last thing to do in this process is to create an Alert in Lookout for Metrics, to do that open your AWS Console and visit the Lookout for Metrics page:
+https://console.aws.amazon.com/console/home
 
 First open the section for your Detector by clicking the drop down triangle on the left:
 
@@ -89,7 +89,7 @@ First fill out the `Alert details` by specifying a name, a description, and the 
 
 <img alt="Lookout_step4" src="static/imgs/img12.png" width=568>
 
-Now move on down to the Lambda function, first click the drop down and select `HumanReadableAlerts` like so:
+Now move on down to the Lambda function, first click the drop down and select `HumanReadableAlertsRich` like so:
 
 <img alt="Lookout_step5" src="static/imgs/img13.png" width=608>
 
@@ -97,7 +97,7 @@ The next section is for a `Service role` this may have something filled in alrea
 
 <img alt="Lookout_step5" src="static/imgs/img14.png" width=608>
 
-The next dialog box will ask for a list of Lambda functions to enable, enter in `HumanReadableAlerts` then click `Create a role`:
+The next dialog box will ask for a list of Lambda functions to enable, enter in `HumanReadableAlertsRich` then click `Create a role`:
 
 <img alt="Lookout_step6" src="static/imgs/img15.png" width=624>
 
@@ -120,6 +120,6 @@ That's it! You can continue on below to explore more advanced options.
 
 ## Extending The Solution
 
-By editing the Lambda function, you can customize the solution, adding different types of information, and changing the design of emails. 
+You can customize the solution, such as adding different types of information, modifying the format of email subject, and changing the layout of email body. 
 
 The logic to gather anomaly information and generate HTML formatted email is implemented in the Lambda function (`readable_alerts_rich.py`). The CloudFormation template (`HumanReadableAlertsRich.YAML`) contains a copy of the script, so please note that you may have to update the CloudFormation template if you want to deploy your customized version of the solution using CloudFormation.
