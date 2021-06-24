@@ -2,7 +2,7 @@
 
 The purpose of this sample is to explain how to send HTML formatted emails when anomalies are detected.
 
-<img alt="Email" src="static/imgs/img18.png" width=400>
+<img alt="Email Preview" src="static/imgs/img18.png" width=400>
 
 ## Overview
 
@@ -45,11 +45,11 @@ This page is a bit longer, so scroll to the bottom, check the box to acknowledge
 
 This will take about 2 minutes to complete, you should see a `CREATE_IN_PROGRESS` like this: 
 
-![StackWizard_Step5](static/imgs/img5.png)
+<img alt="StackWizard_Step5" src="static/imgs/img5.png" width=295>
 
 When it is finished you will see:
 
-![StackWizard_Step6](static/imgs/img6.png)
+<img alt="StackWizard_Step6" src="static/imgs/img6.png" width=295>
 
 You have successfully deployed the solution! There are 2 steps remaining:
 
@@ -73,47 +73,47 @@ https://us-west-2.console.aws.amazon.com/lookoutmetrics/home?region=us-west-2#
 
 First open the section for your Detector by clicking the drop down triangle on the left:
 
-![Lookout_step1](static/imgs/img9.png)
+<img alt="Lookout_step1" src="static/imgs/img9.png" width=258>
 
 Now click on the `Alerts` section:
 
-![Lookout_step2](static/imgs/img10.png)
+<img alt="Lookout_step2" src="static/imgs/img10.png" width=391>
 
 At this point, no Alerts exist, so click the `Add alert` button in the top right to creat your first:
 
-![Lookout_step3](static/imgs/img11.png)
+<img alt="Lookout_step3" src="static/imgs/img11.png" width=296>
 
 This Wizard is broken down into 2 important sections the `Alert details` and after you make a change to the channel, `Lambda function` information, there is also tagging available but that is up to your discretion.
 
 First fill out the `Alert details` by specifying a name, a description, and the severity threshold. The higher the threshold, the less alerts you will receive, a good starting point is the default of `70`. Then for channel, click the drop down adn select `AWS Lambda`. When completed the top should look like this:
 
-![Lookout_step4](static/imgs/img12.png)
+<img alt="Lookout_step4" src="static/imgs/img12.png" width=568>
 
 Now move on down to the Lambda function, first click the drop down and select `HumanReadableAlerts` like so:
 
-![Lookout_step5](static/imgs/img13.png)
+<img alt="Lookout_step5" src="static/imgs/img13.png" width=608>
 
 The next section is for a `Service role` this may have something filled in already, but you want to know that it is configured correctly so click the drop down and select `Create a role`:
 
-![Lookout_step5](static/imgs/img14.png)
+<img alt="Lookout_step5" src="static/imgs/img14.png" width=608>
 
 The next dialog box will ask for a list of Lambda functions to enable, enter in `HumanReadableAlerts` then click `Create a role`:
 
-![Lookout_step6](static/imgs/img15.png)
+<img alt="Lookout_step6" src="static/imgs/img15.png" width=624>
 
 You will then see a grean dialog box like the one below, it means that the role was created successfully:
 
-![Lookout_step7](static/imgs/img16.png)
+<img alt="Lookout_step7" src="static/imgs/img16.png" width=546>
 
 IAM Roles can take a bit to fully propagate, so wait 30 seconds before continuing on. After your wait, scroll to the bottom of the page and click the `Add alert` button:
 
-![Lookout_step8](static/imgs/img17.png)
+<img alt="Lookout_step8" src="static/imgs/img17.png" width=587>
 
 You will then be redirected to the `Alerts` page where your new alert is listed. Congratulations!!! Your alert is enabled and correctly configured, the next time an anomaly is detected at or above your severity threshold you will receive an email! 
 
 It should look something like this:
 
-![Email Preview](static/imgs/img18.png)
+<img alt="Email Preview" src="static/imgs/img18.png" width=400>
 
 That's it! You can continue on below to explore more advanced options.
 
