@@ -22,6 +22,7 @@ The [next_steps/](next_steps/) directory houses additional resources for learnin
 **Available Now:**
 
 1. Human Readable Alerts - [next_steps/readable_alerts/](next_steps/readable_alerts/) folder contains a CloudFormation template that will deploy a solution to convert JSON alert responses into human readable plain text.
+1. Human Readable Alerts in HTML email - [next_steps/readable_alerts_html/](next_steps/readable_alerts_html/) folder contains a CloudFormation template that will deploy a solution to send alerts in HTML email format.
 1. Cost Calculator - [next_steps/cost_calculator/](next_steps/cost_calculator/) folder contains a Jupyter Notebook that can guide you through estimating the costs of running your workload.
 
 **Coming Soon:**
