@@ -66,8 +66,6 @@ Please follow the verification steps reading this document.
 
 [Verifying an email address](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/verify-email-addresses-procedure.html)
 
-<a href="https://docs.aws.amazon.com/ses/latest/DeveloperGuide/verify-email-addresses-procedure.html" target="_blank">Verifying an email address</a>
-
 
 ### Creating The Alert
 
