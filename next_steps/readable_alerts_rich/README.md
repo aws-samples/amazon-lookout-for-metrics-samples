@@ -22,7 +22,7 @@ In order to overcome these limitations, this solution uses Lookout for Metrics A
 
 The simplest possible option is to simply deploy the existing template and answer a few questions, to do that click the link below and follow along with the screenshots provided. At the end of it, the HTML email formatted human readable alerts will arrive in your inbox automatically!
 
-[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=HumanReadableAlertsRich&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/HumanReadableAlertsRich.YAML)
+[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=HumanReadableAlertsHtml&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/HumanReadableAlertsHtml.YAML)
 
 
 ### Cloud Formation Wizard
@@ -89,7 +89,7 @@ First fill out the `Alert details` by specifying a name, a description, and the 
 
 <img alt="Lookout_step4" src="static/imgs/img12.png" width=568>
 
-Now move on down to the Lambda function, first click the drop down and select `HumanReadableAlertsRich` like so:
+Now move on down to the Lambda function, first click the drop down and select `HumanReadableAlertsHtml` like so:
 
 <img alt="Lookout_step5" src="static/imgs/img13.png" width=608>
 
@@ -97,7 +97,7 @@ The next section is for a `Service role` this may have something filled in alrea
 
 <img alt="Lookout_step5" src="static/imgs/img14.png" width=608>
 
-The next dialog box will ask for a list of Lambda functions to enable, enter in `HumanReadableAlertsRich` then click `Create a role`:
+The next dialog box will ask for a list of Lambda functions to enable, enter in `HumanReadableAlertsHtml` then click `Create a role`:
 
 <img alt="Lookout_step6" src="static/imgs/img15.png" width=624>
 
@@ -122,4 +122,4 @@ That's it! You can continue on below to explore more advanced options.
 
 You can customize the solution, such as adding different types of information, modifying the format of email subject, and changing the layout of email body. 
 
-The logic to gather anomaly information and generate HTML formatted email is implemented in the Lambda function (`readable_alerts_rich.py`). The CloudFormation template (`HumanReadableAlertsRich.YAML`) contains a copy of the script, so please note that you may have to update the CloudFormation template if you want to deploy your customized version of the solution using CloudFormation.
+The logic to gather anomaly information and generate HTML formatted email is implemented in the Lambda function (`readable_alerts_html.py`). The CloudFormation template (`HumanReadableAlertsHtml.YAML`) contains a copy of the script, so please note that you may have to update the CloudFormation template if you want to deploy your customized version of the solution using CloudFormation.

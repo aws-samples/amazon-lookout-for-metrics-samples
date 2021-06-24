@@ -1,7 +1,7 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
 
-Description: HumanReadableAlertsRichForLookoutForMetrics IAM Policies, and Lambda Function to deliver human readable alerts in HTML format from Lookout for Metrics.
+Description: HumanReadableAlertsHtmlForLookoutForMetrics IAM Policies, and Lambda Function to deliver human readable alerts in HTML format from Lookout for Metrics.
 
 Parameters:
 
@@ -18,10 +18,10 @@ Parameters:
 Resources:
 
   # Role for Lambda
-  HumanReadableAlertRichLambdaRole:
+  HumanReadableAlertHtmlLambdaRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: HumanReadableAlertRichLambdaRole
+      RoleName: HumanReadableAlertHtmlLambdaRole
       AssumeRolePolicyDocument:
         Statement:
           - Effect: Allow
@@ -29,7 +29,7 @@ Resources:
               Service: lambda.amazonaws.com
             Action: sts:AssumeRole
       Policies: 
-        - PolicyName: "HumanReadableAlertRichPolicyL4mSesLogs"
+        - PolicyName: "HumanReadableAlertHtmlPolicyL4mSesLogs"
           PolicyDocument: 
             Version: "2012-10-17"
             Statement: 
@@ -69,14 +69,14 @@ Resources:
                   - "arn:aws:logs:*:*:log-group:/aws/lambda/*:log-stream:*"
 
   # Lambda Function To Deliver Alerts
-  HumanReadableAlertsRichLambdaFunction:
-    DependsOn: HumanReadableAlertRichLambdaRole
+  HumanReadableAlertsHtmlLambdaFunction:
+    DependsOn: HumanReadableAlertHtmlLambdaRole
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: HumanReadableAlertsRich
+      FunctionName: HumanReadableAlertsHtml
       Role:
         Fn::GetAtt:
-          - HumanReadableAlertRichLambdaRole
+          - HumanReadableAlertHtmlLambdaRole
           - Arn
       Runtime: python3.8
       Handler:  index.lambda_handler
