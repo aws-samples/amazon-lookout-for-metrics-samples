@@ -2,8 +2,7 @@
 
 The purpose of this sample is to explain how to send HTML formatted emails when anomalies are detected.
 
-![Reference](static/imgs/img18.png)
-
+<img alt="Email" src="static/imgs/img18.png" width=400>
 
 ## Overview
 
@@ -30,19 +29,19 @@ The simplest possible option is to simply deploy the existing template and answe
 
 Start by clicking `Next` at the bottom like shown:
 
-![StackWizard_Step1](static/imgs/img1.png)
+<img alt="StackWizard_Step1" src="static/imgs/img1.png" width=600>
 
 In this screen be sure to update sender email address and receiver email address, then click `Next`:
 
-![StackWizard_Step2](static/imgs/img2.png)
+<img alt="StackWizard_Step2" src="static/imgs/img2.png" width=550>
 
 All of the default options here are fine, click `Next`:
 
-![StackWizard_Step3](static/imgs/img3.png)
+<img alt="StackWizard_Step3" src="static/imgs/img3.png" width=690>
 
 This page is a bit longer, so scroll to the bottom, check the box to acknowledge the AWS CloudFormation service will create IAM resourceswith custom names, then click `Next`:
 
-![StackWizard_Step4](static/imgs/img4.png)
+<img alt="StackWizard_Step4" src="static/imgs/img4.png" width=700>
 
 This will take about 2 minutes to complete, you should see a `CREATE_IN_PROGRESS` like this: 
 
