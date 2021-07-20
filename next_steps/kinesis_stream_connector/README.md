@@ -45,7 +45,7 @@ After you have setup and activated data generator and the AWS Glue ETL job, the 
 ## Getting Started
 To get started, clone this repo to your workstation/development environment
 ```bash
-$ git clone <<url to this repository>>
+$ git clone https://github.com/aws-samples/amazon-lookout-for-metrics-samples.git
 ```
 You need to install AWS CDK and Typescript to deploy the included **AWS Cloud Development Kit (CDK)** templates written in Typescript. For more information on using the CDK in Typescript, please see the [CDK Developer Guide](https://docs.aws.amazon.com/cdk/latest/guide/work-with-cdk-typescript.html).
 
