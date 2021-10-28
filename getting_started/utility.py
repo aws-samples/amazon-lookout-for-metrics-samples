@@ -2,12 +2,333 @@ import sys
 import time
 import json
 import pathlib
-
+import os
 import boto3
 from botocore.config import Config
 from botocore.exceptions import ClientError
 
 # -----
+def crawlerRoleCreation(bucket_arn):
+    iam = boto3.client('iam')
+    bucket_arn=bucket_arn+"*"
+    role_name_crawler= 'L4M_visualization_glue'
+    assume_role_policy_document = {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "glue.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+        ]
+    }
+
+    try:
+        create_role_response = iam.create_role(
+            RoleName = role_name_crawler,
+            AssumeRolePolicyDocument = json.dumps(assume_role_policy_document)
+        );
+
+    except iam.exceptions.EntityAlreadyExistsException as e:
+        print('Warning: role already exists:', e)
+        create_role_response = iam.get_role(
+            RoleName = role_name_crawler
+        );
+    role_arn = create_role_response["Role"]["Arn"]
+
+    print('IAM Role: {}'.format(role_arn))
+
+    policy_json={
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "s3:GetObject",
+                    "s3:PutObject"
+                ],
+                "Resource": [
+                    bucket_arn
+                ]
+            },
+            {
+                "Effect": "Allow",
+                    "Action": [
+                        "glue:*",
+                        "s3:GetBucketLocation",
+                        "s3:ListBucket",
+                        "s3:ListAllMyBuckets",
+                        "s3:GetBucketAcl",
+                        "ec2:DescribeVpcEndpoints",
+                        "ec2:DescribeRouteTables",
+                        "ec2:CreateNetworkInterface",
+                        "ec2:DeleteNetworkInterface",
+                        "ec2:DescribeNetworkInterfaces",
+                        "ec2:DescribeSecurityGroups",
+                        "ec2:DescribeSubnets",
+                        "ec2:DescribeVpcAttribute",
+                        "iam:ListRolePolicies",
+                        "iam:GetRole",
+                        "iam:GetRolePolicy",
+                        "cloudwatch:PutMetricData"
+                    ],
+                    "Resource": [
+                        "*"
+                    ]
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "s3:CreateBucket"
+                    ],
+                    "Resource": [
+                        "arn:aws:s3:::aws-glue-*"
+                    ]
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "s3:GetObject",
+                        "s3:PutObject",
+                        "s3:DeleteObject"
+                    ],
+                    "Resource": [
+                        "arn:aws:s3:::aws-glue-*/*",
+                        "arn:aws:s3:::*/*aws-glue-*/*"
+                    ]
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "s3:GetObject"
+                    ],
+                    "Resource": [
+                        "arn:aws:s3:::crawler-public*",
+                        "arn:aws:s3:::aws-glue-*"
+                    ]
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "logs:CreateLogGroup",
+                        "logs:CreateLogStream",
+                        "logs:PutLogEvents"
+                    ],
+                    "Resource": [
+                        "arn:aws:logs:*:*:/aws-glue/*"
+                    ]
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "ec2:CreateTags",
+                        "ec2:DeleteTags"
+                    ],
+                    "Condition": {
+                        "ForAllValues:StringEquals": {
+                            "aws:TagKeys": [
+                                "aws-glue-service-resource"
+                            ]
+                        }
+                    },
+                    "Resource": [
+                        "arn:aws:ec2:*:*:network-interface/*",
+                        "arn:aws:ec2:*:*:security-group/*",
+                        "arn:aws:ec2:*:*:instance/*"
+                    ]
+                }
+        ]
+    }
+
+    try:
+        create_policy = iam.create_policy(
+            PolicyName = 'AccessGlueForS3andL4M',
+            PolicyDocument = json.dumps(policy_json)
+        );
+
+    except iam.exceptions.EntityAlreadyExistsException as e:
+        print('Warning: role already exists:', e)
+        response = iam.list_policies()
+        s= response['Policies']
+        my_policy = next((item for item in s if item['PolicyName'] == 'AccessGlueForS3andL4M'), None)
+        create_policy = iam.get_policy(
+            PolicyArn = my_policy['Arn']
+        );
+
+    policy_arn = create_policy["Policy"]["Arn"]
+    print('IAM Policy: {}'.format(policy_arn))
+
+    attach_response = iam.attach_role_policy(
+        RoleName = role_name_crawler,
+        PolicyArn = policy_arn
+    );
+    return (role_name_crawler,policy_arn)
+    
+def lambda_role(bucket_arn,L4M_AnomalyDetectorArn):
+    l4m = boto3.client('lookoutmetrics')
+    response = l4m.list_metric_sets(
+    AnomalyDetectorArn=L4M_AnomalyDetectorArn,
+    )
+    iam = boto3.client('iam')
+    bucket_arn=bucket_arn+"*"
+    role_name_lambda= 'L4M_visualization_lambda'
+    assume_role_policy_document_lambda = {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+        ]
+    }
+    try:
+        create_role_response = iam.create_role(
+            RoleName = role_name_lambda,
+            AssumeRolePolicyDocument = json.dumps(assume_role_policy_document_lambda)
+        );
+
+    except iam.exceptions.EntityAlreadyExistsException as e:
+        print('Warning: role already exists:', e)
+        create_role_response = iam.get_role(
+            RoleName = role_name_lambda
+        );
+    role_arn = create_role_response["Role"]["Arn"]
+    print('IAM Role: {}'.format(role_arn))
+
+    policy_json={
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "s3:GetObject",
+                    "s3:PutObject",
+                    "s3:listBucket"
+                ],
+                "Resource": [
+                    bucket_arn
+                ]
+            },
+            {
+                "Effect": "Allow",
+                "Action": "lookoutmetrics:DescribeMetricSet",
+                "Resource": response['MetricSetSummaryList'][0]['MetricSetArn']
+            }#,
+            #{
+            #    "Effect": "Allow",
+            #    "Action": "logs:CreateLogGroup",
+            #    "Resource": "arn:aws:logs:us-east-1:165810815517:*"
+            #},
+            #{
+            #    "Effect": "Allow",
+            #    "Action": [
+            #        "logs:CreateLogStream",
+            #        "logs:PutLogEvents"
+            #    ],
+            #    "Resource": [
+            #        "arn:aws:logs:us-east-1:165810815517:log-group:/aws/lambda/L4M:*"
+             #   ]
+            #}
+        ]
+    }
+    
+    try:
+        create_policy = iam.create_policy(
+            PolicyName = 'AccessLambdaForS3forL4M',
+            PolicyDocument = json.dumps(policy_json)
+        );
+
+    except iam.exceptions.EntityAlreadyExistsException as e:
+        print('Warning: role already exists:', e)
+        response = iam.list_policies()
+        s= response['Policies']
+        my_policy = next((item for item in s if item['PolicyName'] == 'AccessLambdaForS3forL4M'), None)
+        create_policy = iam.get_policy(
+            PolicyArn = my_policy['Arn']
+        );
+
+    policy_arn = create_policy["Policy"]["Arn"]
+    print('IAM Policy: {}'.format(policy_arn))
+
+    attach_response = iam.attach_role_policy(
+        RoleName = role_name_lambda,
+        PolicyArn = policy_arn
+    );
+    return (role_name_lambda, role_arn,policy_arn)
+
+def L4M_role(ARN_lambda):
+    iam = boto3.client('iam')
+    role_name_l4M= 'L4M_alert_lambda'
+    assume_role_policy_document_L4M = {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lookoutmetrics.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+        ]
+    }
+    try:
+        create_role_response = iam.create_role(
+            RoleName = role_name_l4M,
+            AssumeRolePolicyDocument = json.dumps(assume_role_policy_document_L4M)
+        );
+
+    except iam.exceptions.EntityAlreadyExistsException as e:
+        print('Warning: role already exists:', e)
+        create_role_response = iam.get_role(
+            RoleName = role_name_l4M
+        );       
+    role_arn = create_role_response["Role"]["Arn"]
+    print('IAM Role: {}'.format(role_arn))
+
+    policy_json={
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "lambda:InvokeFunction"
+                ],
+                "Resource": [
+                    ARN_lambda
+                ]
+            }
+        ]
+    }
+    
+    try:
+        create_policy = iam.create_policy(
+            PolicyName = 'L4M_alert_lambda',
+            PolicyDocument = json.dumps(policy_json)
+        );
+
+    except iam.exceptions.EntityAlreadyExistsException as e:
+        print('Warning: role already exists:', e)
+        response = iam.list_policies()
+        s= response['Policies']
+        my_policy = next((item for item in s if item['PolicyName'] == 'L4M_alert_lambda'), None)
+        create_policy = iam.get_policy(
+            PolicyArn = my_policy['Arn']
+        );
+
+    policy_arn = create_policy["Policy"]["Arn"]
+    print('IAM Policy: {}'.format(policy_arn))
+
+    attach_response = iam.attach_role_policy(
+        RoleName = role_name_l4M,
+        PolicyArn = policy_arn
+    );
+    return (role_name_l4M, role_arn,policy_arn)
+
 
 def wait_anomaly_detector( lookoutmetrics_client, arn ):
     

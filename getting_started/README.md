@@ -45,6 +45,7 @@ Amazon Lookout for Metrics is designed to primarily focus on alerting you to rea
 4. Set up alerts and configure notification parameter to get notified when Amazon Lookout for Metrics detects important outliers.
 5. Inspect the detected outliers to figure out their root causes.
 6. Provide feedback on the outliers to improve predictor accuracy.
+7. *Optional*: Use Amazon QuickSight to visualize the results and your live data from your detector.
 
 
 ### Backtesting Data Architecture
@@ -135,5 +136,7 @@ From there you are ready to create your first detectors with the service, this r
 
 1. `2.BacktestingWithHistoricalData.ipynb` - Use the APIs to build a `Backtesting` detector.
 1. `3.GettingStartedWithLiveData.ipynb` - Use the APIs to build a `Continuous` detector.
+1. `4.ExportingAnomalies.ipynb` - Use the APIs to export the detected anomalies.
+1. `5.UseQuicksightToVisualizeL4M.ipynb` - Use the APIs to trigger a Lambda as a channel for anomaly alerts and capture the data from the `Continuous` detector to build visualizations.
 1. `BacktestingWithTheConsole.md` - Use the Console to build a `Backtesting` detector.
 1. `ContinuousDetectionWithTheConsole.md` - Use the Console to build a `Continuous` detector.
