@@ -1,0 +1,49 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: >
+  From the blog post, Visualize your Amazon Lookout for Metrics Anomaly Results, this script will
+  create the Lookout For Metrics Anomaly Detector Alert with an SMS target.
+
+Parameters:
+
+  SmsPhoneNumber:
+    Description: >
+      Number to use for receiving text alerts in the E.164 format (e.g. for US, +1XXX5550100).
+    Type: String
+
+Resources:
+
+  L4MLiveDetectorAlertRole: 
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: L4MLiveDetectorAlertRole
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - Effect: Allow
+            Principal: 
+              Service: lookoutmetrics.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonSNSFullAccess"
+
+  L4MLiveDetectorSnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: L4MLiveDetectorSnsTopic
+      Subscription: 
+        - Protocol: sms
+          Endpoint: !Ref SmsPhoneNumber  
+
+  L4MLiveDetectorAlert:
+    Type: AWS::LookoutMetrics::Alert
+    Properties: 
+      Action: 
+        SNSConfiguration:
+          RoleArn: !GetAtt L4MLiveDetectorAlertRole.Arn
+          SnsTopicArn: !Ref L4MLiveDetectorSnsTopic
+      AlertDescription: "L4M Live Detector Test SMS Alert"
+      AlertName: L4MLiveDetectorAlert
+      AlertSensitivityThreshold: 50
+      AnomalyDetectorArn: !ImportValue L4MLiveDetectorArn

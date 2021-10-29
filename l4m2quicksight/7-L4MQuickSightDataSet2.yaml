@@ -1,0 +1,130 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: >
+   The Stack Template for the L4M2QuickSight Blog QuickSight Data Set
+
+Parameters:
+
+   UserName:
+      Type: String
+
+Resources:
+
+   L4MQuickSightDataSetWithLiveData:
+      Type: AWS::QuickSight::DataSet
+      Properties: 
+         AwsAccountId: !Ref AWS::AccountId
+         DataSetId: "L4MQuickSightDataSetWithLiveData"
+         Name: L4MQuickSightDataSetWithLiveData
+         PhysicalTableMap: 
+            L4MQuickSightLiveData:
+               RelationalTable:
+                  DataSourceArn: !ImportValue L4MQuickSightDataSourceArn
+                  Catalog: "AwsDataCatalog"
+                  Schema: "l4m-crawler-output-db"
+                  Name: "live"
+                  InputColumns: 
+                     - Name: platform
+                       Type: STRING
+                     - Name: marketplace
+                       Type: STRING
+                     - Name: timestamp
+                       Type: STRING
+                     - Name: views
+                       Type: DECIMAL
+                     - Name: revenue
+                       Type: DECIMAL
+            L4MQuickSightMetricAnomalyScores:
+               RelationalTable:
+                  DataSourceArn: !ImportValue L4MQuickSightDataSourceArn
+                  Catalog: "AwsDataCatalog"
+                  Schema: "l4m-crawler-output-db"
+                  Name: "metricvalue_anomalyscore"
+                  InputColumns: 
+                     - Name: key
+                       Type: STRING
+                     - Name: timestamp
+                       Type: STRING
+                     - Name: platform
+                       Type: STRING
+                     - Name: marketplace
+                       Type: STRING
+                     - Name: viewsanomalymetricvalue
+                       Type: DECIMAL
+                     - Name: viewsgroupscore
+                       Type: DECIMAL
+                     - Name: revenueanomalymetricvalue
+                       Type: DECIMAL
+                     - Name: revenuegroupscore
+                       Type: DECIMAL
+         LogicalTableMap:
+            L4MQuickSightDimensionContributions:
+               Alias: "L4M Live Data"
+               Source:
+                  PhysicalTableId: L4MQuickSightLiveData
+               DataTransforms:
+                  - RenameColumnOperation:
+                     ColumnName: "timestamp"
+                     NewColumnName: "timestampInput"
+            L4MQuickSightMetricAnomalyScores:
+               Alias: "L4M Metric Anomaly Scores"
+               Source:
+                  PhysicalTableId: L4MQuickSightMetricAnomalyScores
+               DataTransforms:
+                  - RenameColumnOperation:
+                     ColumnName: "timestamp"
+                     NewColumnName: "timestampAnomalyScore"
+                  - RenameColumnOperation:
+                     ColumnName: "marketplace"
+                     NewColumnName: "marketplaceAnomalyScore"
+                  - RenameColumnOperation:
+                     ColumnName: "platform"
+                     NewColumnName: "platformAnomalyScore"
+            L4MQuickSightMetricsAndDimensions:
+               Alias: "RIGHT join of input and output"
+               Source:
+                  JoinInstruction:
+                     LeftOperand: L4MQuickSightDimensionContributions
+                     RightOperand: L4MQuickSightMetricAnomalyScores
+                     Type: LEFT
+                     OnClause: "timestampInput = timestampAnomalyScore AND marketplace = marketplaceAnomalyScore AND platform = platformAnomalyScore"
+               DataTransforms:
+                  - CreateColumnsOperation:
+                     Columns:
+                        - ColumnName: "timestamp"
+                          ColumnId: "CalculatedTimestamp"
+                          Expression: "parseDate(timestampInput, 'yyyy-MM-dd HH:mm:ss')"
+                  - ProjectOperation:
+                     ProjectedColumns:
+                        - "timestamp"
+                        - "marketplace"
+                        - "platform"
+                        - "views"
+                        - "revenue"
+                        - "revenueanomalymetricvalue"
+                        - "revenuegroupscore"
+                        - "viewsanomalymetricvalue"
+                        - "viewsgroupscore"
+         ImportMode: DIRECT_QUERY
+         Permissions:
+            - Principal: !Sub "arn:aws:quicksight:us-east-1:${AWS::AccountId}:user/default/${UserName}"
+              Actions: # Used default Actions from describe-data-set-permissions
+                  - "quicksight:UpdateDataSetPermissions"
+                  - "quicksight:DescribeDataSet"
+                  - "quicksight:DescribeDataSetPermissions"
+                  - "quicksight:PassDataSet"
+                  - "quicksight:DescribeIngestion"
+                  - "quicksight:ListIngestions"
+                  - "quicksight:UpdateDataSet"
+                  - "quicksight:DeleteDataSet"
+                  - "quicksight:CreateIngestion"
+                  - "quicksight:CancelIngestion"
+
+Outputs:
+
+   L4MQuickSightDataSetWithLiveDataArn:
+      Description: "L4M QuickSight DataSet ARN"
+      Value: !GetAtt L4MQuickSightDataSetWithLiveData.Arn
+      Export:
+         Name: "L4MQuickSightDataSetWithLiveDataArn"

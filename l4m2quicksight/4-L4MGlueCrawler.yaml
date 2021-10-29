@@ -1,0 +1,76 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: >
+  From the blog post, Visualize your Amazon Lookout for Metrics Anomaly Results, this script will
+  create the Glue Crawler.
+
+Resources:
+
+  L4MCrawlerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: L4MCrawlerRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - glue.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonSNSFullAccess"
+        - "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
+      Policies: 
+        - PolicyName: L4MCrawlerRoleInlinePolicy
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement: 
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:DeleteObject
+                  - s3:GetBucketLocation
+                  - s3:ListBucket
+                Resource:
+                  - Fn::Sub:
+                    - "arn:aws:s3:::${BucketName}/ecommerce/live/*"
+                    - BucketName: !ImportValue L4MS3BucketName
+                  - Fn::Sub:
+                    - "arn:aws:s3:::${BucketName}/anomalyResults/dimensionContributions/*"
+                    - BucketName: !ImportValue L4MS3BucketName
+                  - Fn::Sub: 
+                    - "arn:aws:s3:::${BucketName}/anomalyResults/metricValue_AnomalyScore/*"
+                    - BucketName: !ImportValue L4MS3BucketName
+ 
+  L4MCrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Name: L4MCrawler
+      Role: !GetAtt L4MCrawlerRole.Arn
+      DatabaseName: !Ref L4MCrawlerOutputDatabase
+      Targets:
+        S3Targets:
+          - Path:
+              Fn::Sub:
+                - "${BucketName}/ecommerce/live"
+                - BucketName: !ImportValue L4MS3BucketName
+          - Path: 
+              Fn::Sub:
+                - "${BucketName}/anomalyResults/dimensionContributions"
+                - BucketName: !ImportValue L4MS3BucketName
+          - Path: 
+              Fn::Sub: 
+                - "${BucketName}/anomalyResults/metricValue_AnomalyScore"
+                - BucketName: !ImportValue L4MS3BucketName
+
+  L4MCrawlerOutputDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: "l4m-crawler-output-db" #DB names do not support camel case from CloudFormation
+        Description: "DB Location for Output from the L4M Crawler"

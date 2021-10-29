@@ -1,0 +1,87 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: >
+  From the blog post, Visualize your Amazon Lookout for Metrics Anomaly Results, this script will
+  create the Lookout For Metrics Anomaly Detector.
+
+Parameters:
+
+  L4MS3BucketName:
+    Description: >
+      S3 Bucket create from the ALFMDemo stack for both live and backtest data. It will be in the 
+      format - <Account Number>-lookoutmetrics-lab
+    Type: String
+    MinLength: 3
+    MaxLength: 63
+
+  L4MRoleArn:
+    Description: >
+      The role created in the getting started #1 notebook for L4M to use for live and backtest data.
+    Type: String
+ 
+  DetectorFrequency:
+    Description: >
+      The frequency at which the detector analyzes its source data. Used for both the Anomaly 
+      Detector and Metric Set.
+    Type: String
+    AllowedValues:
+      - P1D
+      - PT1H
+      - PT10M
+      - PT5M
+    Default: PT1H
+
+Resources:
+
+  L4MLiveDetector:
+    Type: AWS::LookoutMetrics::AnomalyDetector
+    Properties: 
+      AnomalyDetectorConfig: 
+        AnomalyDetectorFrequency: !Ref DetectorFrequency
+      AnomalyDetectorDescription: "L4M Live Detector"
+      AnomalyDetectorName: L4MLiveDetector
+      MetricSetList: 
+        - DimensionList: 
+            - platform
+            - marketplace
+          MetricList: 
+            - MetricName: views
+              AggregationFunction: SUM
+            - MetricName: revenue
+              AggregationFunction: SUM
+          MetricSetFrequency: !Ref DetectorFrequency
+          MetricSetName: L4MLiveDetectorMetricSet
+          MetricSource: 
+            S3SourceConfig:
+              FileFormatDescriptor: 
+                CsvFormatDescriptor:
+                  Charset: UTF-8
+                  ContainsHeader: true
+                  Delimiter: ","
+                  FileCompression: NONE
+                  QuoteSymbol: '"'
+              # Backtest option is commented out, below. You can modify this to run in 
+              # backtest mode, similar to the second python script, under getting started.
+              #HistoricalDataPathList: !Sub "s3://${L4MS3BucketName}/ecommerce/backtest/"
+              RoleArn: !Ref L4MRoleArn
+              TemplatedPathList: 
+                - !Sub "s3://${L4MS3BucketName}/ecommerce/live/{{yyyyMMdd}}/{{HHmm}}"
+          TimestampColumn: 
+            ColumnFormat: "yyyy-MM-dd HH:mm:ss"
+            ColumnName: timestamp
+
+Outputs:
+
+  L4MLiveDetectorArn:
+    Description: Live Detector ARN
+    Value: !GetAtt L4MLiveDetector.Arn
+    Export:
+      Name: L4MLiveDetectorArn
+
+  L4MS3BucketName:
+    Description: S3 Bucket for the live and backtest data
+    Value: !Ref L4MS3BucketName
+    Export:
+      Name: L4MS3BucketName
+
