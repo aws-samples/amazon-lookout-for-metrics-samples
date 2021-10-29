@@ -144,3 +144,8 @@ backtestdata.csv
 
 # AWS Stuff
 .awsconfig
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
