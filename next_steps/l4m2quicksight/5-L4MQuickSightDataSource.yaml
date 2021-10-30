@@ -2,7 +2,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 
 Description: >
-   The Stack Template for the L4M2QuickSight Blog Glue Crawler
+   From the blog post, Visualize your Amazon Lookout for Metrics Anomaly Results, this script will
+   create the Amazon QuickSight Athena Data Source.
 
 Parameters:
 

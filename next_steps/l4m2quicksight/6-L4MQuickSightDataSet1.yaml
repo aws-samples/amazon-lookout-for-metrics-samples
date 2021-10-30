@@ -2,7 +2,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 
 Description: >
-   The Stack Template for the L4M2QuickSight Blog QuickSight Data Set
+   From the blog post, Visualize your Amazon Lookout for Metrics Anomaly Results, this script will
+   create an Amazon QuickSight Dataset.
 
 Parameters:
 
