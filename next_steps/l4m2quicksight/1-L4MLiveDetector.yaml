@@ -9,7 +9,7 @@ Parameters:
 
   L4MS3BucketName:
     Description: >
-      S3 Bucket create from the ALFMDemo stack for both live and backtest data. It will be in the 
+      The name of the S3 Bucket created from the getting started #1 notebook. It will be in the 
       format - <Account Number>-lookoutmetrics-lab
     Type: String
     MinLength: 3
@@ -17,7 +17,7 @@ Parameters:
 
   L4MRoleArn:
     Description: >
-      The role created in the getting started #1 notebook for L4M to use for live and backtest data.
+      The ARN of the role created in the getting started #1 notebook.
     Type: String
  
   DetectorFrequency:
