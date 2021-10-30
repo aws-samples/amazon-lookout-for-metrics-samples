@@ -14,6 +14,14 @@ Parameters:
 
 Resources:
 
+  L4MLiveDetectorSnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: L4MLiveDetectorSnsTopic
+      Subscription: 
+        - Protocol: sms
+          Endpoint: !Ref SmsPhoneNumber  
+          
   L4MLiveDetectorAlertRole: 
     Type: AWS::IAM::Role
     Properties:
@@ -25,16 +33,14 @@ Resources:
             Principal: 
               Service: lookoutmetrics.amazonaws.com
             Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - "arn:aws:iam::aws:policy/AmazonSNSFullAccess"
-
-  L4MLiveDetectorSnsTopic:
-    Type: AWS::SNS::Topic
-    Properties:
-      DisplayName: L4MLiveDetectorSnsTopic
-      Subscription: 
-        - Protocol: sms
-          Endpoint: !Ref SmsPhoneNumber  
+      Policies:
+        - PolicyName: L4MLiveDetectorAlertPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: sns:Publish
+                Resource: !Ref L4MLiveDetectorSnsTopic
 
   L4MLiveDetectorAlert:
     Type: AWS::LookoutMetrics::Alert

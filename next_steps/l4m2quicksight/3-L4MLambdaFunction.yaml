@@ -27,19 +27,25 @@ Resources:
             Principal: 
               Service: lambda.amazonaws.com
             Action: sts:AssumeRole
-      Path: "/"
       ManagedPolicyArns:
-        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole" #AWS Managed Policy - Provides write permissions to CloudWatch Logs.
       Policies: 
-        - PolicyName: L4MTest
+        - PolicyName: L4MLambdaExecutionS3Policy
           PolicyDocument: 
             Version: "2012-10-17"
-            Statement: 
-              - 
-                Effect: Allow
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                Resource:
+                  - Fn::Sub:
+                    - "arn:aws:s3:::${BucketName}/*"
+                    - BucketName: !ImportValue L4MS3BucketName
+              - Effect: Allow
                 Action: lookoutmetrics:*
-                Resource: "*"
+                Resource:
+                  - !ImportValue L4MLiveDetectorArn
 
   L4MLambdaFunction:
     Type: AWS::Lambda::Function

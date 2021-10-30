@@ -21,7 +21,6 @@ Resources:
             Action:
               - sts:AssumeRole
       ManagedPolicyArns:
-        - "arn:aws:iam::aws:policy/AmazonSNSFullAccess"
         - "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
       Policies: 
         - PolicyName: L4MCrawlerRoleInlinePolicy
@@ -32,7 +31,6 @@ Resources:
                 Action:
                   - s3:GetObject
                   - s3:PutObject
-                  - s3:DeleteObject
                   - s3:GetBucketLocation
                   - s3:ListBucket
                 Resource:
