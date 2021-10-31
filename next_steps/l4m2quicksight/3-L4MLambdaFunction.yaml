@@ -44,8 +44,7 @@ Resources:
                     - BucketName: !ImportValue L4MS3BucketName
               - Effect: Allow
                 Action: lookoutmetrics:*
-                Resource:
-                  - !ImportValue L4MLiveDetectorArn
+                Resource: "*"
 
   L4MLambdaFunction:
     Type: AWS::Lambda::Function
