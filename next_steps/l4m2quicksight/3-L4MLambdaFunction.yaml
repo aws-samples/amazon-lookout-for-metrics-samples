@@ -38,7 +38,12 @@ Resources:
                 Action:
                   - s3:PutObject
                   - s3:GetObject
+                  - s3:ListBucket
+                  - s3:GetBucketLocation
                 Resource:
+                  - Fn::Sub:
+                    - "arn:aws:s3:::${BucketName}"
+                    - BucketName: !ImportValue L4MS3BucketName
                   - Fn::Sub:
                     - "arn:aws:s3:::${BucketName}/*"
                     - BucketName: !ImportValue L4MS3BucketName
@@ -58,6 +63,7 @@ Resources:
       Layers:
         - !Ref LammbdaLayerPandasArn
       Runtime: python3.8
+      MemorySize: 128
       Timeout: 5
       TracingConfig:
         Mode: Active
