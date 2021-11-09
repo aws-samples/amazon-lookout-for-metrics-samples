@@ -68,6 +68,6 @@ Resources:
                 sudo -u ec2-user -i <<'EOF'
                 cd /home/ec2-user/SageMaker/
                 git clone https://github.com/aws-samples/amazon-lookout-for-metrics-samples
-                cd /home/ec2-user/SageMaker/amazon-lookout-for-metrics-samples/workshops/RI2021/mlops/
+                cd /home/ec2-user/SageMaker/amazon-lookout-for-metrics-samples/workshops/RI2021/ml_ops/
                 nohup sh deploy.sh "${SAMArtifactsBucket}" &
                 EOF
