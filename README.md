@@ -26,6 +26,12 @@ The [next_steps/](next_steps/) directory houses additional resources for learnin
 1. Cost Calculator - [next_steps/cost_calculator/](next_steps/cost_calculator/) folder contains a Jupyter Notebook that can guide you through estimating the costs of running your workload.
 1. Kinesis Data Stream connector for Lookout for Metrics - [next_steps/kinesis_stream_connector/](next_steps/kinesis_stream_connector/) contains a deployable framework for mapping a Kinesis Data Stream into S3, as well as the automation to build and activate a live detector from it. 
 
+## Workshops
+
+**Available Now:**
+
+1. RI2021 - [workshops/RI2021/](workshops/RI2021/) contains a CloudFormation template taht will deploy a full demo pipeline with Amazon Lookout for Metrics showcasing backtesting results and how to orchestrate ML Ops with Step Functions. Also instructions provided to support visualizing results with Quicksight.
+
 **Coming Soon:**
 
 1. More examples with real world datasets.
