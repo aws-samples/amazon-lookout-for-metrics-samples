@@ -21,7 +21,7 @@ The solution created is a combination of AWS services, primarily: Amazon Lookout
 ![](images/architecture.png)
 
 To go through this example, have an AWS account where the solution will be deployed. This solution will expand on the resources created in the getting_started section from AWS Samples Repository, Amazon Lookout for Metrics The steps below have options to create the resources using either the AWS Console or launching the provided AWS CloudFormation stacks.
-1. Create the Amazon SageMaker notebook instance (ALFMTestNotebook) and notebooks using the stack provided in the Initial Setup section.
+1. Create the Amazon SageMaker notebook instance (ALFMTestNotebook) and notebooks using the stack provided in the Initial Setup section (ALFMDemo).
 2. Create the Amazon S3 Bucket and complete the data preparation using the first notebook (1.PrereqSetupData.ipynb).
 3. We will skip the second notebook as it is focused on backtesting data.
 4. If you will be walking through the example using the AWS Console, create the Amazon Lookout for Metrics live detector and its alert using the third notebook (3.GettingStartedWithLiveData.ipynb).
@@ -40,7 +40,7 @@ Ensure the steps below are completed in the same region where your Amazon Lookou
 ![](images/live-detector.png)
 
 ## Create the Amazon SageMaker Notebook Instance
-Create the Amazon SageMaker notebook instance and notebooks using the CloudFormation Stack (ALFMDemo) provided in the Initial Setup section.
+Create the Amazon SageMaker notebook instance and notebooks using the CloudFormation Stack (ALFMDemo) provided in the [getting_started, Initial Setup](https://github.com/troiano01/amazon-lookout-for-metrics-samples/tree/l4m2quicksight/getting_started#initial-setup) section.
 
 ## Create the S3 Bucket and Prepare the Data Using the Amazon SageMaker Notebook
 Create the Amazon S3 Bucket and complete the data preparation using the first notebook (1.PrereqSetupData.ipynb).
