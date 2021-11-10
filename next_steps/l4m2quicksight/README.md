@@ -71,9 +71,11 @@ Before proceeding to Step 1, stop your SageMaker notebook instance, as it is no 
 First, download the latest version of the Lambda function code (L4MVersion3.zip) similar to the console instructions, however in this case move it to the S3 bucket where it can be accessed by the CloudFormation code.
 
 Open the S3 Console and choose the bucket.
+
 ![](images/s3-bucket.png)
 
 Create a new folder, lambdaCode, and upload the lambda code archive file.
+
 ![](images/s3-upload-lambda-code.png)
 
 The *L4MLambdaFunction.yaml* CloudFormation script creates the Lambda Function and Alert resources using the code archive stored in the S3 bucket.
