@@ -53,12 +53,12 @@ From the objects created in the above steps, you will need:
 - Role ARN: `arn:aws:iam::<Account Number>:role/L4MTestRole`
 - The anomaly detection frequency: choose `PT1H` (hourly)
 
-The [*L4MLiveDetector.yaml*](1-L4MLiveDetector.yaml) CloudFormation script creates the Lookout for Metrics Anomaly Detector resource with its source pointing to the live data in the S3 bucket created above.
+The [*L4MLiveDetector.yaml*](src/1-L4MLiveDetector.yaml) CloudFormation script creates the Lookout for Metrics Anomaly Detector resource with its source pointing to the live data in the S3 bucket created above.
 - Launch the stack from the link below and update the parameters with the values from above.
 
-![](images/launch-stack.png)
+[![Launch Stack](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3.amazonaws.com/samplecfntemplates/mytemplate.template)
  
-- On the Specify stack details page, add the values from above, give it a Stack name (ex. L4MLiveDetector), and click *Next*
+- On the Specify stack details page, add the values from above to the parameters and give it a Stack name (ex. L4MLiveDetector), and click *Next*
 - On the Configure stack options page, leave everything as-is and click *Next*
 - On the Review page, leave everything as-is and click *Create Stack*
 
