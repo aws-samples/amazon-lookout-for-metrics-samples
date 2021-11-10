@@ -47,11 +47,11 @@ Create the Amazon SageMaker notebook instance and notebooks using the CloudForma
 ### Create the S3 Bucket and Prepare the Data Using the Amazon SageMaker Notebook
 Open the [Amazon SageMaker console](https://console.aws.amazon.com/sagemaker/), and open the notebook instance created by the ALFMDemo stack (ALFMTestNotebook). Create the Amazon S3 Bucket and complete the data preparation using the first notebook (located at amazon-lookout-for-metrics-samples/getting_started/1.PrereqSetupData.ipynb).
 
-### Create the Live Detector Using CloudFormation
+### Create the Live Detector
 From the objects created in the above steps, you will need:
-- S3 Bucket: <Account Number>-lookoutmetrics-lab 
-- Role ARN: arn:aws:iam::<Account Number>:role/L4MTestRole
-- The anomaly detection frequency: choose PT1H (hourly)
+- S3 Bucket: `<Account Number>-lookoutmetrics-lab` 
+- Role ARN: `arn:aws:iam::<Account Number>:role/L4MTestRole`
+- The anomaly detection frequency: choose `PT1H` (hourly)
 
 The [*L4MLiveDetector.yaml*](1-L4MLiveDetector.yaml) CloudFormation script creates the Lookout for Metrics Anomaly Detector resource with its source pointing to the live data in the S3 bucket created above.
 - Launch the stack from the link below and update the parameters with the values from above.
