@@ -123,39 +123,39 @@ Open the AWS Glue Console and choose Crawlers from the left menu. Click the chec
 ![Run Glue Crawler Screenshot](images/run-glue-crawler.png)
 
 ## Step 3: Visualize your data in Amazon QuickSight
-Navigate to Amazon QuickSight, create an account if you do not have one. You need to make sure to have access to the corresponding services (Athena and S3) by clicking on your account name on the top right, manage QuickSight, and click on Security and Permissions where you can add the necessary services. 
+Navigate to Amazon QuickSight, create an account if you do not have one. Ensure sure to have access to the corresponding services (Athena and S3) by clicking on your account name on the top right, manage QuickSight, and click on Security and Permissions where you can add the necessary services. 
 
-![](images/amazon-quicksight.png)
+![QuickSight Security & Permissions Screenshot](images/amazon-quicksight.png)
 
-### Create the Amazon QuickSight Data Source Using CloudFormation
-The L4MQuickSightDataSource.yaml CloudFormation script creates the AWS Glue Crawler, its associated IAM Role, and the output Athena database.
-- Launch the stack from the link below and update the parameters with the values from above.
+### Create the Amazon QuickSight Data Source
+The [*L4MQuickSightDataSource.yaml*](src/5-L4MQuickSightDataSource.yaml) CloudFormation script creates the AWS Glue Crawler, its associated IAM Role, and the output Athena database.
+- Launch the stack from the link below and update the parameter value.
 
-![](images/launch-stack.png)
+[![Launch Stack: L4MQuickSightDataSource](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?templateURL=null&stackName=L4MQuickSightDataSource) (To be updated)
  
-- On the Specify stack details page, add the values from above, give it a Stack name (ex. L4MGlueCrawler), and click Next
-- On the Configure stack options page, leave everything as-is and click Next
-- On the Review page, check the IAM Role creation acknowledgement, leave everything else as-is, and click Create Stack
+- On the Specify stack details page, add the parameter value, give it a Stack name (ex. L4MQuickSightDataSource), and click *Next*.
+- On the Configure stack options page, leave everything as-is and click *Next*.
+- On the Review page leave everything else as-is and click *Create Stack*.
 
-### Create the First Amazon QuickSight Dataset Using CloudFormation
-The L4MQuickSightDataSet1.yaml CloudFormation script creates an Amazon QuickSight Dataset for that joins the dimensions table with the anomaly table.
+### Create the First Amazon QuickSight Dataset
+The [*L4MQuickSightDataSet1.yaml*](src/6-L4MQuickSightDataSet1.yaml) CloudFormation script creates an Amazon QuickSight Dataset for that joins the dimensions table with the anomaly table.
+- Launch the stack from the link below and update the parameter value.
+
+[![Launch Stack: L4MQuickSightDataSet1](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?templateURL=null&stackName=L4MQuickSightDataSet1) (To be updated)
+
+- On the Specify stack details page, add the parameter value, give it a Stack name (ex. L4MQuickSightDataSet1), and click *Next*.
+- On the Configure stack options page, leave everything as-is and click *Next*.
+- On the Review page leave everything else as-is and click *Create Stack*.
+
+### Create the Second Amazon QuickSight Dataset
+The [*L4MQuickSightDataSet2.yaml*](src/6-L4MQuickSightDataSet2.yaml) CloudFormation script creates the Amazon QuickSight Dataset that joins the anomaly table with the live data table.
 - Launch the stack from the link below and update the parameters with the values from above.
 
-![](images/launch-stack.png)
+[![Launch Stack: L4MQuickSightDataSet2](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?templateURL=null&stackName=L4MQuickSightDataSet2) (To be updated)
 
-- On the Specify stack details page, add the values from above, give it a Stack name (ex. L4MGlueCrawler), and click Next
-- On the Configure stack options page, leave everything as-is and click Next
-- On the Review page, check the IAM Role creation acknowledgement, leave everything else as-is, and click Create Stack
-
-### Create the Second Amazon QuickSight Dataset Using CloudFormation
-The L4MQuickSightDataSet1.yaml CloudFormation script creates the Amazon QuickSight Dataset that joins the anomaly table with the live data table.
-- Launch the stack from the link below and update the parameters with the values from above.
-
-![](images/launch-stack.png)
-
-- On the Specify stack details page, add the values from above, give it a Stack name (ex. L4MGlueCrawler), and click Next
-- On the Configure stack options page, leave everything as-is and click Next
-- On the Review page, check the IAM Role creation acknowledgement, leave everything else as-is, and click Create Stack
+- On the Specify stack details page, add the parameter value, give it a Stack name (ex. L4MQuickSightDataSet2), and click *Next*.
+- On the Configure stack options page, leave everything as-is and click *Next*.
+- On the Review page leave everything else as-is and click *Create Stack*.
 
 ### Create the Amazon QuickSight Analysis for Dashboard Creation
 With the two Amazon QuickSight datasets created, open the Amazon QuickSight console, and choose Analysis from the left menu. Click on New analysis in the upper right. Select the first of the two datasets created, L4MQuickSightDataSetWithLiveData, and click Create analysis in the small dialog window that opened.
