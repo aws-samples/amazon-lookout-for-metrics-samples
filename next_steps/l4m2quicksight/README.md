@@ -158,24 +158,24 @@ The [*L4MQuickSightDataSet2.yaml*](src/6-L4MQuickSightDataSet2.yaml) CloudFormat
 - On the Review page leave everything else as-is and click *Create Stack*.
 
 ### Create the Amazon QuickSight Analysis for Dashboard Creation
-With the two Amazon QuickSight datasets created, open the Amazon QuickSight console, and choose Analysis from the left menu. Click on New analysis in the upper right. Select the first of the two datasets created, L4MQuickSightDataSetWithLiveData, and click Create analysis in the small dialog window that opened.
+With the two Amazon QuickSight datasets created, open the [Amazon QuickSight console](https://quicksight.aws.amazon.com/), and choose Analysis from the left menu. Click on New analysis in the upper right. Select the first of the two datasets created, L4MQuickSightDataSetWithLiveData, and click Create analysis in the small dialog window that opened.
 
-![](images/create-analysis.png)
+![Create Analysis Screenshot](images/create-analysis.png)
 
-![](images/choose-dataset.png)
+![Choose Dataset Screenshot](images/choose-dataset.png)
 
 The QuickSight Analysis was initially created with only the first dataset. To add the second, click the pencil icon next to Dataset in the upper left, and choose Add dataset from the dialog window that opened. Choose the second dataset and click Select. You will then be able to use either dataset for creating charts by choosing the dropdown under Dataset.
 
-![](images/add-second-dataset.png)
+![Add Second Dataset Screenshot](images/add-second-dataset.png)
 
-![](images/select-second-dataset.png)
+![Select Second Dataset Screenshot](images/select-second-dataset.png)
 
-![](images/show-datasets.png)
+![Show Datasets Screenshot](images/show-datasets.png)
 
 ## Next Steps
-You have now all the data to start building your own dashboards. This blog post will not go through an explanation on creating Amazon QuickSight charts. If you are new to QuickSight, you can walk through the Getting Started with Data Analysis in Amazon QuickSight documentation for an introduction. As an example, the images below show basic dashboards. For further information there is an official workshop on Amazon QuickSight.
+You have now all the data to start building your own dashboards. This blog post will not go through an explanation on creating Amazon QuickSight charts. If you are new to QuickSight, you can walk through the [Getting Started with Data Analysis in Amazon QuickSight documentation](https://docs.aws.amazon.com/quicksight/latest/user/getting-started.html) for an introduction. As an example, the images below show basic dashboards. For further information there is an [official workshop on Amazon QuickSight](https://learnquicksight.workshop.aws/en/).
 
-![](images/sample-chart1.png)
+![Sample Chart 1](images/sample-chart1.png)
 
-![](images/sample-chart2.png)
+![Sample Chart 2](images/sample-chart2.png)
 
