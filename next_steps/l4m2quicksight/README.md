@@ -88,7 +88,7 @@ Create a new folder, lambdaCode, and upload the lambda code archive file.
 
 ![S3 Upload Screenshot](images/s3-upload-lambda-code.png)
 
-The [*L4MLambdaFunction.yaml*](src/L4MLambdaFunction.yaml) CloudFormation script creates the Lambda Function and Alert resources using the code archive stored in the S3 bucket.
+The [*L4MLambdaFunction.yaml*](src/3-L4MLambdaFunction.yaml) CloudFormation script creates the Lambda Function and Alert resources using the code archive stored in the S3 bucket.
 - Launch the stack from the link below and update the parameters.
 
 [![Launch Stack: L4MLambdaFunction](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?templateURL=null&stackName=L4MLambdaFunction) (To be updated)
@@ -99,10 +99,10 @@ The [*L4MLambdaFunction.yaml*](src/L4MLambdaFunction.yaml) CloudFormation script
 
 ### Activate the Detector
 Before proceeding to Step 2, the Detector needs to be activated from the console.
-- Open the Amazon Lookout for Metrics console and expand the menu on the left.
+- Open the [Amazon Lookout for Metrics console](https://console.aws.amazon.com/lookoutmetrics) and expand the menu on the left.
 - Choose Detectors from the menu and click on the name of the newly created Detector.
-- Click Activate in the upper left and then click Activate again on the dialog that opens.
-- Activation initializes the detector and will complete after the model has completed its learning cycle. This can take up to 2 hours.
+- Click *Activate* in the upper left and then click *Activate* again on the dialog that opens.
+- Activation initializes the detector and will be ready after the model has completed its learning cycle. This can take up to 2 hours.
 
 ## Step 2: Preparing the data for Amazon QuickSight
 
