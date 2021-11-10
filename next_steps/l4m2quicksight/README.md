@@ -43,10 +43,7 @@ Ensure the steps below are completed in the same region where your Amazon Lookou
 Create the Amazon SageMaker notebook instance and notebooks using the CloudFormation Stack (ALFMDemo) provided in the [getting_started, Initial Setup](https://github.com/troiano01/amazon-lookout-for-metrics-samples/tree/l4m2quicksight/getting_started#initial-setup) section.
 
 ## Create the S3 Bucket and Prepare the Data Using the Amazon SageMaker Notebook
-Create the Amazon S3 Bucket and complete the data preparation using the first notebook (1.PrereqSetupData.ipynb).
-
-## Create the Live Detector and Alert Using the Amazon SageMaker Notebook
-If you will be walking through the example using the AWS Console, create the Amazon Lookout for Metrics live detector and its alert using the third notebook (3.GettingStartedWithLiveData.ipynb). If you will be using the provided CloudFormation stacks, this third notebook isn’t required. The detector and its alert will be created using the provided CloudFormation stacks, below.
+Open the [Amazon SageMaker console](https://console.aws.amazon.com/sagemaker/), and open the notebook instance created by the ALFMDemo stack (ALFMTestNotebook). Create the Amazon S3 Bucket and complete the data preparation using the first notebook (located at amazon-lookout-for-metrics-samples/getting_started/1.PrereqSetupData.ipynb).
 
 ## Create the Live Detector Using CloudFormation
 From the objects created in the above steps, you will need:
