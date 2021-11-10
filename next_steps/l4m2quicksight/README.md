@@ -41,13 +41,13 @@ Ensure the steps below are completed in the same region where your Amazon Lookou
 
 ![](images/live-detector.png)
 
-## Create the Amazon SageMaker Notebook Instance
+### Create the Amazon SageMaker Notebook Instance
 Create the Amazon SageMaker notebook instance and notebooks using the CloudFormation Stack (ALFMDemo) provided in the [getting_started, Initial Setup](https://github.com/troiano01/amazon-lookout-for-metrics-samples/tree/l4m2quicksight/getting_started#initial-setup) section.
 
-## Create the S3 Bucket and Prepare the Data Using the Amazon SageMaker Notebook
+### Create the S3 Bucket and Prepare the Data Using the Amazon SageMaker Notebook
 Open the [Amazon SageMaker console](https://console.aws.amazon.com/sagemaker/), and open the notebook instance created by the ALFMDemo stack (ALFMTestNotebook). Create the Amazon S3 Bucket and complete the data preparation using the first notebook (located at amazon-lookout-for-metrics-samples/getting_started/1.PrereqSetupData.ipynb).
 
-## Create the Live Detector Using CloudFormation
+### Create the Live Detector Using CloudFormation
 From the objects created in the above steps, you will need:
 - S3 Bucket: <Account Number>-lookoutmetrics-lab 
 - Role ARN: arn:aws:iam::<Account Number>:role/L4MTestRole
@@ -62,7 +62,7 @@ The *L4MLiveDetector.yaml* CloudFormation script creates the Lookout for Metrics
 - On the Configure stack options page, leave everything as-is and click *Next*
 - On the Review page, leave everything as-is and click *Create Stack*
 
-## Resource Cleanup
+### Resource Cleanup
 Before proceeding to Step 1, stop your SageMaker notebook instance, as it is no longer needed, to ensure no unnecessary costs are incurred.
 
 ## Step 1: Setting up the AWS Lambda function
@@ -85,7 +85,7 @@ The *L4MLambdaFunction.yaml* CloudFormation script creates the Lambda Function a
 - On the Configure stack options page, leave everything as-is and click *Next*
 - On the Review page, check the IAM Role creation acknowledgement, leave everything else as-is, and click *Create Stack*
 
-## Activate the Detector
+### Activate the Detector
 Before proceeding to Step 2, the Detector needs to be activated from the console.
 - Open the Amazon Lookout for Metrics console and expand the menu on the left.
 - Choose Detectors from the menu and click on the name of the newly created Detector.
