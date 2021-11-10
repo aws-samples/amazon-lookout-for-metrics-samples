@@ -39,7 +39,7 @@ Instructions using AWS CloudFormation are below. Console-based instructions are 
 ## Prerequisites
 Ensure the steps below are completed in the same region where your Amazon Lookout for Metrics live detector is created. 
 
-![](images/live-detector.png)
+![Live Detector Overview Image](images/live-detector.png)
 
 ### Create the Amazon SageMaker Notebook Instance
 Create the Amazon SageMaker notebook instance and notebooks using the CloudFormation Stack (ALFMDemo) provided in the [getting_started, Initial Setup](https://github.com/troiano01/amazon-lookout-for-metrics-samples/tree/l4m2quicksight/getting_started#initial-setup) section.
@@ -56,34 +56,44 @@ From the objects created in the above steps, you will need:
 The [*L4MLiveDetector.yaml*](src/1-L4MLiveDetector.yaml) CloudFormation script creates the Lookout for Metrics Anomaly Detector resource with its source pointing to the live data in the S3 bucket created above.
 - Launch the stack from the link below and update the parameters with the values from above.
 
-[![Launch Stack](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3.amazonaws.com/samplecfntemplates/mytemplate.template)
+[![Launch Stack: L4MLiveDetector](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?templateURL=null&stackName=L4MLiveDetector) (To be updated)
  
-- On the Specify stack details page, add the values from above to the parameters and give it a Stack name (ex. L4MLiveDetector), and click *Next*
-- On the Configure stack options page, leave everything as-is and click *Next*
-- On the Review page, leave everything as-is and click *Create Stack*
+- On the Specify stack details page, add the values from above to the parameters and give it a Stack name (ex. L4MLiveDetector), and click *Next*.
+- On the Configure stack options page, leave everything as-is and click *Next*.
+- On the Review page, leave everything as-is and click *Create Stack*.
+
+### Create the Live Detector SMS Alert
+This step is optional. The alert is presented as an example, with no impact on the dataset creation. The [*L4MLiveDetectorAlert.yaml*](src/2-L4MLiveDetectorAlert.yaml) CloudFormation script creates the Lookout for Metrics Anomaly Detector Alert resource with an SMS target. 
+- Launch the stack from the link below and update the parameters.
+
+[![Launch Stack: L4MLiveDetectorAlert](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?templateURL=null&stackName=L4MLiveDetectorAlert) (To be updated)
+
+- On the Specify stack details page, add the parameter value, give it a Stack name (ex. L4MLiveDetectorAlert), and click *Next*.
+- On the Configure stack options page, leave everything as-is and click *Next*.
+- On the Review page, check the IAM Role creation acknowledgement, leave everything else as-is, and click *Create Stack*.
 
 ### Resource Cleanup
-Before proceeding to Step 1, stop your SageMaker notebook instance, as it is no longer needed, to ensure no unnecessary costs are incurred.
+Before proceeding to Step 1, stop your SageMaker notebook instance to ensure no unnecessary costs are incurred. It is no longer needed.
 
 ## Step 1: Setting up the AWS Lambda function
 
 ### Create the AWS Lambda Function and Alert Using CloudFormation
-First, download the latest version of the Lambda function code (L4MVersion3.zip) similar to the console instructions, however in this case move it to the S3 bucket where it can be accessed by the CloudFormation code.
+First, download the latest version of the Lambda function code, [*L4MVersion3.zip*](src/L4MVersion3.zip), and upload it to the S3 bucket where it can be accessed by the CloudFormation code.
 
 Open the S3 Console and choose the bucket.
 
-![](images/s3-bucket.png)
+![S3 Bucket Screenshot](images/s3-bucket.png)
 
 Create a new folder, lambdaCode, and upload the lambda code archive file.
 
-![](images/s3-upload-lambda-code.png)
+![S3 Upload Screenshot](images/s3-upload-lambda-code.png)
 
-The *L4MLambdaFunction.yaml* CloudFormation script creates the Lambda Function and Alert resources using the code archive stored in the S3 bucket.
-- Launch the stack from the link below and update the parameters with the values from above.
+The [*L4MLambdaFunction.yaml*](src/L4MLambdaFunction.yaml) CloudFormation script creates the Lambda Function and Alert resources using the code archive stored in the S3 bucket.
+- Launch the stack from the link below and update the parameters.
 
-![](images/launch-stack.png)
+[![Launch Stack: L4MLambdaFunction](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?templateURL=null&stackName=L4MLambdaFunction) (To be updated)
  
-- On the Specify stack details page, add the values from above, give it a Stack name (ex. L4MLambdaFunction), and click *Next*
+- On the Specify stack details page give it a Stack name (ex. L4MLambdaFunction), and click *Next*
 - On the Configure stack options page, leave everything as-is and click *Next*
 - On the Review page, check the IAM Role creation acknowledgement, leave everything else as-is, and click *Create Stack*
 
