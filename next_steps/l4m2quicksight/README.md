@@ -27,7 +27,7 @@ To go through this example, have an AWS account where the solution will be deplo
 4. If you will be walking through the example using the AWS Console, create the Amazon Lookout for Metrics live detector and its alert using the third notebook (3.GettingStartedWithLiveData.ipynb).
 5. If you will be using the provided CloudFormation stacks, the third notebook isn’t required. The detector and its alert will be created using the Launch Stack link.
 6. Once the L4M live detector is created, you will need to activate it from the console. This can take up to 2 hours to initialize the model and detect anomalies.
-7. Deploy an Amazon Lambda function, using Python with a Pandas library layer, and create an alert to launch it, attached to the live detector.
+7. Deploy an Amazon Lambda function, using Python with a pandas library layer, and create an alert to launch it, attached to the live detector.
 8. Use the combination of Amazon Athena and AWS Glue to discover and prepare the data for QuickSight. Once the Glue crawler is ready, you will need to start it via the console.
 9. Create the Amazon QuickSight Data Source and Datasets.
 10. Finally, create an Amazon QuickSight Analysis for visualization, using the datasets. The CloudFormation scripts, below would be typically be run as a set of nested stacks in a production environment. They are provided individually here to facilitate a step-by-step walk through.
@@ -53,7 +53,7 @@ From the objects created in the above steps, you will need:
 - Role ARN: arn:aws:iam::<Account Number>:role/L4MTestRole
 - The anomaly detection frequency: choose PT1H (hourly)
 
-The *L4MLiveDetector.yaml* CloudFormation script creates the Lookout for Metrics Anomaly Detector resource with its source pointing to the live data in the S3 bucket created above.
+The [*L4MLiveDetector.yaml*](1-L4MLiveDetector.yaml) CloudFormation script creates the Lookout for Metrics Anomaly Detector resource with its source pointing to the live data in the S3 bucket created above.
 - Launch the stack from the link below and update the parameters with the values from above.
 
 ![](images/launch-stack.png)
