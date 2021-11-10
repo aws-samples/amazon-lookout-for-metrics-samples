@@ -34,6 +34,8 @@ To go through this example, have an AWS account where the solution will be deplo
 
 The CloudFormation scripts, below would be typically be run as a set of nested stacks in a production environment. They are provided individually here to facilitate a step-by-step walk through.
 
+Instructions using AWS CloudFormation are below. Console-based instructions are located here.
+
 ## Prerequisites
 Ensure the steps below are completed in the same region where your Amazon Lookout for Metrics live detector is created. 
 
