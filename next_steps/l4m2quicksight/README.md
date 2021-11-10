@@ -106,13 +106,13 @@ Before proceeding to Step 2, the Detector needs to be activated from the console
 
 ## Step 2: Preparing the data for Amazon QuickSight
 
-### Create the AWS Glue Crawler Using CloudFormation
-The *L4MGlueCrawler.yaml* CloudFormation script creates the AWS Glue Crawler, its associated IAM Role, and the output Athena database.
-- Launch the stack from the link below and update the parameters with the values from above.
+### Create the AWS Glue Crawler
+The [*L4MGlueCrawler.yaml*](src/4-L4MGlueCrawler.yaml) CloudFormation script creates the AWS Glue Crawler, its associated IAM Role, and the output Athena database.
+- Launch the stack from the link below.
 
-![](images/launch-stack.png)
+[![Launch Stack: L4MGlueCrawler](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?templateURL=null&stackName=L4MGlueCrawler) (To be updated)
  
-- On the Specify stack details page, add the values from above, give it a Stack name (ex. L4MGlueCrawler), and click *Next*.
+- On the Specify stack details page give it a Stack name (ex. L4MGlueCrawler) and click *Next*.
 - On the Configure stack options page, leave everything as-is and click *Next*.
 - On the Review page, check the IAM Role creation acknowledgement, leave everything else as-is, and click *Create Stack*.
 - Once the AWS Glue Crawler has been created, it will need to be run from the console (or AWS CLI) before moving on to the next steps.
@@ -120,7 +120,7 @@ The *L4MGlueCrawler.yaml* CloudFormation script creates the AWS Glue Crawler, it
 ### Run the AWS Glue Crawler
 Open the AWS Glue Console and choose Crawlers from the left menu. Click the checkbox next to your crawler (L4MCrawler) and then the Run Crawler button above the list. It will run for a few minutes and then show a Ready status when completed.
 
-![](images/run-glue-crawler.png)
+![Run Glue Crawler Screenshot](images/run-glue-crawler.png)
 
 ## Step 3: Visualize your data in Amazon QuickSight
 Navigate to Amazon QuickSight, create an account if you do not have one. You need to make sure to have access to the corresponding services (Athena and S3) by clicking on your account name on the top right, manage QuickSight, and click on Security and Permissions where you can add the necessary services. 
