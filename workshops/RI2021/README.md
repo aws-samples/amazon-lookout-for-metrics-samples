@@ -182,7 +182,79 @@ To see how to setup a backtesting job on your own later, check out: https://gith
 
 ### Getting Started with The Lab:
 
+#### Detectors and Datasets:
 
+Finally! The time has come to start using Amazon Lookout for Metrics, to begin login to your temporary AWS account or the account in which you deployed this workshop. If you are asked for a one time token, that's fine just put in any email address you have access to and you'll get a token to enter in your browser so that you can continue along.
+
+Once you have logged into the console, start by entering `Lookout for Metrics` in your search bar at the top and clicking on the service like so:
+
+![finding the lookout for Metrics Service](static/imgs/screenshot-1.png)
+
+
+This will take you to the service page below:
+
+![click on the expand icon to see all detectors](static/imgs/screenshot-2.png)
+
+Here you can see the arrow is poitning at an expand icon, click it, then click `Detectors` to see a full list of detectors that have been deployed in your account. Remember a Detector is a trained model for anomaly detection and note that one has been created for you already. If you do not see a detector yet, take a look in the top right corner of the screen and ensure that you are in `N. Virginia` or `us-east-1` for a region. **Note** your instructor may indicate a different region for your specific workshop.
+
+Continue on by clicking on the `lookout-for-metrics-workshop-backtesting-detector` detector, note that the backtesting job has completed, when you run your own experiements that field will update to let you know how the job is progressing, it can also be polled via an API.
+
+
+![instructions to click on detector above](static/imgs/screenshot-3.png)
+
+Once you havce clicked on the detector you'll be taken to a full view of the detector:
+
+![detector overview](static/imgs/screenshot-4.png)
+
+
+There are some really interesting bits of information here. First you can see the updates that everything was created, a dataset was added, the backtest job was complete, and 1 alert was added, all of these are in grean near the top. Also at teh bottom you'll see a collection of date ranges that showcase the exact time periods for your anomaly detection job, such as the dates that were used for training and the specific date ranges where anomalies could have been detected. Use this information later on your own datasets to confirm a known anomlay was inside the detection period if you're looking to see how Amazon Lookout for Metrics would respond to a specific event.
+
+In the middle of this page you'll also see that the detection interval was for `1 hour intervals`, this means that the service will be aggregating data as appropriate and then looking for anomalies every hour in the date ranges reported. 
+
+Next, take a look at the specific dataset that was provided, you can do that by clicking on the `Dataset` link in the left panel:
+
+
+![showing how to click on the dataset link](static/imgs/screenshot-5.png)
+
+Again there's a ton of content to absob on this page, you can see the interval is once again hourly and the location of your dataset, this will be come relevant again in the next section when it is time to create a continuous detector.
+
+Take a look at the bottom:
+
+![screenshot of bottom of page content of dataset page](static/imgs/screenshot-6.png)
+
+
+This is where you can see the various components of our dataset, specifically that `views` and `revenue` were listed as measures, meaning they are numerical columns and those values will be checked for anomalous entries, also their aggregation function is `SUM` meaning that if more data points are provided for this value within a given time frame, they will be added together before anomaly detection occurs. Also the dimensions are `platform` and `marketplace` , the categorial entries here are what identify specific entries for the measures of `view` and `revenue`. Lastly, the timestamp column is `timestamp` and you can see that we parse the data using `yyyy-MM-dd HH:mm:ss` as the format.
+
+
+#### Viewing Anomalies 
+
+To view the anomalies detected via the backtest job, start by clicking the `Anomalies` link on the left, as shown below. It is worth nothing this link will also behave the same way for a continous detector as well.
+
+![showing how to get to the anomalies page](static/imgs/screenshot-7.png)
+
+At long last! Anomalies!!!!
+
+![illustrating the severity threshold slider and collection of anomalies](static/imgs/screenshot-8.png)
+
+
+The `Severity score` slider can be shifted to a higher value(to see more severe and also less total anomalies) or a lower value(more anomalies will be shown). The `severity score` of an anomaly is a function of how far the observed value was from what was expected, and over how many metrics it impacts. For example a 10% drop in sales for 100 stores might be shown as more severe than a 15% drop in sales for a specific store. This slider can be helpful when deciding what value you would like to select for `Alerts`, if you are exporting them as we are in this lab for visualization elsewhere then `1` makes sense as a value(the lowest). However, if you are sending these alerts to users for further investigation you will want to select a higher value to help reduce the likelihood of alert fatigue for your end users.
+
+
+#### Alerts
+
+The final component to Lookout for Metrics is `Alerts`, they allow you to specify a specific severity threshold and to deliver a JSON response to either AWS Lambda or Amazon SNS. To view a sample of this JSON payload, take a look [here](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/next_steps/readable_alerts/input.json), alterantively you could make an API call and examine one of your very own!
+
+To see how we've configured alerts so far, click on `Alerts` on the left sidebar:
+
+![showing where to click for alerts](static/imgs/screenshot-9.png)
+
+Once the page loads you should see a simlpe alert function named `alertexporter` deployed:
+
+![a view of alerts](static/imgs/screenshot-10.png)
+
+Clicking on the name will bring up more details about the alert, you can already see the severity threshold of `1` and that the delivery channel defined was `Lambda`. The severity threshold was selected so that all anomalies that are detected are reacted to, this allows us to use this function to stream our anomalies to S3. Later in this workshop you will see how to fetch that data and how to visualize it with your own custom dashboards in Amazon QuickSight.
+
+Having thoroughly reviewed a completed backtesting detector, the next step is to create your own!
 
 ### Setting Up Your Own Live Anomaly Detector
 
@@ -190,7 +262,7 @@ To see how to setup a backtesting job on your own later, check out: https://gith
 
 ### What’s Next
 
-
+	
 ## Todos
 - Port get anomalies script to lambda
 - Port lambda to CF template
