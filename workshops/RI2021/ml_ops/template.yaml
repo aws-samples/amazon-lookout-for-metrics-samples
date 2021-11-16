@@ -325,7 +325,7 @@ Resources:
             - iam:GetRole
             - iam:GetRolePolicy
             - cloudwatch:PutMetricData
-          Resource: *
+          Resource: "*"
         - Effect: Allow
           Action: s3:CreateBucket
           Resource: arn:aws:s3:::aws-glue-*
