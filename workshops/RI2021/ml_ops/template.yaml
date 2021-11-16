@@ -393,9 +393,9 @@ Outputs:
     Value: !Ref AnomalyAlertFunction
   CrawlerRoleArn:
     Description: The ARN of the Role used by Glue Crawler
-    value: !GetAtt
+    Value: !GetAtt
               - CrawlerRole 
               - Arn
   CrawlerPolicyArn:
     Description: The ARN of the Role used by Glue Crawler
-    value: !Ref CrawlerPolicy 
+    Value: !Ref CrawlerPolicy 
