@@ -3,7 +3,7 @@
 import sys
 import json
 import boto3
-
+   
 # Open params and read as a dict
 with open('params.json') as f:
   data = json.load(f)
@@ -23,6 +23,9 @@ data['metric_source']['S3SourceConfig']['HistoricalDataPathList'] = [s3_path_bac
 data['s3_bucket'] = sys.argv[2]
 
 data['alert_lambda_name'] = sys.argv[3]
+
+data['crawler_role_arn'] = sys.argv[4]
+data['crawler_policy_arn'] = sys.argv[5]
 
 # Close the File
 with open('params.json', 'w') as json_file:
