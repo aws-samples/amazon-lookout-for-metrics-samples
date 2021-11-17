@@ -25,7 +25,6 @@ data['s3_bucket'] = sys.argv[2]
 data['alert_lambda_name'] = sys.argv[3]
 
 data['crawler_role_arn'] = sys.argv[4]
-data['crawler_policy_arn'] = sys.argv[5]
 
 # Close the File
 with open('params.json', 'w') as json_file:
