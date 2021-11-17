@@ -71,7 +71,7 @@ Monitoring large amounts of data accross businesses with Machine Learning enable
 
 A rough timeline of Anomaly Detection at Amazon is as follows:
 
-* 1995 - BI and data analytics dashboards were created, then later static rules and thresholds were created to enable rule based alerts.
+* 1995 - BI and data analytics dashboards were created, then later static rules and scores were created to enable rule based alerts.
 * 2007 - Building custom machine learning models started
 * 2015 - Integration of anomaly detection inside our analytics platforms, usage of deep learning for Anomaly Detection, and creation of Human in the Loop(HITL) algorithms
 * 2019 - Grouping and causality algorithms were developed and tested
@@ -137,6 +137,8 @@ What has already been completed:
 1. The SageMaker Notebook will deploy a collection of Step Functions and create a new bucket for your historical and future data, it also loads that data into the bucket for you. 
 1. The step functions create a detector, attach your dataset to it, kick off a backtesting job, and connect a last Lambda to an alert that will stream all identified anomalies into S3 for later examination.
 
+**NOTE**: The templates above are designed to be reusable and can be ported to any custom dataset you have, simply adjust the params.json file to be relevant to your dataset and you have an instant end-to-end pipeline that will setup your workload and execute a backtesting job. This could also be easily modified to support continous live detection of anomalies as well!**END NOTE**
+
 
 There is still plenty to be done, and before you go any further, let's dive into some basics. From there, you will visit the console to review some of the results before moving onto Live Detection and scaling beyond just using Amazon Lookout for Metrics.
 
@@ -144,7 +146,7 @@ There is still plenty to be done, and before you go any further, let's dive into
 
 In this lab you were provided a sample dataset containing some historical as well as future looking data, in the real world it would not be possible to generate future looking data but it was done here for educational purposes. You'll definitely want to create some form of data pipeline to reliably grab data from your systems of record and stream it into Amazon S3 if this is the storage engine you choose. 
 
-*Note* Earlier we showed various connectors like RDS, Redshift and more. Each of those requires you to create a table with your information correctly formatted to work with Amazon Lookout for Metrics. Often it is easier to export to Amazon S3 to begin your ETL process, then feed the data into Amazon Lookout for Metrics. *End Note*
+**NOTE** Earlier we showed various connectors like RDS, Redshift and more. Each of those requires you to create a table with your information correctly formatted to work with Amazon Lookout for Metrics. Often it is easier to export to Amazon S3 to begin your ETL process, then feed the data into Amazon Lookout for Metrics. **END NOTE**
 
 Amazon Lookout for Metrics works on structured time series datasets, if your dataset is not in that format you'll want to start with an ETL process to reformat it first. Below you can see a simple dataset:
 
@@ -234,15 +236,23 @@ To view the anomalies detected via the backtest job, start by clicking the `Anom
 
 At long last! Anomalies!!!!
 
-![illustrating the severity threshold slider and collection of anomalies](static/imgs/screenshot-8.png)
+![illustrating the severity score slider and collection of anomalies](static/imgs/screenshot-8.png)
 
 
 The `Severity score` slider can be shifted to a higher value(to see more severe and also less total anomalies) or a lower value(more anomalies will be shown). The `severity score` of an anomaly is a function of how far the observed value was from what was expected, and over how many metrics it impacts. For example a 10% drop in sales for 100 stores might be shown as more severe than a 15% drop in sales for a specific store. This slider can be helpful when deciding what value you would like to select for `Alerts`, if you are exporting them as we are in this lab for visualization elsewhere then `1` makes sense as a value(the lowest). However, if you are sending these alerts to users for further investigation you will want to select a higher value to help reduce the likelihood of alert fatigue for your end users.
 
+To view an anomaly, click any of the title's in the Anomalies list on the under the severity score slider, any will do, it will take you to a details page on that anomaly.
+
+
+![a screenshot of the anomalies detail page](static/imgs/screenshot-really-9.png)
+
+On this page you can see the time the anomaly was detected, the domains over which it occured(Marketplace: ES and Platform Pc_web) as well as the historical data points and the higlighted(last) anomalous data point! If multiple dimensional values have contributed to this score you'll see that reported as well. Here you can also specify in the right corner of each graph, `Is this relevant? Yes or No`, this feature creates a labeled data point for this anomaly, as the service retrains this data is used to build a model that reduces false positives and generates anomalies that you are looking to act upon, or that you find relevant. 
+
+Sometimes you may find that you want to share this information with others, that takes you to the next section, Alerts.
 
 #### Alerts
 
-The final component to Lookout for Metrics is `Alerts`, they allow you to specify a specific severity threshold and to deliver a JSON response to either AWS Lambda or Amazon SNS. To view a sample of this JSON payload, take a look [here](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/next_steps/readable_alerts/input.json), alterantively you could make an API call and examine one of your very own!
+The final component to Lookout for Metrics is `Alerts`, they allow you to specify a specific severity score and to deliver a JSON response to either AWS Lambda or Amazon SNS. To view a sample of this JSON payload, take a look [here](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/next_steps/readable_alerts/input.json), alterantively you could make an API call and examine one of your very own!
 
 To see how we've configured alerts so far, click on `Alerts` on the left sidebar:
 
@@ -252,11 +262,181 @@ Once the page loads you should see a simlpe alert function named `alertexporter`
 
 ![a view of alerts](static/imgs/screenshot-10.png)
 
-Clicking on the name will bring up more details about the alert, you can already see the severity threshold of `1` and that the delivery channel defined was `Lambda`. The severity threshold was selected so that all anomalies that are detected are reacted to, this allows us to use this function to stream our anomalies to S3. Later in this workshop you will see how to fetch that data and how to visualize it with your own custom dashboards in Amazon QuickSight.
+Clicking on the name will bring up more details about the alert, you can already see the severity score of `1` and that the delivery channel defined was `Lambda`. The severity score was selected so that all anomalies that are detected are reacted to, this allows us to use this function to stream our anomalies to S3. Later in this workshop you will see how to fetch that data and how to visualize it with your own custom dashboards in Amazon QuickSight.
 
-Having thoroughly reviewed a completed backtesting detector, the next step is to create your own!
+Having thoroughly reviewed a completed backtesting detector, the next step is to create your own continuous one!
 
 ### Setting Up Your Own Live Anomaly Detector
+
+#### Creating a Detector and Connecting a Dataset
+
+The next step in your journey is one you have probaby taken countless times, opening a new browser tab! After that enter `https://console.aws.amazon.com` as the URL and once again navigate to the `Lookout for Metrics` service page. This will allow you to have one tab open with your old detector, and one open for the process of creating a new one(many values can be carried over).
+
+Once you are at the `Lookout for Metrics` service console page, click the orange `Create detector` button on the right:
+
+![a view of the lookout home page with an arrow indicating where to click](static/imgs/screenshot-11.png)
+
+This should take you to a long form that looks like this:
+
+![long form screenshot of create detector screen](static/imgs/screenshot-12.png)
+
+The first thing to enter is a detector name, there are some checks in the console to prevent a name that will not work, but to keep things simple use: `l4m-workshop-continous-detector`(1). A description is totally optional. For interval, click the drop down and select `1 hour intervals`(2), to continue to the next page click `Create`(3).
+
+![long form screenshot of create detector screen filled in](static/imgs/screenshot-13.png)
+
+With that completed, the console will prompt you to enter the next step, adding a dataset. This is done by clicking the orange `Add a dataset` button in the console:
+
+![add a dataset button illustration](static/imgs/screenshot-14.png)
+
+
+After clicking, you'll be taken to the page for chosing chosing a datasource, this has a number of options including connectors to RDS databases and external sources like SalesForce but for this workshop you'll be using S3. This is a wonderful option if you find yourself needing to do custom ETL work to build a dataset for Lookout for Metrics. 
+
+Start by entering:
+
+1. A name - go with `l4m-workshop-continuous-dataset`
+1. An optional description
+1. Selecting `UTC+0` for your time zone.
+
+This portion should look like this:
+
+![initial dataset values](static/imgs/screenshot-15.png)
+
+
+The next component of this form is the `Datasetsource details` section, this is where you specify to use S3. Do so by clicking it from the dropdown, then click the `Continuous` mode button. You will then be prompted for an object in your continuous dataset. When using Amazon Lookout for Metrics, you need to structure the data in S3 in such a way that the service knows where to be able to find it when it is time to look for anomalies. To accomplish this we use folder pathing that contain timestamps to guide the services' crawlers for your data. That being said, it can be cumbersome to type out date parsing logic on your own so the console contains a helper function that can look at an example file and attempt to guess the time format you are using. 
+
+In this workshop the data has already been provided, to get a sample file open a new browser tab or window to: `https://console.aws.amazon.com` and then search for `S3` and open the corresponding console page.
+
+![how to find s3 console](static/imgs/screenshot-16.png)
+
+Your bucket has been programatically generated so to find it, search for `input` in the `Find buckets by name field`:
+
+
+![how to find the bucket](static/imgs/screenshot-17.png)
+
+Click on the bucket name to open it, inside you should see 3 items like this:
+
+![bucket contents](static/imgs/screenshot-18.png)
+
+
+From here we want to get a sample of some of our `live` data, to do this open the `ecommerce` folder, then the `live` folder, pick any random date after that for your next folder, then select `1300` for your next folder, click the name of the CSV file, and you should see a screen like the one below, on this page, click the `Copy S3 URI` button in the top center:
+
+![how to copy an s3 uri](static/imgs/screenshot-19.png)
+
+You did all of this to obtain a sample input file that contains time series data. To take a look at the sample data you can download the file via the button to the left of the one you just clicked. When you open the text file you should see something like this in the contents:
+
+```csv
+platform,marketplace,timestamp,views,revenue
+pc_web,us,2021-01-24 11:00:00,553,165.9
+pc_web,uk,2021-01-24 11:00:00,528,158.4
+pc_web,de,2021-01-24 11:00:00,800,240.0
+pc_web,fr,2021-01-24 11:00:00,593,177.9
+pc_web,es,2021-01-24 11:00:00,237,71.1
+pc_web,it,2021-01-24 11:00:00,344,103.2
+pc_web,jp,2021-01-24 11:00:00,468,140.4
+mobile_web,us,2021-01-24 11:00:00,496,148.79999999999998
+mobile_web,uk,2021-01-24 11:00:00,708,212.4
+mobile_web,de,2021-01-24 11:00:00,517,155.1
+mobile_web,fr,2021-01-24 11:00:00,430,129.0
+mobile_web,es,2021-01-24 11:00:00,552,165.6
+mobile_web,it,2021-01-24 11:00:00,466,139.79999999999998
+mobile_web,jp,2021-01-24 11:00:00,277,83.1
+mobile_app,us,2021-01-24 11:00:00,260,78.0
+mobile_app,uk,2021-01-24 11:00:00,270,81.0
+mobile_app,de,2021-01-24 11:00:00,754,226.2
+mobile_app,fr,2021-01-24 11:00:00,349,104.7
+mobile_app,es,2021-01-24 11:00:00,430,129.0
+mobile_app,it,2021-01-24 11:00:00,176,52.8
+mobile_app,jp,2021-01-24 11:00:00,272,81.6
+```
+
+These are the records for 1 hour of data for our particular dataset, armed now with the URI in your clipboard, go back to the Amazon Lookout for Metrics console page and paste it into the field `Path to an object in your continuous dataset`, then click the `Continuous data S3 path pattern` drop down for a list of options, select the one most similar to the screenshot below. You are looking to see the bucket name as well as `{{yyyyMMdd}}/{{HHmm}}/`
+
+
+![selecting the s3 path](static/imgs/screenshot-20.png)
+
+
+For the `Datasource interval` select `1 hour intervals` from the drop down. The next parameter is `Offset in seconds`, given that our data is precomputed in this workshop this parameter has no use. In the real world however you may need to wait on data to arrive before looking for anomalies, determine how long that process will take and specify the correct value of seconds there.
+
+
+You also have the option of using historical data, if you'd like you can select that option, then go back to the console and find the backtest csv inside the S3 bucket under `ecommerce`. By default, just ignore it and continue on. If you provide historical data, the detector will learn from your history before attempting to execute anomaly detection, this generally builds a more performant initial model.
+
+Under the section of `Format` all of the default values are fine and can be ignored, however do take a look at them to see what your options are for your own datasets.
+
+The last required parameter to specify to Amazon Lookout for Metrics to access and parse your dataset is the `Service role` this is created so that Amazon Lookout for Metrics has access to your content. A role was already created for you when the backtesting job was created so we will go back and reuse it. Start by opening your original Amazon Lookout for Metrics browser tab, then clicking `Dataset` on the left, and then click the square icons near `IAM role` in the details that load, this will copy the role's ARN for you.
+
+![grabbing the IAM role](static/imgs/screenshot-21.png)
+
+
+With that copied, navigate back to the form you were working on and click the `Service role` drop down, then select `Enter the ARN of a role`:
+
+![get a text entry field](static/imgs/screenshot-22.png)
+
+In the form field below, paste the IAM role ARN you copied, then click `Next` to move on to mapping your fields.
+
+![clicking next to move on to parsing the data](static/imgs/screenshot-23.png)
+
+Amazon Lookout for Metrics will try to validate that the role provided and the S3 URIs provided work for providing data to the service, if this is successful you'll see a `Validation complete` notification like the one below, just click `OK` to continue on.
+
+
+![completing validation](static/imgs/screenshot-24.png)
+
+Earlier you saw a preview of the data that looked like the image below:
+
+```csv
+platform,marketplace,timestamp,views,revenue
+pc_web,us,2021-01-24 11:00:00,553,165.9
+```
+
+Here you see numerical values or measures for views and revenue, as well as string or dimensional values for platform and marketplace(dimensions can also be numerical but they are treated as a string). Also the timestamp field is there, looking like a timestamp.
+
+Start on this page by specifying the fields athat are measures, and then a corresponding aggregation function. Given the data is hourly and we are not aggregating into days, this has no impact on our results, so feel free to choose `AVG`(Average) or `SUM`.
+
+Complete your inputs to look like the image below, click `Add measure` once to add the additional field:
+
+![entering measures](static/imgs/screenshot-25.png)
+
+Dimensions are optional but are incredibly useful for letting your users and Amazon Lookout for Metrics know where an anomaly came from in a human readable way, also without the categorial fields, the service would add up all the numerical ones and just track them as one large aggregate. For this dataset click the `Add dimension` button twice and click the drop down selecting `platform` and `marketplace` as your dimensions:
+
+![entering dimensions](static/imgs/screenshot-26.png)
+
+For your `Timestamp` field click the drop down and select `timestamp` as the field, then click the `Enter a tiemstamp format` radio button, followed by pasting in this:`yyyy-MM-dd HH:mm:ss`. That configures your dataset and you are ready to click `Next`.
+
+![timestamp and next](static/imgs/screenshot-27.png)
+
+The following page is just a review of everything that you configured, it should look like this:
+
+![dataset recap](static/imgs/screenshot-28.png)
+
+Click the `Save and activate` button in the bottom right, then enter `confirm` in the dialog that this will incur costs and click `Activate`. This workshop configuration is within the Free tier for all services used, and if you are in an official AWS event there is no cost associated with running this. However, your organizations usage may impact this if you are deploying it within your own AWS account or a corporate one, so check with any IT administrators to understand any potential impacts if you need to.
+
+Once you have clicked `Activate` you will be taken back to the overview page for your detector. The model is training and will be ready within an hour or so. To learn the final bit of setting up a workload with Amazon Lookout for Metrics click `Add alerts` to add an alert function.
+
+#### Adding Alerts
+
+In the backtesting job that was deployed beforehand, an alert funciton was deployed that will take an anomaly and record it into S3 so that it can be viewed and examined in other tools. In this case you are now going to add that same alert function to your continuous detector. After clicking the `Add alerts` function you'll be taken to a wizard to guide you through that process.
+
+Enter a sample name(`alert-exporter-continuous`), description, set your severity threshold to `1` instead of `70`(this ensures all anomalies are delivered to your bucket, 70 may make sense in a real case of delivering alerts to 3rd party services though), and click the dropdown for `Channel` and select `AWS Lambda`:
+
+![initial alert paramters](static/imgs/screenshot-29.png)
+
+For AWS Lambda you will need to choose a specific function, do this by going back to your backtesting detector's tab and clicking `Alerts` on the left side, then the alert's name:
+
+![getting alert from backtesting](static/imgs/screenshot-30.png)
+
+On this page there are 2 values to copy the `Lambda function` and `Service role ARN`(has a square for copying it):
+
+![getting alert values from backtesting](static/imgs/screenshot-31.png)
+
+Copy the `Lambda function` value first and then enter it in your new alert's form, then copy the `Service role ARN` and enter it under `Custom service role ARN` as show below:
+
+
+![final alert values](static/imgs/screenshot-31.png)
+
+Then click `Add alert`, that was it! From here on out, all anomalies caught by your new detector will have their content written to S3. This could have been configured to stream data to a ticketing system or to create a readable email alert, once you are processing the data via Lambda you can really get creative.
+
+For this exercise though the next thing to do is start to build more impactful dashboards about anomalies. This will help you make better sense of the behavior of your workload and will allow analysts and other users to quickly see the results from Amazon Lookout for Metrics.
+
+
 
 ### Building Impactful Dashboards with Glue and Quicksight
 
