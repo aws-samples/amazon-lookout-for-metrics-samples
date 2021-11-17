@@ -292,6 +292,27 @@ Resources:
             AttachAlertFunctionArn: !GetAtt AttachAlertFunction.Arn
             NotifyArn: !GetAtt Notify.Arn
 
+
+  
+# ------------------------
+# Role for AWS Glue Crawler
+# ------------------------
+  CrawlerRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - glue.amazonaws.com
+            Action: "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
+        - arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess
+ 
 # ------------------------
 # Outputs
 # ------------------------
@@ -305,3 +326,8 @@ Outputs:
   AnomalyAlertFunctionName:
     Description: The name of the anonmaly detection function for reporting.
     Value: !Ref AnomalyAlertFunction
+  CrawlerRoleArn:
+    Description: The ARN of the Role used by Glue Crawler
+    Value: !GetAtt
+              - CrawlerRole 
+              - Arn
