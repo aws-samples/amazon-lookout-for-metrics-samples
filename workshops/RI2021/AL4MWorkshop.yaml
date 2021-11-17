@@ -43,9 +43,16 @@ Resources:
         - "arn:aws:iam::aws:policy/AWSLambda_FullAccess"
         - "arn:aws:iam::aws:policy/AmazonSNSFullAccess"
         - "arn:aws:iam::aws:policy/AmazonLookoutMetricsFullAccess"
+        - "arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess"
+      Policies:
+        - PolicyName: quicksightFullAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: quiksight:*
+                Resource: "*"
         
-        
-
   # SageMaker notebook
   NotebookInstance:
     Type: "AWS::SageMaker::NotebookInstance"
