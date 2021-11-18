@@ -128,7 +128,7 @@ Navigate to Amazon QuickSight, create an account if you do not have one. Ensure 
 ![QuickSight Security & Permissions Screenshot](images/amazon-quicksight.png)
 
 ### Create the Amazon QuickSight Data Source
-The [*L4MQuickSightDataSource.yaml*](src/5-L4MQuickSightDataSource.yaml) CloudFormation script creates the AWS Glue Crawler, its associated IAM Role, and the output Athena database.
+The [*L4MQuickSightDataSource.yaml*](src/5-L4MQuickSightDataSource.yaml) CloudFormation script creates the Amazon QuickSight Athena Data Source.
 - Launch the stack from the link below and update the parameter value.
 
 [![Launch Stack: L4MQuickSightDataSource](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?templateURL=null&stackName=L4MQuickSightDataSource) (To be updated)
