@@ -603,40 +603,11 @@ In the visualize menu, we create a line-bar combo chart with timestamp in the x-
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 The backtest data 
 
 For this exercise though the next thing to do is start to build more impactful dashboards about anomalies. This will help you make better sense of the behavior of your workload and will allow analysts and other users to quickly see the results from Amazon Lookout for Metrics.
 
 
-### What’s Next
+###  Conclusion / What's Next
 
-	
-## Todos
-- Port get anomalies script to lambda
-- Port lambda to CF template
-- Combine ec2 bootstrapping with lambda CF
-- Validate EE support
-- Document how to create dashboards
-- Validate EE Support of dashboards
-- Cut screenshots and document
-- Port PPTX content into docs as well.
-- LOTS OF DRY RUNS
+TBD
