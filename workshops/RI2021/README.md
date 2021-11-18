@@ -439,6 +439,193 @@ For this exercise though the next thing to do is start to build more impactful d
 
 
 ### Building Impactful Dashboards with Glue and Quicksight
+There are 3 major steps in visualizing anomalies exported from Lookout for Metrics:
+1. catalog the exported anomalies and input backtest data in Glue
+2. create the datasource and dataset in Quicksight
+3. create analysis and dashboards in Quicksight 
+
+
+#### 1. Catalog the data in Glue 
+The anomaly alert export lambda stores exported alerts in CSV format in s3 buckets:
+- `<bucket>/anomalyResults/dimensionContributions/`   -  contains % contribution of each dimension to the anomaly 
+- `<bucket>/anomalyResults/metricValue_AnomalyScore/` -  contains anomaly score for each metric (e.g. views & revenue)
+
+The input to backtest is available in `<bucket>/ecommerce/backtest/`
+
+We will now setup and run a Glue Crawler to scan these s3 buckets and create metadata (in the form of Glue Tables) automatically.  
+
+First, navigate to `Databases` from the left navigation menu and click `Add database` to create a new Glue database.
+
+![Add Database](static/imgs/screenshot-33.png)
+
+Enter a database name and click Create
+
+![Create Database](static/imgs/screenshot-34.png)
+
+Navigate to `Crawlers` from the left navigation menu and click `Add crawler` to setup a new crawler job.
+
+![Create Crawler](static/imgs/screenshot-35.png)
+
+Specify a Crawler name and click `Next`
+
+![Crawler step 1](static/imgs/screenshot-36.png)
+
+Since we are going to use S3 as the data source for Glue crawler, choose `Data stores` as the Crawler source type and choose `Crawl all folders` and click `Next`
+
+![Crawler step 2](static/imgs/screenshot-37.png)
+
+Select `S3` as the data store and click on the folder icon to specify the path of S3 bucket where we have stored anomalies exported from backtest results.
+
+![Crawler step 2](static/imgs/screenshot-38.png)
+
+Select the appropriate bucket in your account that has the anomaly CSV files, and choose `anomalyResults` path. Click `Select`
+
+![Crawler step 2](static/imgs/screenshot-39.png)
+
+Click `Next` and choose `Yes` when prompted for `Add another data source` to add backtest input csv file to Glue catalog
+
+![Crawler step 2](static/imgs/screenshot-40.png)
+
+In the `Add a data store` screen, choose S3 as data source and click on the folder icon to specify the S3 path for back test input data. Select the appropriate bucket in your account that has the backtest CSV files, and choose `ecommerce/backtest` path. Click `Select`
+
+![Crawler step 2](static/imgs/screenshot-41.png)
+
+In the `Add another data source` prompt, click `No`
+
+![Crawler step 2](static/imgs/screenshot-42.png)
+
+Select `Create an IAM role` option to let Glue create the appropriate IAM role for the crawler job to access S3 bucket resources and click `Next`
+
+![Crawler step 2](static/imgs/screenshot-43.png)
+
+Select `Run on demand` option to let Glue run the crawler one time. Note: This option does not run the crawler automatically. Once the crawler is created, you need to run the crawler from the console. 
+
+![Crawler step 2](static/imgs/screenshot-44.png)
+
+Configure where you want Glue crawler to store the output - from the `database` dropdown, select the glue database we created earlier and click `Next`
+
+![Crawler step 2](static/imgs/screenshot-45.png)
+
+The crawler you just created appears on the console. Click on the checkbox next to the crawler, and click `Run Crawler` button to run the crawler job.
+
+![Crawler step 2](static/imgs/screenshot-46.png)
+
+When the crawler completes successfully, you will see a message indicating 3 tables were ccreated. 
+
+![Crawler step 2](static/imgs/screenshot-47.png)
+
+Navigate to `Databases->Tables` on the left navigation menu. There are three tables in Glue catalog created by Glue crawler job. Notice that the `Location` column shows S3 location of source data for each table and `Classification` column shows that the source data is in CSV format. 
+
+![Crawler step 2](static/imgs/screenshot-48.png)
+
+We will use Glue tables as the data source for Quicksight analysis and dashboards. Note that Crawler infers table schema from the input CSV files automatically. Some of the data types are not compatible with Quicksight. We will update the data types when we create the data source in Quicksight.  
+
+![Crawler step 2](static/imgs/screenshot-49.png)
+
+#### 2. Configure Quicksight
+
+When you access Quicksight for the first time, you will be asked to sign-up. Click `Sign up for QuickSight` button.
+
+![Crawler step 2](static/imgs/screenshot-50.png)
+
+Choose `Standard` account option
+
+![Crawler step 2](static/imgs/screenshot-51.png)
+
+Enter a unique account name for the account and notification eail address.
+
+![Crawler step 2](static/imgs/screenshot-52.png)
+
+Choose Amazon S3 (and bucket) and click `Finish` to setup Quicksight access.
+
+![Crawler step 2](static/imgs/screenshot-53.png)
+![Crawler step 2](static/imgs/screenshot-54.png)
+
+You should see the following message when Quicksight account creation completes successfully. 
+
+![Crawler step 2](static/imgs/screenshot-55.png)
+
+### 3. Create data source, data set and visualize anomalies
+
+Click `New Dataset` button to create a new dataset for analysis. This dataset uses Athena (with Glue Tables) as data source.
+
+![quicksight](static/imgs/screenshot-56.png)
+
+Click `Athena` to use Athena/Glue Tables as data source.
+
+![quicksight](static/imgs/screenshot-57.png)
+
+Enter a name for the data source and click `Create data source` button.
+
+![quicksight](static/imgs/screenshot-58.png)
+
+You have two options to select and join source tables to create dataset - visual editor and custom SQL. For this workshop, we will use the visual editor.  Click `Edit/Preview daa`
+
+![quicksight](static/imgs/screenshot-59.png)
+
+You will see one of the tables `backtest` is already selected. We will now add `metricvalue_anaomalyscore` table so that we can join both for our analysis. Click `Add data` button
+
+![quicksight](static/imgs/screenshot-60.png)
+
+Select `Data source` from the drop down
+
+![quicksight](static/imgs/screenshot-61.png)
+
+![quicksight](static/imgs/screenshot-62.png)
+
+Select `metricvalue_anaomalyscore` table from the list of Glue tables.
+
+![quicksight](static/imgs/screenshot-63.png)
+
+You will now see second table added to the visual editor.  Click on the two red dots to add `RIGHT JOIN` clauses as shown.
+
+![quicksight](static/imgs/screenshot-64.png)
+
+Exclude all the duplicate columns as shown. Update `Dataset Name` before clicking on `Save`.
+
+![quicksight](static/imgs/screenshot-65.png)
+
+Now, we are ready to create our first dashboard using this dataset as source. Navigate to `Analyses` menu and click `New analysis` button.
+
+![quicksight](static/imgs/screenshot-66.png)
+
+Select the dataset you created earlier.
+
+![quicksight](static/imgs/screenshot-67.png)
+
+Click `Create analysis`
+
+![quicksight](static/imgs/screenshot-68.png)
+
+In the visualize menu, we create a line-bar combo chart with timestamp in the x-axis, views as bars and lines. Bars are color coded to indicate anomalous data points.
+
+![quicksight](static/imgs/screenshot-69.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The backtest data 
+
+For this exercise though the next thing to do is start to build more impactful dashboards about anomalies. This will help you make better sense of the behavior of your workload and will allow analysts and other users to quickly see the results from Amazon Lookout for Metrics.
+
 
 ### What’s Next
 
