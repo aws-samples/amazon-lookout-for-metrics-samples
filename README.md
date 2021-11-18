@@ -24,7 +24,8 @@ The [next_steps/](next_steps/) directory houses additional resources for learnin
 1. Human Readable Alerts - [next_steps/readable_alerts/](next_steps/readable_alerts/) folder contains a CloudFormation template that will deploy a solution to convert JSON alert responses into human readable plain text.
 1. Human Readable Alerts in HTML email - [next_steps/readable_alerts_html/](next_steps/readable_alerts_html/) folder contains a CloudFormation template that will deploy a solution to send alerts in HTML email format.
 1. Cost Calculator - [next_steps/cost_calculator/](next_steps/cost_calculator/) folder contains a Jupyter Notebook that can guide you through estimating the costs of running your workload.
-1. Kinesis Data Stream connector for Lookout for Metrics - [next_steps/kinesis_stream_connector/](next_steps/kinesis_stream_connector/) contains a deployable framework for mapping a Kinesis Data Stream into S3, as well as the automation to build and activate a live detector from it. 
+1. Kinesis Data Stream connector for Lookout for Metrics - [next_steps/kinesis_stream_connector/](next_steps/kinesis_stream_connector/) contains a deployable framework for mapping a Kinesis Data Stream into S3, as well as the automation to build and activate a live detector from it.
+1. Visualize your Amazon Lookout for Metrics Anomaly Results - [next_steps/l4m2quicksight/](next_steps/l4m2quicksight/) folder contains the CloudFomration-based instructions related to the corresponding blog post.
 
 **Coming Soon:**
 
