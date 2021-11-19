@@ -209,7 +209,7 @@ Once you havce clicked on the detector you'll be taken to a full view of the det
 ![detector overview](static/imgs/screenshot-4.png)
 
 
-There are some really interesting bits of information here. First you can see the updates that everything was created, a dataset was added, the backtest job was complete, and 1 alert was added, all of these are in grean near the top. Also at teh bottom you'll see a collection of date ranges that showcase the exact time periods for your anomaly detection job, such as the dates that were used for training and the specific date ranges where anomalies could have been detected. Use this information later on your own datasets to confirm a known anomlay was inside the detection period if you're looking to see how Amazon Lookout for Metrics would respond to a specific event.
+There are some really interesting bits of information here. First you can see the updates that everything was created, a dataset was added, the backtest job was complete, and 1 alert was added, all of these are in grean near the top. Also at the bottom you'll see a collection of date ranges that showcase the exact time periods for your anomaly detection job, such as the dates that were used for training and the specific date ranges where anomalies could have been detected. Use this information later on your own datasets to confirm a known anomlay was inside the detection period if you're looking to see how Amazon Lookout for Metrics would respond to a specific event.
 
 In the middle of this page you'll also see that the detection interval was for `1 hour intervals`, this means that the service will be aggregating data as appropriate and then looking for anomalies every hour in the date ranges reported. 
 
@@ -559,11 +559,11 @@ Enter a name for the data source and click `Create data source` button.
 
 ![quicksight](static/imgs/screenshot-58.png)
 
-You have two options to select and join source tables to create dataset - visual editor and custom SQL. For this workshop, we will use the visual editor.  Click `Edit/Preview daa`
+You have two options to select and join source tables to create dataset - visual editor and custom SQL. For this workshop, we will use the visual editor.  Click `Edit/Preview data`
 
 ![quicksight](static/imgs/screenshot-59.png)
 
-You will see one of the tables `backtest` is already selected. We will now add `metricvalue_anaomalyscore` table so that we can join both for our analysis. Click `Add data` button
+`Edit/Preview data` window opens with `backtest` table already selected. We will now add `metricvalue_anaomalyscore` table so that we can join both for our analysis. Click `Add data` button
 
 ![quicksight](static/imgs/screenshot-60.png)
 
@@ -577,13 +577,27 @@ Select `metricvalue_anaomalyscore` table from the list of Glue tables.
 
 ![quicksight](static/imgs/screenshot-63.png)
 
-You will now see second table added to the visual editor.  Click on the two red dots to add `RIGHT JOIN` clauses as shown.
+You will now see second table added to the visual editor.  Click on the two red dots to add `LEFT JOIN` clauses as shown.
 
 ![quicksight](static/imgs/screenshot-64.png)
 
-Exclude all the duplicate columns as shown. Update `Dataset Name` before clicking on `Save`.
+Exclude the columns `key, timestamp, platform, marketplace, viewsanomalymetricvalue, revenueanomalymetricvalue` of the table `metricvalue_anomalyscore` by clicking on ... next each column name, select `Exclude Field` from the dropdown. 
 
 ![quicksight](static/imgs/screenshot-65.png)
+
+Next, we will add couple of calculated fields - indicator columns - that we will use to color code anomalies in our final line-bar chart. Click `Add calculated field`
+
+![quicksight](static/imgs/screenshot-70.png)
+
+Add a column name `isViewAnomaly` and add `ifelse(coalesce({viewsgroupscore},0)>0, TRUE, FALSE)` to calculation text box and click `Save`
+
+![quicksight](static/imgs/screenshot-71.png)
+
+Add one more calculated field with column name `isRevenueAnomaly` with `ifelse(coalesce({revenuegroupscore},0)>0, TRUE, FALSE)`
+
+Change the data type of `timestamp` column to `Date`. Update `Dataset Name` and click on `Save` to save the dataset.  
+
+![quicksight](static/imgs/screenshot-72.png)
 
 Now, we are ready to create our first dashboard using this dataset as source. Navigate to `Analyses` menu and click `New analysis` button.
 
@@ -597,9 +611,40 @@ Click `Create analysis`
 
 ![quicksight](static/imgs/screenshot-68.png)
 
-In the visualize menu, we create a line-bar combo chart with timestamp in the x-axis, views as bars and lines. Bars are color coded to indicate anomalous data points.
+In the visualize menu, choose `Clustered bar combo chart` as `Visual type` with timestamp in the x-axis, views as bars and lines. For timestamp (x-axis), select `Aggregate` by `Hour`. From the chart properties menu, click `Hide "other" categories` and `Hide legend`
 
 ![quicksight](static/imgs/screenshot-69.png)
+
+We will now color the bars related to anomalous data point in darker color using `isViewAnomaly` column. Drag and drop `isViewAnomaly` column to `Group/Color for bars` in `Field wells` section of the chart. Then, to choose a specific color for anomaly data points, locate and click on a bar with value `1` for `isViewAnomaly` column and change the color to red.  
+
+![quicksight](static/imgs/screenshot-73.png)
+
+Next, we will create `parameters` for `timestamp`, `marketplace` and `platform` fields and use them to create `Filters` to interact with the chart. 
+
+Navigate to `Parameters` menu item in the left navigation bar, and click `+` to add parameters as shown. 
+
+![quicksight](static/imgs/screenshot-74.png)
+
+Repeat this step to add `EndDate`, `Marketplace` and `Platform`
+
+![quicksight](static/imgs/screenshot-75.png)
+
+Next, we add `Filters` based on parameters we created in the previous step. Filters will update the chart dynamically based on the value/value range of the parameters. Navigate to `Filter` menu item in the left navigation bar and click `+` to add filters in this order - `marketplace`, `platform` and `timestamp`.  
+
+![quicksight](static/imgs/screenshot-76.png)
+
+![quicksight](static/imgs/screenshot-77.png)
+
+Finally, we create controls on `Start Date`, `End Date`, `marketplace` and `platform` parameters to interact with the chart. Navigate to `Parameters` menu item and click on drop down right next to each parameter, and click `Add control`. Enter a `Display Name` amd click `Add`. Repeat this for all 4 parameters. 
+
+![quicksight](static/imgs/screenshot-78.png)
+
+![quicksight](static/imgs/screenshot-79.png)
+
+
+The controls now appear on the `Controls` section of the chart. You can now interact with the chart by filtering the data on `timestamp`, `marketplace` and `platform`.
+
+![quicksight](static/imgs/screenshot-80.png)
 
 
 
