@@ -21,6 +21,12 @@ If you're attending this workshop via an official AWS event, there will already 
 Otherwise you can deploy this: [![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=ALFMWorkshopRI2021&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/AL4MWorkshop.yaml)
 
 
+## Architecture Diagram
+
+During this workshop you'll cover everything below! Don't worry if it looks a bit overwhelming, you'll be taking each section bit by bit until they are all deployed and it makes sense.
+
+![Arch Diagram of everything](static/imgs/AIM302Architecture.drawio.png)
+
 ## Agenda:
 
 1. An overview of Anomaly Detection and Amazon Lookout for Metrics
@@ -184,6 +190,11 @@ To see how to setup a backtesting job on your own later, check out: https://gith
 
 ### Getting Started with The Lab:
 
+First up, reviewing a fully executed backtesting workload, from the architecture diagram earlier we'll be focusing on this subset:
+
+![finding the lookout for Metrics Service](static/imgs/backtesting.png)
+
+
 #### Detectors and Datasets:
 
 Finally! The time has come to start using Amazon Lookout for Metrics, to begin login to your temporary AWS account or the account in which you deployed this workshop. If you are asked for a one time token, that's fine just put in any email address you have access to and you'll get a token to enter in your browser so that you can continue along.
@@ -267,6 +278,11 @@ Clicking on the name will bring up more details about the alert, you can already
 Having thoroughly reviewed a completed backtesting detector, the next step is to create your own continuous one!
 
 ### Setting Up Your Own Live Anomaly Detector
+
+From here you'll now focus on the bits of the architecture diagram on the right side, more specifically:
+
+![a view of alerts](static/imgs/continuous.png)
+
 
 #### Creating a Detector and Connecting a Dataset
 
@@ -437,8 +453,12 @@ Then click `Add alert`, that was it! From here on out, all anomalies caught by y
 For this exercise though the next thing to do is start to build more impactful dashboards about anomalies. This will help you make better sense of the behavior of your workload and will allow analysts and other users to quickly see the results from Amazon Lookout for Metrics.
 
 
-
 ### Building Impactful Dashboards with Glue and Quicksight
+
+Now you'll continue by building out the remaining bits of the architecture diagram:
+
+![Add Database](static/imgs/datavis.png)
+
 There are 3 major steps in visualizing anomalies exported from Lookout for Metrics:
 1. catalog the exported anomalies and input backtest data in Glue
 2. create the datasource and dataset in Quicksight
