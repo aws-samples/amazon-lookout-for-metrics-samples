@@ -86,7 +86,7 @@ def lambda_handler(event, context):
         df = pd.DataFrame.from_dict(data=file2, orient='index')
         df2 = df.transpose()
         with io.StringIO() as filename:
-            df2.to_csv(filename, index=False, encoding='utf-8')
+            df2.to_csv(filename, index=False, encoding='utf-8', date_format='%Y-%m-%d %H:%M:%S')
             response = s3.put_object(
                 Bucket=bucket, Key=key, Body=filename.getvalue()
             )
@@ -132,7 +132,7 @@ def lambda_handler(event, context):
         df2 = df.transpose()
 
         with io.StringIO() as filename:
-            df2.to_csv(filename, index=False, encoding='utf-8')
+            df2.to_csv(filename, index=False, encoding='utf-8', date_format='%Y-%m-%d %H:%M:%S')
             response = s3.put_object(
                 Bucket=bucket, Key=key, Body=filename.getvalue()
             )
@@ -178,7 +178,7 @@ def lambda_handler(event, context):
         result = pd.concat([df2, df])
 
         with io.StringIO() as filename:
-            result.to_csv(filename, index=False, encoding='utf-8')
+            result.to_csv(filename, index=False, encoding='utf-8', date_format='%Y-%m-%d %H:%M:%S')
             response = s3.put_object(
                 Bucket=bucket, Key=key, Body=filename.getvalue()
             )
@@ -207,7 +207,7 @@ def lambda_handler(event, context):
         print('the dimension first csv file is', )
         #CSV generation and upload to S3
         with io.StringIO() as filename:
-            df.to_csv(filename, index=False)
+            df.to_csv(filename, index=False, date_format='%Y-%m-%d %H:%M:%S')
             response = s3.put_object(
                 Bucket=bucket, Key=key, Body=filename.getvalue()
             )
