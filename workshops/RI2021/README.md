@@ -655,4 +655,21 @@ For this exercise though the next thing to do is start to build more impactful d
 
 ###  Conclusion / What's Next
 
-TBD
+THAT'S IT! You've completed AIM 304 - Our in depth workshop on Amazon Lookout for Metrics!
+
+You've learned:
+
+* What kinds of anomaly detection problems can be solved with Amazon Lookout for Metrics.
+* How to build datasets for the serivce and execute backtesting jobs to test out performance.
+* How to connect Lambda functions to the Alert mechanism in order to export results into other services.
+* How to build custom dashboards to expand on the capabilities of the Amazon Lookout for Metrics console.
+
+This workshop content will remain public on Github and can be deployed into any AWS account by simply launching the stack near the top of this page. For questions in the future you can reach out via AWS Support, the forums, or your AWS Account team.
+
+If you need help getting started with a POC please reach out to `l4m-bd-support@amazon.com`!
+
+If you have any quesitons please ask! 
+
+
+
+
