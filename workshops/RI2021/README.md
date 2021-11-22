@@ -667,12 +667,6 @@ The controls now appear on the `Controls` section of the chart. You can now inte
 ![quicksight](static/imgs/screenshot-80.png)
 
 
-
-The backtest data 
-
-For this exercise though the next thing to do is start to build more impactful dashboards about anomalies. This will help you make better sense of the behavior of your workload and will allow analysts and other users to quickly see the results from Amazon Lookout for Metrics.
-
-
 ###  Conclusion / What's Next
 
 THAT'S IT! You've completed AIM 304 - Our in depth workshop on Amazon Lookout for Metrics!
