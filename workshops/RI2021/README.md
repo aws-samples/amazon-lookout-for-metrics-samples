@@ -474,7 +474,7 @@ The input to backtest is available in `<bucket>/ecommerce/backtest/`
 
 We will now setup and run a Glue Crawler to scan these s3 buckets and create metadata (in the form of Glue Tables) automatically.  
 
-First, navigate to `Databases` from the left navigation menu and click `Add database` to create a new Glue database.
+First, visit the Glue service console by searching for `Glue` in the top search bar of the console and clicking on it, then navigate to `Databases` from the left navigation menu of the service console and click `Add database` to create a new Glue database.
 
 ![Add Database](static/imgs/screenshot-33.png)
 
@@ -542,7 +542,9 @@ We will use Glue tables as the data source for Quicksight analysis and dashboard
 
 ![Crawler step 2](static/imgs/screenshot-49.png)
 
-#### 2. Configure Quicksight
+#### 2. Configure 
+
+To get started here, once again use the search bar at the top looking for `QuickSight` then clicking the first result.
 
 When you access Quicksight for the first time, you will be asked to sign-up. Click `Sign up for QuickSight` button.
 
