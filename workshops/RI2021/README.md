@@ -7,7 +7,7 @@
 ## What You'll Learn Here:
 
 1. A history of Anomaly Detection at Amazon
-1. A working knowledge of the types of problems Amazon Lookout for Metrics can help solve and how to identify or curiate datasets for the service.
+1. A working knowledge of the types of problems Amazon Lookout for Metrics can help solve and how to identify or curate datasets for the service.
 1. How to execute a backtesting job with your data to identify the types of anomalies that Amazon Lookout for Metrics can help you find.
 1. How to view anomalies and export them for use in other tools.
 1. How to create real time anomaly detection workloads and how to iteratively improve your models.
@@ -82,7 +82,7 @@ A rough timeline of Anomaly Detection at Amazon is as follows:
 * 2015 - Integration of anomaly detection inside our analytics platforms, usage of deep learning for Anomaly Detection, and creation of Human in the Loop(HITL) algorithms
 * 2019 - Grouping and causality algorithms were developed and tested
 
-This experimentation and development gave rise to a few key learnigns on Anomaly Detection:
+This experimentation and development over Amazon's history gave rise to a few key learnigns on Anomaly Detection:
 
 ![Our learnings on Anomaly Detection, iterated below](static/imgs/our-learnings.png)
 
@@ -257,7 +257,7 @@ To view an anomaly, click any of the title's in the Anomalies list on the under 
 
 ![a screenshot of the anomalies detail page](static/imgs/screenshot-really-9.png)
 
-On this page you can see the time the anomaly was detected, the domains over which it occured(Marketplace: ES and Platform Pc_web) as well as the historical data points and the higlighted(last) anomalous data point! If multiple dimensional values have contributed to this score you'll see that reported as well. Here you can also specify in the right corner of each graph, `Is this relevant? Yes or No`, this feature creates a labeled data point for this anomaly, as the service retrains this data is used to build a model that reduces false positives and generates anomalies that you are looking to act upon, or that you find relevant. 
+On this page you can see the time the anomaly was detected, the domains over which it occured(Marketplace: ES and Platform Pc_web) as well as the historical data points and the higlighted(last) anomalous data point! If multiple other dimensions showcase a similar anonmaly at the time, they will be grouped together and you can see them individually with their own rendered graphs below. There you can also specify in the right corner of each graph, `Is this relevant? Yes or No`, this feature creates a labeled data point for this anomaly, as the service retrains this data is used to build a model that reduces false positives and generates anomalies that you are looking to act upon, or that you find relevant. 
 
 Sometimes you may find that you want to share this information with others, that takes you to the next section, Alerts.
 
