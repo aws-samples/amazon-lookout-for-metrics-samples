@@ -603,7 +603,7 @@ You will now see second table added to the visual editor.  Click on the two red 
 
 ![quicksight](static/imgs/screenshot-64.png)
 
-Exclude the columns `key, timestamp, platform, marketplace, viewsanomalymetricvalue, revenueanomalymetricvalue` of the table `metricvalue_anomalyscore` by clicking on ... next each column name, select `Exclude Field` from the dropdown. 
+Exclude the columns `key, timestamp, platform, marketplace, viewsanomalymetricvalue, revenueanomalymetricvalue` of the table `metricvalue_anomalyscore` by clicking on `...` next each column name, select `Exclude Field` from the dropdown. 
 
 ![quicksight](static/imgs/screenshot-65.png)
 
@@ -617,7 +617,7 @@ Add a column name `isViewAnomaly` and add `ifelse(coalesce({viewsgroupscore},0)>
 
 Add one more calculated field with column name `isRevenueAnomaly` with `ifelse(coalesce({revenuegroupscore},0)>0, TRUE, FALSE)`
 
-Change the data type of `timestamp` column to `Date`. Update `Dataset Name` and click on `Save` to save the dataset.  
+Change the data type of `timestamp` column to `Date`. Update `Dataset Name` and click on `Save and Publish` to save the dataset.  
 
 ![quicksight](static/imgs/screenshot-72.png)
 
