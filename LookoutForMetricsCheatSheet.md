@@ -11,7 +11,7 @@ Amazon Lookout for Metrics is a great platform for general purpose anomaly detec
 | Providing quick responses to shifts in KPIs for your business.    | Providing quick responses on specific users' behavior.    |
 | Identifying when levels plummet or spike outside of norms.    | Identifying anomalies when data does not arrive.    |
 | Identifying anomalies in structured CSV or JSONlines files from S3 based on timestamps.    | Detecting anomalies in free form text log files.    |
-| Identifying anomalies in 5 min, 10 min, 1 hour, and 1 day intervals.    | Identifying anomalies on custom intervals.    |
+| Identifying anomalies in 5 min, 10 min, 1 hour, and 1 day intervals.    | Identifying anomalies on custom or on sub 5 minute intervals.    |
 
 
 ## Minimum Suggested Data Volume:
@@ -28,10 +28,20 @@ All use cases that are solved by Lookout for Metrics start by being grounded in 
 
 |timestamp    | traffic_source   | traffic_volume   |
 |---    |---    | ---    |
-|03/03/2021 10:00:00    | stream1    | 1000    |
-|03/03/2021 10:00:00    | stream2    | 1000    |
-|03/03/2021 11:00:00    | stream1    | 1005    |
-|03/03/2021 11:00:00    | stream2    | 999    |
+|03/03/2021 10:00:00    | stream1    | 10    |
+|03/03/2021 10:00:00    | stream2    | 30    |
+|03/03/2021 11:00:00    | stream1    | 50    |
+|03/03/2021 11:00:00    | stream2    | 30    |
+
+Here you have the 3 core data types inside Lookout for Metrics(L4M) 
+
+* timestamp = timestamp
+* traffic_sore = dimension - a categorical label
+* traffic_volume = measure - numerical attribute to be checked for anomalies 
+
+If we assume the detection interval is hourly, this provided dataset will allow you to see anomalies in traffic volumes in either stream 1 or stream 2 within the hour they occur.
+
+However, if you are detecting at a daily interval, you then have another choice on the aggregation function used. If you aggregate on **SUM** then both streams would show a daily usage of 60, and if this is consistent or within reason for multiple days no anomaly would be detected. However if 60 is still the normal SUM value, it might not be the normal for the other aggregation function of **AVG**. Average here would show 30 for both, and we can see there was a dip and a spike in stream 1, be mindful when choosing an aggregation function that you are not abstracting away potential anomalies.
 
 
 **What About Data Aggregation?**
