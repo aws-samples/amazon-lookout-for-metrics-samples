@@ -144,3 +144,6 @@ backtestdata.csv
 
 # AWS Stuff
 .awsconfig
+
+# Pycharm
+.idea/
