@@ -39,13 +39,6 @@ def parse_l4m_timestamp(s):
     )
     return t
 
-# Format anomaly group detail page URL
-
-
-def create_url_to_console(anomaly_detector_arn, anomaly_group_id):
-    region_name, _, _ = parse_anomaly_detector_arn(anomaly_detector_arn)
-    url = f"https://{region_name}.console.aws.amazon.com/lookoutmetrics/home?region={region_name}#{anomaly_detector_arn}/anomalies/anomaly/{anomaly_group_id}"
-    return url
 
 # Look up the anomaly group which matches the received alert, and gather details
 
@@ -140,7 +133,7 @@ def lookup_anomaly_group_and_get_details(anomaly_detector_arn, alert_timestamp, 
 
 
 # Compile email subject and HTML body from gathered information
-def create_email_contents(anomaly_detector_arn, alert_timestamp, alert_metric_name, anomaly_score, anomaly_group_id, relevant_time_series):
+def create_email_contents(anomaly_detector_arn, alert_timestamp, alert_metric_name, anomaly_score, anomaly_group_id, relevant_time_series, console_url):
 
     # Format email subject
     subject = "L4M Alert - %s - %s" % (alert_metric_name,
@@ -196,7 +189,6 @@ def create_email_contents(anomaly_detector_arn, alert_timestamp, alert_metric_na
     html_body += "<br>\n"
 
     # Direct link to anomaly group detail page
-    console_url = create_url_to_console(anomaly_detector_arn, anomaly_group_id)
     html_body += '<a href="%s">Link to Lookout for Metrics console</a>\n' % console_url
 
     html_body += "</body>"
@@ -242,6 +234,7 @@ def lambda_handler(event, context):
     alert_timestamp = parse_l4m_timestamp(event["timestamp"])
     alert_metric_name = event["impactedMetric"]["metricName"]
     anomaly_score = event["anomalyScore"]
+    url = event["consoleUrl"]
 
     # Lookup anomaly group by metric name and timestamp
     anomaly_group_id, relevant_time_series = lookup_anomaly_group_and_get_details(
@@ -249,7 +242,7 @@ def lambda_handler(event, context):
 
     # Create email contents from the identified information
     subject, html_body = create_email_contents(
-        anomaly_detector_arn, alert_timestamp, alert_metric_name, anomaly_score, anomaly_group_id, relevant_time_series)
+        anomaly_detector_arn, alert_timestamp, alert_metric_name, anomaly_score, anomaly_group_id, relevant_time_series, url)
 
     # Send email by SES
     send_email(subject, html_body)
