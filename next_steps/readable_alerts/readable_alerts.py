@@ -41,11 +41,7 @@ def create_anomaly_string(input_json):
     response += "\nThe Anomaly  score was: " + str(input_json['anomalyScore']) + "\n"
     
     # Generate a link to the console for the user to learn more
-    runtime_region = os.environ['AWS_REGION']
-    url = "https://" + runtime_region + ".console.aws.amazon.com/lookoutmetrics/home?region=" + runtime_region + "#"
-    url += str(input_json['anomalyDetectorArn'])
-    url += "/detectorDetails"
-    response += "To learn more visit the Lookout for Metrics console at: " + url + " \n"
+    response += "To learn more visit the Lookout for Metrics console at: " + input_json['consoleUrl'] + " \n"
     return response
 
 def lambda_handler(event, context):
