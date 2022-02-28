@@ -1,4 +1,5 @@
-# Amazon Lookout for Metrics Cheat Sheet
+# Amazon Lookout for Metrics in Plain English
+
 This file should contain everything you need to get a working understanding of where Lookout for Metrics 
 makes sense, how to frame problems for the service, and where to go for more information. The goal is 
 that every answer is in plain English and if something is not covered here, please open an issue here 
@@ -185,20 +186,17 @@ changes in latency.
 data that has your historic values and where you will collect future ones. 
 2. Build a simple table like the ones above that point out the timestamp, dimension, and measure values.
 3. Identify what the shifts in the metrics can tell you, and that it meets your use case.
-4. Build a pipeline from this datasource into L4M, this can be via custom automation, the Custom Connectors solution below, or simply reading an existing table in your database.
+4. Build a pipeline from this datasource into Lookout for Metrics, this can be via custom automation, the Custom Connectors solution below, or simply reading an existing table in your database.
 5. Activate a detector inside Lookout for Metrics.
 6. Attach a dataset to Lookout for Metrics.
 7. Activate the Detector.
 8. Bonus - Configure Alerts.
 
 ## How Do I Understand the Results from Lookout for Metrics?
-@TODO - TBD
+Lookout for Metrics examines data in your specified interval to look for and detect anomalies within that time period. Anomalies that look very similar in that they are impacting the same measures will be grouped together and listed in the console as a singular anomaly, however it will contain all the time series that were impacted.Using this approach the console can show you over how many dimensions an anomaly occured, as well as by what percentage it occurred. For example it could show you that only 2 geographic regions are reporting an issue, and the percentage that each of them are impacted. Lastly the service may detect a correlation between one metric's anomaly and another, if this occurs the service will show them as a cause-effect relationship in the details of the anomaly as well.
 
 ## Resources
-1. [Getting Started Guide](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/tree/main/getting_started) - After reading this doc and the getting started guide, you'll know how to work with L4M from end to end.
-2. [Cost Calculator](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/next_steps/cost_calculator/CostCalculator.ipynb) - Run this notebook to instantly calculate the monthly cost for your dataset.
+1. [Getting Started Guide](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/tree/main/getting_started) - After reading this doc and the getting started guide, you'll know how to work with Lookout for Metrics from end to end.
+2. [Cost Calculator](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/next_steps/cost_calculator/) - Run this notebook to instantly calculate the monthly cost for your dataset. There's also a spreadhsheet there if you prefer that approach.
 3. [Re:Invent 2021 Workshop](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/tree/main/workshops/RI2021) - Getting started and how to push anomalies into custom dashboards.
-4. [Custom Connectors](https://github.com/aws-samples/amazon-lookout-for-metrics-custom-connectors) - A simple way to provide complex data from your database into L4M.
-
-## FAQs
-@TODO - TBD
+4. [Custom Connectors](https://github.com/aws-samples/amazon-lookout-for-metrics-custom-connectors) - A simple way to provide complex data from your database into Lookout for Metrics.

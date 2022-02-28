@@ -15,10 +15,6 @@ detects important outliers.
 
 This guide will walk you through the steps needed to configure local or SageMaker environment for working with Amazon Lookout For Metrics. At the end of this guide, move on to the Jupyter notebooks to explore the service in more detail.
 
-## Preview
-
-The service is available in preview. To find out more, go to https://aws.amazon.com/lookout-for-metrics
-
 **PROTIP**: At present when you start a `Continuous` detector it needs 100 data points in order to start detecting anomalies. If you start with ANY system other than S3 you are unable to specify historical data to bootstrap this process. For that reason it is advisable to use S3. Otherwise you will need to wait for 100 intervals of your given time in order for Lookout for Metrics to have enough data.**/END_PROTIP**
 
 
