@@ -177,8 +177,8 @@ Resources:
       Runtime: python3.8
       Layers:
         - !Ref SharedLayer
-        - !Sub arn:aws:lambda:${AWS::Region}:770693421928:layer:Klayers-python38-pandas:43
-        - !Sub arn:aws:lambda:${AWS::Region}:770693421928:layer:Klayers-python38-numpy:22
+        - !Sub arn:aws:lambda:${AWS::Region}:770693421928:layer:Klayers-p38-pandas:1
+        - !Sub arn:aws:lambda:${AWS::Region}:770693421928:layer:Klayers-p38-numpy:1
       Policies:
         - Version: "2012-10-17"
           Statement:
