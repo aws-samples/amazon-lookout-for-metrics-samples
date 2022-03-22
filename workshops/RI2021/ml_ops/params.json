@@ -1,0 +1,45 @@
+{
+    "detector_description": "A quick sample config of how to use L4M.",
+    "detector_frequency": "PT1H",
+    "dimension_list": [
+        "platform",
+        "marketplace"
+    ],
+    "metric_source": {
+        "S3SourceConfig": {
+            "FileFormatDescriptor": {
+                "CsvFormatDescriptor": {
+                    "Charset": "UTF-8",
+                    "ContainsHeader": true,
+                    "Delimiter": ",",
+                    "FileCompression": "NONE",
+                    "QuoteSymbol": "\""
+                }
+            },
+            "HistoricalDataPathList": [
+                "s3://id-ml-ops2-inputbucket-18vaudty8qtec/ecommerce/backtest/"
+            ],
+            "RoleArn": "arn:aws:iam::059124553121:role/id-ml-ops2-LookoutForMetricsRole-IZ5PL6M7YKR1"
+        }
+    },
+    "metrics_set": [
+        {
+            "AggregationFunction": "SUM",
+            "MetricName": "views"
+        },
+        {
+            "AggregationFunction": "SUM",
+            "MetricName": "revenue"
+        }
+    ],
+    "project": "lookout-for-metrics-workshop-backtesting",
+    "timestamp_column": {
+        "ColumnFormat": "yyyy-MM-dd HH:mm:ss",
+        "ColumnName": "timestamp"
+    },
+    "s3_bucket": "",
+    "alert_name": "alertexporter",
+    "alert_threshold": 1,
+    "alert_description": "Exports anomalies into s3 for visualization",
+    "alert_lambda_arn": ""
+}

@@ -1,0 +1,333 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+
+Globals:
+  Function:
+    Timeout: 300
+
+Resources:
+
+# ------------------------
+# Data Input Bucket
+# ------------------------
+  InputBucket:
+    Type: AWS::S3::Bucket
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W41
+            reason: S3 will not be encrypted for the porpose of this block
+          - id: W35
+            reason: S3 will not have logging for the porpose of this block
+          - id: W51
+            reason: S3 will not have a policy for the porpose of this block
+  LookoutS3Policy:
+    Type: AWS::S3::BucketPolicy
+    Properties: 
+      Bucket: !Ref InputBucket
+      PolicyDocument: 
+        Statement: 
+          - Sid: LookoutForMetricsList
+            Effect: Allow
+            Principal:
+              Service: 'lookoutmetrics.amazonaws.com'
+            Action: 
+              - 's3:*'
+            Resource:
+              - !Join 
+                - ''
+                - - 'arn:aws:s3:::'
+                  - !Ref InputBucket
+          - Sid: LambdaList
+            Effect: Allow
+            Principal:
+              Service: 'lambda.amazonaws.com'
+            Action: 
+              - 's3:*'
+            Resource:
+              - !Join 
+                - ''
+                - - 'arn:aws:s3:::'
+                  - !Ref InputBucket
+  S3Lambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/s3lambda/
+      Handler: parse.lambda_handler
+      Runtime: python3.9
+      Role: !GetAtt TriggerRole.Arn
+      Environment:
+        Variables:
+          STEP_FUNCTIONS_ARN: !Ref DeployStateMachine
+          PARAMS_FILE: "params.json"
+      Events:
+        S3Bucket:
+          Type: S3
+          Properties:
+            Bucket: !Ref InputBucket
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                - Name: prefix
+                  Value: "params.json"
+  TriggerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - !Sub lambda.${AWS::Region}.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSStepFunctionsFullAccess
+        - arn:aws:iam::aws:policy/CloudWatchFullAccess
+        - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+      Policies:
+        - PolicyName: LambdaExecutionPolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                  - iam:PassRole
+                  - s3:GetBucketAcl
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: arn:aws:logs:*:*:*
+# ------------------------
+# Custom Shared Layer
+# ------------------------
+  SharedLayer:
+      Type: AWS::Serverless::LayerVersion
+      Properties:
+        ContentUri: shared/
+        CompatibleRuntimes:
+          - python3.8
+        RetentionPolicy: Delete
+# ------------------------
+# Role for L4M
+# ------------------------
+  LookoutForMetricsRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - lookoutmetrics.amazonaws.com
+            Action: "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonLookoutMetricsFullAccess
+        - arn:aws:iam::aws:policy/CloudWatchFullAccess
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AWSLambda_FullAccess
+      Policies:
+        - PolicyName: LookoutForMetricsS3BucketAccessPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:ListBucket
+                  - s3:GetBucketAcl
+                  - lambda:InvokeFunction
+                Resource: arn:aws:s3:::*
+# ------------------------
+# Create Steps Definition
+# ------------------------
+  CreateAndActivateDetector:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/create-and-activate-detector/
+      Handler: create-and-activate-detector.lambda_handler
+      Runtime: python3.8
+      Layers:
+        - !Ref SharedLayer
+      Policies:
+        - AmazonLookoutMetricsFullAccess
+        - CloudWatchFullAccess
+        - AmazonS3FullAccess
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - lookoutmetrics:*
+                - iam:PassRole
+                - s3:*
+              Resource: "*"
+
+  AnomalyAlertFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/anomaly-alert-function/
+      Handler: anomaly-alert-function.lambda_handler
+      Runtime: python3.8
+      Layers:
+        - !Ref SharedLayer
+        - !Sub arn:aws:lambda:${AWS::Region}:770693421928:layer:Klayers-p38-pandas:1
+        - !Sub arn:aws:lambda:${AWS::Region}:770693421928:layer:Klayers-p38-numpy:1
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - lookoutmetrics:*
+                - iam:PassRole
+                - s3:*
+              Resource: "*"
+
+  AttachAlertFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/attach-alert-function/
+      Handler: attach-alert-function.lambda_handler
+      Runtime: python3.8
+      Layers:
+        - !Ref SharedLayer
+      Policies:
+        - AmazonLookoutMetricsFullAccess
+        - CloudWatchFullAccess
+        - AmazonS3FullAccess
+        - AWSLambda_FullAccess
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - lookoutmetrics:*
+                - iam:PassRole
+                - lambda:*
+                - s3:*
+              Resource: "*"
+
+  Notify:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambdas/notify/
+      Handler: notify.lambda_handler
+      Runtime: python3.8
+
+  StatesExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - !Sub states.${AWS::Region}.amazonaws.com
+            Action: "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonLookoutMetricsFullAccess
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+      Policies:
+        - PolicyName: StatesExecutionPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "lambda:InvokeFunction"
+                  - s3:*
+                  - lookoutmetrics:*
+                  - iam:PassRole
+                Resource: "*"
+
+  DeployStateMachine:
+    Type: "AWS::StepFunctions::StateMachine"
+    DependsOn: StatesExecutionRole
+    Properties:
+      RoleArn: !GetAtt [StatesExecutionRole, Arn]
+      DefinitionString:
+        !Sub
+          - |-
+            {
+              "StartAt": "Create and Activate Detector",
+              "States": {
+                "Create and Activate Detector": {
+                  "Type": "Task",
+                  "Resource": "${CreateAndActivateDetectorArn}",
+                  "InputPath": "$.params",
+                  "ResultPath": "$.DetectorArn",
+                  "Catch": [{
+                    "ErrorEquals": ["ResourceFailed"],
+                    "ResultPath": "$.serviceError",
+                    "Next": "Fail"
+                  }],
+                  "Next": "Attach Alert Function"
+                },
+                "Attach Alert Function": {
+                  "Type": "Task",
+                  "Resource": "${AttachAlertFunctionArn}",
+                  "InputPath": "$",
+                  "ResultPath": "$.params",
+                  "Catch": [{
+                    "ErrorEquals": ["ResourceFailed"],
+                    "ResultPath": "$.serviceError",
+                    "Next": "Fail"
+                  }],
+                  "End": true
+                },
+                "Fail": {
+                  "Type": "Task",
+                  "Resource": "${NotifyArn}",
+                  "End": true
+                }
+              }
+            }
+          - CreateAndActivateDetectorArn: !GetAtt CreateAndActivateDetector.Arn
+            AttachAlertFunctionArn: !GetAtt AttachAlertFunction.Arn
+            NotifyArn: !GetAtt Notify.Arn
+
+
+  
+# ------------------------
+# Role for AWS Glue Crawler
+# ------------------------
+  CrawlerRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - glue.amazonaws.com
+            Action: "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
+        - arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess
+ 
+# ------------------------
+# Outputs
+# ------------------------
+Outputs:
+  InputBucketName:
+    Description: The S3 bucket name
+    Value: !Ref InputBucket
+  LookoutForMetricsRole:
+      Description: The role for L4M to use
+      Value: !Ref LookoutForMetricsRole
+  AnomalyAlertFunctionName:
+    Description: The name of the anonmaly detection function for reporting.
+    Value: !Ref AnomalyAlertFunction
+  CrawlerRoleArn:
+    Description: The ARN of the Role used by Glue Crawler
+    Value: !GetAtt
+              - CrawlerRole 
+              - Arn
