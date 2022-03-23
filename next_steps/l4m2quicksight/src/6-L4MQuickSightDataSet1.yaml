@@ -1,0 +1,128 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: >
+   From the blog post, Visualize your Amazon Lookout for Metrics Anomaly Results, this script will
+   create an Amazon QuickSight Dataset.
+
+Parameters:
+
+   UserName:
+      Description: Enter your Amazon QuickSight username.
+      Type: String
+
+Resources:
+
+   L4MQuickSightDataSetWithDimensionContributions:
+      Type: AWS::QuickSight::DataSet
+      Properties: 
+         AwsAccountId: !Ref AWS::AccountId
+         DataSetId: "L4MQuickSightDataSetWithDimensionContributions"
+         Name: L4MQuickSightDataSetWithDimensionContributions
+         PhysicalTableMap: 
+            L4MQuickSightDimensionContributions:
+               RelationalTable:
+                  DataSourceArn: !ImportValue L4MQuickSightDataSourceArn
+                  Catalog: "AwsDataCatalog"
+                  Schema: "l4m-crawler-output-db"
+                  Name: "dimensioncontributions"
+                  InputColumns: 
+                     - Name: timestamp
+                       Type: STRING
+                     - Name: metricname
+                       Type: STRING
+                     - Name: dimensionname
+                       Type: STRING
+                     - Name: dimensionvalue
+                       Type: STRING
+                     - Name: valuecontribution
+                       Type: DECIMAL
+            L4MQuickSightMetricAnomalyScores:
+               RelationalTable:
+                  DataSourceArn: !ImportValue L4MQuickSightDataSourceArn
+                  Catalog: "AwsDataCatalog"
+                  Schema: "l4m-crawler-output-db"
+                  Name: "metricvalue_anomalyscore"
+                  InputColumns: 
+                     - Name: key
+                       Type: STRING
+                     - Name: timestamp
+                       Type: STRING
+                     - Name: platform
+                       Type: STRING
+                     - Name: marketplace
+                       Type: STRING
+                     - Name: viewsanomalymetricvalue
+                       Type: DECIMAL
+                     - Name: viewsgroupscore
+                       Type: DECIMAL
+                     - Name: revenueanomalymetricvalue
+                       Type: DECIMAL
+                     - Name: revenuegroupscore
+                       Type: DECIMAL
+         LogicalTableMap:
+            L4MQuickSightDimensionContributions:
+               Alias: "L4M Dimension Contributions"
+               Source:
+                  PhysicalTableId: L4MQuickSightDimensionContributions
+               DataTransforms:
+                  - RenameColumnOperation:
+                     ColumnName: "timestamp"
+                     NewColumnName: "timestampoutput"
+            L4MQuickSightMetricAnomalyScores:
+               Alias: "L4M Metric Anomaly Scores"
+               Source:
+                  PhysicalTableId: L4MQuickSightMetricAnomalyScores
+               DataTransforms:
+                  - RenameColumnOperation:
+                     ColumnName: "timestamp"
+                     NewColumnName: "timestamp2"
+            L4MQuickSightMetricsAndDimensions:
+               Alias: "L4MQuickSightMetricsAndDimensions"
+               Source:
+                  JoinInstruction:
+                     LeftOperand: L4MQuickSightDimensionContributions
+                     RightOperand: L4MQuickSightMetricAnomalyScores
+                     Type: RIGHT
+                     OnClause: "timestampoutput = timestamp2"
+               DataTransforms:
+                  - CreateColumnsOperation:
+                     Columns:
+                        - ColumnName: "timestamp"
+                          ColumnId: "CalculatedTimestamp"
+                          Expression: "parseDate(timestampoutput, 'yyyy-MM-dd HH:mm:ss')"
+                  - ProjectOperation:
+                     ProjectedColumns:
+                        - "timestamp"
+                        - "dimensionname"
+                        - "dimensionvalue"
+                        - "marketplace"
+                        - "metricname"
+                        - "ScoreValue"
+                        - "platform"
+                        - "revenueanomalymetricvalue"
+                        - "revenuegroupscore"
+                        - "viewsanomalymetricvalue"
+                        - "viewsgroupscore"
+         ImportMode: DIRECT_QUERY
+         Permissions:
+            - Principal: !Sub "arn:aws:quicksight:us-east-1:${AWS::AccountId}:user/default/${UserName}"
+              Actions: # Used default Actions from describe-data-set-permissions
+                  - "quicksight:UpdateDataSetPermissions"
+                  - "quicksight:DescribeDataSet"
+                  - "quicksight:DescribeDataSetPermissions"
+                  - "quicksight:PassDataSet"
+                  - "quicksight:DescribeIngestion"
+                  - "quicksight:ListIngestions"
+                  - "quicksight:UpdateDataSet"
+                  - "quicksight:DeleteDataSet"
+                  - "quicksight:CreateIngestion"
+                  - "quicksight:CancelIngestion"
+
+Outputs:
+
+   L4MQuickSightDataSetWithDimensionContributionsArn:
+      Description: "L4M QuickSight DataSet ARN"
+      Value: !GetAtt L4MQuickSightDataSetWithDimensionContributions.Arn
+      Export:
+         Name: "L4MQuickSightDataSetWithDimensionContributionsArn"

@@ -147,3 +147,7 @@ backtestdata.csv
 
 # Pycharm
 .idea/
+
+# Visual Studio Code
+.vscode/
+*.code-workspace

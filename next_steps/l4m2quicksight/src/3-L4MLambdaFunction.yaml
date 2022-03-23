@@ -1,0 +1,102 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: >
+  From the blog post, Visualize your Amazon Lookout for Metrics Anomaly Results, this script will
+  create the Lambda Function and its Alert.
+
+Parameters:
+
+  LammbdaLayerPandasArn:
+    Description: >
+      pandas layer ARN from https://github.com/keithrozario/Klayers/tree/master/deployments/python3.8/arns. 
+      Modify only if necessary.
+    Type: String
+    Default: "arn:aws:lambda:us-east-2:770693421928:layer:Klayers-python38-pandas:38"
+ 
+Resources:
+
+  L4MLambdaExecutionRole: 
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: L4MLambdaExecutionRole
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - Effect: Allow
+            Principal: 
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole" #AWS Managed Policy - Provides write permissions to CloudWatch Logs.
+      Policies: 
+        - PolicyName: L4MLambdaExecutionS3Policy
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                  - s3:ListBucket
+                  - s3:GetBucketLocation
+                Resource:
+                  - Fn::Sub:
+                    - "arn:aws:s3:::${BucketName}"
+                    - BucketName: !ImportValue L4MS3BucketName
+                  - Fn::Sub:
+                    - "arn:aws:s3:::${BucketName}/*"
+                    - BucketName: !ImportValue L4MS3BucketName
+              - Effect: Allow
+                Action: lookoutmetrics:*
+                Resource: "*"
+
+  L4MLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: "L4MVersion3/lambda_function.lambda_handler"
+      Role: !GetAtt L4MLambdaExecutionRole.Arn
+      PackageType: Zip
+      Code:
+        S3Bucket: !ImportValue L4MS3BucketName
+        S3Key: "lambdaCode/L4MVersion3.zip"
+      Layers:
+        - !Ref LammbdaLayerPandasArn
+      Runtime: python3.8
+      MemorySize: 128
+      Timeout: 5
+      TracingConfig:
+        Mode: Active
+
+  L4MDetectorLambdaAlertRole: 
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: L4MDetectorLambdaAlertRole
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - Effect: Allow
+            Principal: 
+              Service: lookoutmetrics.amazonaws.com
+            Action: sts:AssumeRole
+      Path: "/"
+      Policies: 
+        - PolicyName: L4MTest
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement: 
+              - Effect: Allow
+                Action: lambda:InvokeFunction
+                Resource: !GetAtt L4MLambdaFunction.Arn
+
+  L4MDetectorLambdaAlert:
+    Type: AWS::LookoutMetrics::Alert
+    Properties:
+      Action: 
+        LambdaConfiguration: 
+          LambdaArn: !GetAtt L4MLambdaFunction.Arn
+          RoleArn: !GetAtt L4MDetectorLambdaAlertRole.Arn
+      AlertDescription: "Detector Lambda Alert"
+      AlertName: L4MDetectorLambdaAlert
+      AlertSensitivityThreshold: 70
+      AnomalyDetectorArn: !ImportValue L4MLiveDetectorArn
