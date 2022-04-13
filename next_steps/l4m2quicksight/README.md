@@ -20,21 +20,20 @@ The solution created is a combination of AWS services, primarily: [Amazon Lookou
 
 ![Blog Architecture Image](images/architecture.png)
 
-To go through this example, have an AWS account where the solution will be deployed. This solution will expand on the resources created in the [getting_started section from AWS Samples Repository, Amazon Lookout for Metrics](https://github.com/aws-samples/amazon-lookout-for-metrics-samples) The steps below have options to create the resources using either the AWS Console or launching the provided AWS CloudFormation stacks.
+To go through this example, have an AWS account where the solution will be deployed. This solution will expand on the resources created in the [getting_started section from AWS Samples Repository, Amazon Lookout for Metrics](https://github.com/aws-samples/amazon-lookout-for-metrics-samples). The steps to create the resources using the provided AWS CloudFormation stacks are:
 1. Create the Amazon SageMaker notebook instance (ALFMTestNotebook) and notebooks using the stack provided in the Initial Setup section (ALFMDemo).
 2. Create the Amazon S3 Bucket and complete the data preparation using the first notebook (1.PrereqSetupData.ipynb).
 3. We will skip the second notebook as it is focused on backtesting data.
-4. If you will be walking through the example using the AWS Console, create the Amazon Lookout for Metrics live detector and its alert using the third notebook (3.GettingStartedWithLiveData.ipynb).
-5. If you will be using the provided CloudFormation stacks, the third notebook isn’t required. The detector and its alert will be created using the Launch Stack link.
-6. Once the L4M live detector is created, you will need to activate it from the console. This can take up to 2 hours to initialize the model and detect anomalies.
-7. Deploy an Amazon Lambda function, using Python with a pandas library layer, and create an alert to launch it, attached to the live detector.
-8. Use the combination of Amazon Athena and AWS Glue to discover and prepare the data for QuickSight. Once the Glue crawler is ready, you will need to start it via the console.
-9. Create the Amazon QuickSight Data Source and Datasets.
-10. Finally, create an Amazon QuickSight Analysis for visualization, using the datasets. The CloudFormation scripts, below would be typically be run as a set of nested stacks in a production environment. They are provided individually here to facilitate a step-by-step walk through.
+4. We will skip the third notebook. The detector and its alert will be created using the Launch Stack link.
+5. Once the L4M live detector is created, you will need to activate it from the console. This can take up to 2 hours to initialize the model and detect anomalies.
+6. Deploy an Amazon Lambda function, using Python with a pandas library layer, and create an alert to launch it, attached to the live detector.
+7. Use the combination of Amazon Athena and AWS Glue to discover and prepare the data for QuickSight. Once the Glue crawler is ready, you will need to start it via the console.
+8. Create the Amazon QuickSight Data Source and Datasets.
+9. Finally, create an Amazon QuickSight Analysis for visualization, using the datasets.
 
-The CloudFormation scripts, below would be typically be run as a set of nested stacks in a production environment. They are provided individually here to facilitate a step-by-step walk through.
+The CloudFormation scripts, below would typically be run as a set of nested stacks in a production environment. They are provided individually here to facilitate a step-by-step walk through.
 
-Instructions using AWS CloudFormation are below. Console-based instructions are located here.
+Instructions using AWS CloudFormation are below. Console-based instructions are located here (link to the blog coming soon).
 
 ## Prerequisites
 Ensure the steps below are completed in the same region where your Amazon Lookout for Metrics live detector is created. 
