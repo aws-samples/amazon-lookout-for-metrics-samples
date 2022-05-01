@@ -19,6 +19,12 @@ Parameters:
     NoEcho: true
     Type: String
     Default: https://lookoutformetricsbucket.s3.amazonaws.com/
+
+  CodeS3BucketKey:
+    Description: S3 Bucket Key for related code
+    NoEcho: true
+    Type: String
+    Default: "next_steps/l4m2quicksight/src/L4MVersion3.zip"
  
 Resources:
 
@@ -54,8 +60,8 @@ Resources:
       Role: !GetAtt L4MLambdaExecutionRole.Arn
       PackageType: Zip
       Code:
-        S3Bucket: !ImportValue CodeS3BucketName
-        S3Key: "next_steps/l4m2quicksight/src/L4MVersion3.zip"
+        S3Bucket: !Ref CodeS3BucketName
+        S3Key: !Ref CodeS3BucketKey
       Layers:
         - !Ref LammbdaLayerPandasArn
       Runtime: python3.8
