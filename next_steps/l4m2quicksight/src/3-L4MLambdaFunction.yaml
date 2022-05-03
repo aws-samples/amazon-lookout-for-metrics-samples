@@ -7,22 +7,20 @@ Description: >
 
 Parameters:
 
-  LammbdaLayerPandasArn:
+  LambdaLayerPandasArn:
     Description: >
       pandas layer ARN from https://github.com/keithrozario/Klayers/tree/master/deployments/python3.8/arns. 
       Modify only if necessary.
     Type: String
-    Default: "arn:aws:lambda:us-east-2:770693421928:layer:Klayers-python38-pandas:38"
+    Default: "arn:aws:lambda:us-east-1:770693421928:layer:Klayers-p38-pandas:3"
 
   CodeS3BucketName:
     Description: S3 Bucket location for related code
-    NoEcho: true
     Type: String
-    Default: https://lookoutformetricsbucket.s3.amazonaws.com/
+    Default: "lookoutformetricsbucket"
 
   CodeS3BucketKey:
     Description: S3 Bucket Key for related code
-    NoEcho: true
     Type: String
     Default: "next_steps/l4m2quicksight/src/L4MVersion3.zip"
  
@@ -63,7 +61,7 @@ Resources:
         S3Bucket: !Ref CodeS3BucketName
         S3Key: !Ref CodeS3BucketKey
       Layers:
-        - !Ref LammbdaLayerPandasArn
+        - !Ref LambdaLayerPandasArn
       Runtime: python3.8
       Timeout: 5
       TracingConfig:
