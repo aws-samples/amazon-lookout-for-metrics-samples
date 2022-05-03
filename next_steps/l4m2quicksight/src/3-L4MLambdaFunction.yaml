@@ -7,12 +7,22 @@ Description: >
 
 Parameters:
 
-  LammbdaLayerPandasArn:
+  LambdaLayerPandasArn:
     Description: >
       pandas layer ARN from https://github.com/keithrozario/Klayers/tree/master/deployments/python3.8/arns. 
       Modify only if necessary.
     Type: String
-    Default: "arn:aws:lambda:us-east-2:770693421928:layer:Klayers-python38-pandas:38"
+    Default: "arn:aws:lambda:us-east-1:770693421928:layer:Klayers-p38-pandas:3"
+
+  CodeS3BucketName:
+    Description: S3 Bucket location for related code
+    Type: String
+    Default: "lookoutformetricsbucket"
+
+  CodeS3BucketKey:
+    Description: S3 Bucket Key for related code
+    Type: String
+    Default: "next_steps/l4m2quicksight/src/L4MVersion3.zip"
  
 Resources:
 
@@ -27,27 +37,17 @@ Resources:
             Principal: 
               Service: lambda.amazonaws.com
             Action: sts:AssumeRole
+      Path: "/"
       ManagedPolicyArns:
-        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole" #AWS Managed Policy - Provides write permissions to CloudWatch Logs.
+        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
       Policies: 
-        - PolicyName: L4MLambdaExecutionS3Policy
+        - PolicyName: L4MTest
           PolicyDocument: 
             Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - s3:PutObject
-                  - s3:GetObject
-                  - s3:ListBucket
-                  - s3:GetBucketLocation
-                Resource:
-                  - Fn::Sub:
-                    - "arn:aws:s3:::${BucketName}"
-                    - BucketName: !ImportValue L4MS3BucketName
-                  - Fn::Sub:
-                    - "arn:aws:s3:::${BucketName}/*"
-                    - BucketName: !ImportValue L4MS3BucketName
-              - Effect: Allow
+            Statement: 
+              - 
+                Effect: Allow
                 Action: lookoutmetrics:*
                 Resource: "*"
 
@@ -58,12 +58,11 @@ Resources:
       Role: !GetAtt L4MLambdaExecutionRole.Arn
       PackageType: Zip
       Code:
-        S3Bucket: !ImportValue L4MS3BucketName
-        S3Key: "lambdaCode/L4MVersion3.zip"
+        S3Bucket: !Ref CodeS3BucketName
+        S3Key: !Ref CodeS3BucketKey
       Layers:
-        - !Ref LammbdaLayerPandasArn
+        - !Ref LambdaLayerPandasArn
       Runtime: python3.8
-      MemorySize: 128
       Timeout: 5
       TracingConfig:
         Mode: Active
