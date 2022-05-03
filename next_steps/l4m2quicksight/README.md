@@ -115,39 +115,39 @@ Open the [AWS Glue Console](https://console.aws.amazon.com/glue/) and choose Cra
 ![Run Glue Crawler Screenshot](images/run-glue-crawler.png)
 
 ## Step 3: Visualize your data in Amazon QuickSight
-Navigate to Amazon QuickSight, create an account if you do not have one. Ensure sure to have access to the corresponding services (Athena and S3) by clicking on your account name on the top right, manage QuickSight, and click on Security and Permissions where you can add the necessary services. 
+Before starting this step, [navigate to Amazon QuickSight](https://quicksight.aws.amazon.com/) and create an account if you do not have one. Ensure you have access to the corresponding services (Athena and S3 bucket) by clicking on your account name on the top right, manage QuickSight, and click on Security and Permissions where you can add the necessary services. 
 
 ![QuickSight Security & Permissions Screenshot](images/amazon-quicksight.png)
 
 ### Create the Amazon QuickSight Data Source
 The [*L4MQuickSightDataSource.yaml*](src/5-L4MQuickSightDataSource.yaml) CloudFormation script creates the Amazon QuickSight Athena Data Source.
-- Launch the stack from the link below and update the parameter value.
+- Launch the stack from the link below and click *Next* on the Create stack page.
 
-[![Launch Stack: L4MQuickSightDataSource](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?templateURL=null&stackName=L4MQuickSightDataSource) (To be updated)
+[![Launch Stack: L4MQuickSightDataSource](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MQuickSightDataSource&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/5-L4MQuickSightDataSource.yaml)
  
-- On the Specify stack details page, add the parameter value, give it a Stack name (ex. L4MQuickSightDataSource), and click *Next*.
+- On the Specify stack details page, add your QuickSight username, give it a Stack name (ex. L4MQuickSightDataSource), and click *Next*.
 - On the Configure stack options page, leave everything as-is and click *Next*.
-- On the Review page leave everything else as-is and click *Create Stack*.
+- On the Review page leave everything as-is and click *Create Stack*.
 
 ### Create the First Amazon QuickSight Dataset
-The [*L4MQuickSightDataSet1.yaml*](src/6-L4MQuickSightDataSet1.yaml) CloudFormation script creates an Amazon QuickSight Dataset for that joins the dimensions table with the anomaly table.
+The [*L4MQuickSightDataSet1.yaml*](src/6-L4MQuickSightDataSet1.yaml) CloudFormation script creates an Amazon QuickSight Dataset that joins the dimensions table with the anomaly table.
 - Launch the stack from the link below and update the parameter value.
 
-[![Launch Stack: L4MQuickSightDataSet1](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?templateURL=null&stackName=L4MQuickSightDataSet1) (To be updated)
+[![Launch Stack: L4MQuickSightDataSet1](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MQuickSightDataSet1&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/6-L4MQuickSightDataSet1.yaml)
 
-- On the Specify stack details page, add the parameter value, give it a Stack name (ex. L4MQuickSightDataSet1), and click *Next*.
+- On the Specify stack details page, add your QuickSight username, give it a Stack name (ex. L4MQuickSightDataSet1), and click *Next*.
 - On the Configure stack options page, leave everything as-is and click *Next*.
-- On the Review page leave everything else as-is and click *Create Stack*.
+- On the Review page leave everything as-is and click *Create Stack*.
 
 ### Create the Second Amazon QuickSight Dataset
 The [*L4MQuickSightDataSet2.yaml*](src/6-L4MQuickSightDataSet2.yaml) CloudFormation script creates the Amazon QuickSight Dataset that joins the anomaly table with the live data table.
-- Launch the stack from the link below and update the parameters with the values from above.
+- aunch the stack from the link below and click Next on the Create stack page.
 
-[![Launch Stack: L4MQuickSightDataSet2](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?templateURL=null&stackName=L4MQuickSightDataSet2) (To be updated)
+[![Launch Stack: L4MQuickSightDataSet2](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MQuickSightDataSet2&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/7-L4MQuickSightDataSet2.yaml)
 
-- On the Specify stack details page, add the parameter value, give it a Stack name (ex. L4MQuickSightDataSet2), and click *Next*.
+- On the Specify stack details page, add your QuickSight username, give it a Stack name (ex. L4MQuickSightDataSet2), and click *Next*.
 - On the Configure stack options page, leave everything as-is and click *Next*.
-- On the Review page leave everything else as-is and click *Create Stack*.
+- On the Review page leave everything as-is and click *Create Stack*.
 
 ### Create the Amazon QuickSight Analysis for Dashboard Creation
 With the two Amazon QuickSight datasets created, open the [Amazon QuickSight console](https://quicksight.aws.amazon.com/), and choose Analysis from the left menu. Click on New analysis in the upper right. Select the first of the two datasets created, L4MQuickSightDataSetWithLiveData, and click Create analysis in the small dialog window that opened.
@@ -156,7 +156,7 @@ With the two Amazon QuickSight datasets created, open the [Amazon QuickSight con
 
 ![Choose Dataset Screenshot](images/choose-dataset.png)
 
-The QuickSight Analysis was initially created with only the first dataset. To add the second, click the pencil icon next to Dataset in the upper left, and choose Add dataset from the dialog window that opened. Choose the second dataset and click Select. You will then be able to use either dataset for creating charts by choosing the dropdown under Dataset.
+The QuickSight Analysis was initially created with only the first dataset. To add the second, click the pencil icon next to *Dataset* in the upper left, and choose *Add dataset* from the dialog window that opened. Choose the second dataset and click *Select*. You will then be able to use either dataset for creating charts by choosing the dropdown under *Dataset*.
 
 ![Add Second Dataset Screenshot](images/add-second-dataset.png)
 
@@ -164,8 +164,34 @@ The QuickSight Analysis was initially created with only the first dataset. To ad
 
 ![Show Datasets Screenshot](images/show-datasets.png)
 
-## Next Steps
-You have now all the data to start building your own dashboards. This blog post will not go through an explanation on creating Amazon QuickSight charts. If you are new to QuickSight, you can walk through the [Getting Started with Data Analysis in Amazon QuickSight documentation](https://docs.aws.amazon.com/quicksight/latest/user/getting-started.html) for an introduction. As an example, the images below show basic dashboards. For further information there is an [official workshop on Amazon QuickSight](https://learnquicksight.workshop.aws/en/).
+## Conclusion
+You have successfully created a QuickSight analysis from L4M inference results and the live data. Two datasets are in QuickSight for you to use: The *L4M_Visualization_dataset_with_liveData* dataset and the *L4M_Visualization_dataset_with_dimensionContribution* dataset.
+
+The *L4M_Visualization_dataset_with_liveData* dataset includes the following metrics:
+- The *timestamp* is the date + time of the live data passed to L4M.
+- The *views* is the value of the views metric.
+- The *revenue* is the value of the revenue metric.
+- The *platform, marketplace, revenueAnomalyMetricValue, viewsAnomalyMetricValue, revenueGroupScore and viewsGroupScore* are explained below. These metrics are part of the two datasets. 
+
+The *L4M_Visualization_dataset_with_dimensionContribution* dataset includes the following metrics:
+- The *timestamp* is the date + time of when the anomaly was detected.
+- The *metricName* is the metric(s) you are monitoring. 
+- The *dimensionName* is the dimension within the metric.
+- The *dimensionValue* is the value of the dimension.
+- The *valueContribution* is the percentage on how much is the dimensionValue affecting the anomaly when detected.
+
+The following image shows these 5 metrics together. It is an example from the Anomaly dashboard of the L4M detector.
+![Anomaly Dashboard Example](images/anomaly-dashboard-ex.png)
+
+The following metrics are part of the two datasets:
+- The *platform* is the platform where the anomaly happened. 
+- The *marketplace* is the marketplace where the anomaly happened.
+- The *revenueAnomalyMetricValue and the viewsAnomalyMetricValue* are the corresponding values of the metric when the anomaly was detected (in this situation, the metrics are revenue or views).
+- The *revenueGroupScore and the viewsGroupScore* are the severity scores for each metric for the detected anomaly. 
+
+Note: To better understand these last metrics, please go have a look on the csv files created by the Lambda function in your S3 bucket where you saved the anomalyResults/metricValue_AnomalyScore
+
+The next step is to build the dashboards for the data you would like to see. This blog will not go through an explanation on creating Amazon QuickSight charts. If you are new to QuickSight, you can walk through the [Getting Started with Data Analysis in Amazon QuickSight documentation](https://docs.aws.amazon.com/quicksight/latest/user/getting-started.html) for an introduction. As an example, the images below show basic dashboards. For further information there is an [official workshop on Amazon QuickSight](https://learnquicksight.workshop.aws/en/).
 
 ![Sample Chart 1](images/sample-chart1.png)
 
