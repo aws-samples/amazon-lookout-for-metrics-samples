@@ -100,9 +100,9 @@ Before proceeding to Step 2, the Detector needs to be activated from the console
 
 ### Create the AWS Glue Crawler
 The [*L4MGlueCrawler.yaml*](src/4-L4MGlueCrawler.yaml) CloudFormation script creates the AWS Glue Crawler, its associated IAM Role, and the output Athena database.
-- Launch the stack from the link below.
+- Launch the stack from the link below and click *Next* on the Create stack page.
 
-[![Launch Stack: L4MGlueCrawler](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?templateURL=null&stackName=L4MGlueCrawler) (To be updated)
+[![Launch Stack: L4MGlueCrawler](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MGlueCrawler&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/4-L4MGlueCrawler.yaml)
  
 - On the Specify stack details page give it a Stack name (ex. L4MGlueCrawler) and click *Next*.
 - On the Configure stack options page, leave everything as-is and click *Next*.
@@ -110,7 +110,7 @@ The [*L4MGlueCrawler.yaml*](src/4-L4MGlueCrawler.yaml) CloudFormation script cre
 - Once the AWS Glue Crawler has been created, it will need to be run from the console (or AWS CLI) before moving on to the next steps.
 
 ### Run the AWS Glue Crawler
-Open the AWS Glue Console and choose Crawlers from the left menu. Click the checkbox next to your crawler (L4MCrawler) and then the Run Crawler button above the list. It will run for a few minutes and then show a Ready status when completed.
+Open the [AWS Glue Console](https://console.aws.amazon.com/glue/) and choose Crawlers from the left menu. Click the checkbox next to your crawler (L4MCrawler) and then the *Run Crawler* button above the list. It will run for a few minutes and then show a *Ready* status when completed.
 
 ![Run Glue Crawler Screenshot](images/run-glue-crawler.png)
 
