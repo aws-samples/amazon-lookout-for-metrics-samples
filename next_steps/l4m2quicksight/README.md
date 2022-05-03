@@ -6,40 +6,42 @@
 
 One of the challenges encountered by teams using Amazon lookout for Metrics is quickly and efficiently connecting it to data visualization. The anomalies are presented as individuals in the console, each with their own graph, making it difficult to view the set as a whole. An automated, integrated solution is needed for deeper analysis.
 
-In this blog post we will use an Amazon Lookout for Metrics live detector built following the getting_started section from [AWS Samples Repository, Amazon Lookout for Metrics](https://github.com/aws-samples/amazon-lookout-for-metrics-samples). Once that detector is active and anomalies are generated from the dataset, we’ll continue the steps to connect Amazon Lookout for Metrics to Amazon QuickSight. Two datasets will be created, one by joining the dimensions 
-table with the anomaly table and another by joining the anomaly table with the live data. These two datasets can then be added to an Amazon QuickSight Analysis where charts can be added in a single dashboard.
+In this blog post we will use an Amazon Lookout for Metrics live detector built following the getting_started section from [AWS Samples Repository, Amazon Lookout for Metrics](https://github.com/aws-samples/amazon-lookout-for-metrics-samples). OOnce that detector is active and anomalies are generated from the dataset, we will continue the steps to connect Amazon Lookout for Metrics to Amazon QuickSight. Two datasets will be created, one by joining the dimensions table with the anomaly table and another by joining the anomaly table with the live data. These two datasets can then be added to an Amazon QuickSight Analysis where charts can be added in a single dashboard. 
 
-Two types of data can be provided to the Amazon Lookout for Metrics detector, continuous and historical. The [AWS Samples Repository](https://github.com/aws-samples/amazon-lookout-for-metrics-samples) this is based on presents both, though we will focus on the continuous live data. The detector monitors this live data to identify anomalies and writes to Amazon S3 as it is generated. At the end of a specified interval, the detector analyzes the data. Over time, the detector learns to more accurately identify anomalies based on patterns it finds.
+Two types of data can be provided to the Amazon Lookout for Metrics detector, continuous and historical. The [AWS Samples Repository](https://github.com/aws-samples/amazon-lookout-for-metrics-samples) presents both, though we focus on the continuous live data. The detector monitors this live data to identify anomalies and writes to Amazon S3 as it is generated. At the end of a specified interval, the detector analyzes the data. Over time, the detector learns to more accurately identify anomalies based on patterns it finds.
 
-[Amazon Lookout for Metrics](https://aws.amazon.com/lookout-for-metrics/) uses machine learning (ML) to automatically detect and diagnose anomalies in business and operational data, such as a sudden dip in sales revenue or customer acquisition rates. The service is now generally available as of March 25, 2021. It automatically inspects and prepares data from a variety of sources to detect anomalies with greater speed and accuracy than traditional methods used for anomaly detection. You can also provide feedback on detected anomalies to tune the results and improve accuracy over time. Amazon Lookout for Metrics makes it easy to diagnose detected anomalies by grouping together anomalies that are related to the same event and sending an alert that includes a summary of the potential root cause. It also ranks anomalies in order of severity so that you can prioritize your attention to what matters the most to your business.
+[Amazon Lookout for Metrics](https://aws.amazon.com/lookout-for-metrics/) uses machine learning (ML) to automatically detect and diagnose anomalies in business and operational data, such as a sudden dip in sales revenue or customer acquisition rates. The service is now generally available as of March 25, 2021. It automatically inspects and prepares data from a variety of sources to detect anomalies with greater speed and accuracy than traditional methods used for anomaly detection. You can also provide feedback on detected anomalies to tune the results and improve accuracy over time. Amazon Lookout for Metrics makes it easy to diagnose detected anomalies by grouping together anomalies related to the same event and sending an alert that includes a summary of the potential root cause. It also ranks anomalies in order of severity so you can prioritize your attention to what matters the most to your business.
 
-[Amazon QuickSight](https://aws.amazon.com/quicksight/) lets you easily create and publish interactive business intelligence (BI) dashboards as well as receive answers in seconds through natural language queries. QuickSight’s serverless, highly scalable dashboards can be accessed from any device, and seamlessly embedded into your applications, portals, and websites.
+[Amazon QuickSight](https://aws.amazon.com/quicksight/) lets you easily create and publish interactive business intelligence (BI) dashboards and receive answers in seconds through natural language queries. QuickSight’s serverless, highly scalable dashboards can be accessed from any device, and seamlessly embedded into your applications, portals, and websites. An example that can be achieved by the end of this notebook is shown below.
+
+![Sample Chart 1](images/sample-chart1.png)
+
+![Sample Chart 2](images/sample-chart2.png)
 
 ## Overview of solution
-The solution created is a combination of AWS services, primarily: [Amazon Lookout for Metrics](https://aws.amazon.com/lookout-for-metrics/) (L4M), [Amazon QuickSight](https://aws.amazon.com/quicksight/), [AWS Lambda](https://aws.amazon.com/lambda/), [Amazon Athena](https://aws.amazon.com/athena), [AWS Glue](https://aws.amazon.com/glue), and [Amazon Simple Storage Service](https://aws.amazon.com/s3/) (S3). Amazon Lookout for Metrics detects and sends the anomalies to AWS Lambda via an Alert. The AWS Lambda function will generate the anomaly results as csv files and save them in Amazon S3, An AWS Glue Crawler will analyze the metadata, and create tables in Amazon Athena. Amazon QuickSight will use Athena to query the S3 data, allowing dashboards to be built to visualize both the anomaly results and the live data.
+The solution created is a combination of AWS services, primarily: [Amazon Lookout for Metrics](https://aws.amazon.com/lookout-for-metrics/) (L4M), [Amazon QuickSight](https://aws.amazon.com/quicksight/), [AWS Lambda](https://aws.amazon.com/lambda/), [Amazon Athena](https://aws.amazon.com/athena), [AWS Glue](https://aws.amazon.com/glue), and [Amazon Simple Storage Service](https://aws.amazon.com/s3/) (S3). Amazon Lookout for Metrics detects and sends the anomalies to AWS Lambda via an Alert. The AWS Lambda function generates the anomaly results as csv files and saves them in Amazon S3, An AWS Glue Crawler analyzes the metadata, and creates tables in Amazon Athena. Amazon QuickSight uses Athena to query the S3 data, allowing dashboards to be built to visualize both the anomaly results and the live data.
 
 ![Blog Architecture Image](images/architecture.png)
 
-To go through this example, have an AWS account where the solution will be deployed. This solution will expand on the resources created in the [getting_started section from AWS Samples Repository, Amazon Lookout for Metrics](https://github.com/aws-samples/amazon-lookout-for-metrics-samples) The steps below have options to create the resources using either the AWS Console or launching the provided AWS CloudFormation stacks.
-1. Create the Amazon SageMaker notebook instance (ALFMTestNotebook) and notebooks using the stack provided in the Initial Setup section (ALFMDemo).
-2. Create the Amazon S3 Bucket and complete the data preparation using the first notebook (1.PrereqSetupData.ipynb).
-3. We will skip the second notebook as it is focused on backtesting data.
-4. If you will be walking through the example using the AWS Console, create the Amazon Lookout for Metrics live detector and its alert using the third notebook (3.GettingStartedWithLiveData.ipynb).
-5. If you will be using the provided CloudFormation stacks, the third notebook isn’t required. The detector and its alert will be created using the Launch Stack link.
-6. Once the L4M live detector is created, you will need to activate it from the console. This can take up to 2 hours to initialize the model and detect anomalies.
-7. Deploy an Amazon Lambda function, using Python with a pandas library layer, and create an alert to launch it, attached to the live detector.
-8. Use the combination of Amazon Athena and AWS Glue to discover and prepare the data for QuickSight. Once the Glue crawler is ready, you will need to start it via the console.
-9. Create the Amazon QuickSight Data Source and Datasets.
-10. Finally, create an Amazon QuickSight Analysis for visualization, using the datasets. The CloudFormation scripts, below would be typically be run as a set of nested stacks in a production environment. They are provided individually here to facilitate a step-by-step walk through.
+This solution will expand on the resources created in the [getting_started section from AWS Samples Repository, Amazon Lookout for Metrics](https://github.com/aws-samples/amazon-lookout-for-metrics-samples) Each of the steps below have the option to create the resources using either the AWS Console or launching the provided AWS CloudFormation stack. If you have a customized L4M detector not following the AWS Sample mentioned above, you can use/adapt the following [this notebook](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/getting_started/5.UseQuicksightToVisualizeL4M.ipynb) to reach the same results.
+1. Create the Amazon SageMaker notebook instance (ALFMTestNotebook) and notebooks using the stack provided in the Initial Setup section of from [AWS Samples Repository, Amazon Lookout for Metrics](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/tree/main/getting_started).
+2. Once the Notebook instance has been created (~5 min.), open it from the [console page](https://us-east-1.console.aws.amazon.com/sagemaker/home?#/notebook-instances) and select the amazon-lookout-for-metrics-samples/getting_started folder.
+3. Create the Amazon S3 Bucket and complete the data preparation using the first [notebook](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/getting_started/1.PrereqSetupData.ipynb) (1.PrereqSetupData.ipynb). Open the notebook with the conda_python3 kernel, if prompted.
+4. We will skip the second [notebook](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/getting_started/2.BacktestingWithHistoricalData.ipynb) as it is focused on backtesting data.
+5. If you will be walking through the example using the AWS Console, create the Amazon Lookout for Metrics live detector and its alert using the third [notebook](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/getting_started/3.GettingStartedWithLiveData.ipynb) (3.GettingStartedWithLiveData.ipynb).
+6. If you will be using the provided CloudFormation stacks, the third [notebook](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/getting_started/3.GettingStartedWithLiveData.ipynb) isn’t required. The detector and its alert will be created using the Launch Stack link in the steps below.
+7. Once the L4M live detector is created, you will need to activate it from the console. This can take up to 2 hours to initialize the model and detect anomalies.
+8. Deploy an Amazon Lambda function, using Python with a Pandas library layer, and create an alert attached to the live detector to launch it.
+9. Use the combination of Amazon Athena and AWS Glue to discover and prepare the data for Amazon QuickSight.
+10. Create the Amazon QuickSight Data Source and Datasets.
+11. Finally, create an Amazon QuickSight Analysis for visualization, using the datasets.
 
 The CloudFormation scripts, below would be typically be run as a set of nested stacks in a production environment. They are provided individually here to facilitate a step-by-step walk through.
 
-Instructions using AWS CloudFormation are below. Console-based instructions are located here.
-
 ## Prerequisites
-Ensure the steps below are completed in the same region where your Amazon Lookout for Metrics live detector is created. 
-
-![Live Detector Overview Image](images/live-detector.png)
+To go through this blog, you need an AWS account where the solution will be deployed and ensure that all the resources you deploy are in the same region. You need a running L4M detector built from the notebooks 1 and 3 from the AWS Sample. If you do not have the running L4M detector, you have 2 options:
+1. The first is to run the two notebooks mentioned above and continue from the step 1 of this blog (blog link TBD). 
+2. The second is to run the notebook 1 and then use the cloud formation below to generate the L4M detector.
 
 ### Create the Amazon SageMaker Notebook Instance
 Create the Amazon SageMaker notebook instance and notebooks using the CloudFormation Stack (ALFMDemo) provided in the [getting_started, Initial Setup](https://github.com/troiano01/amazon-lookout-for-metrics-samples/tree/l4m2quicksight/getting_started#initial-setup) section.
@@ -54,21 +56,21 @@ From the objects created in the above steps, you will need:
 - The anomaly detection frequency: choose `PT1H` (hourly)
 
 The [*L4MLiveDetector.yaml*](src/1-L4MLiveDetector.yaml) CloudFormation script creates the Lookout for Metrics Anomaly Detector resource with its source pointing to the live data in the S3 bucket created above.
-- Launch the stack from the link below and update the parameters with the values from above.
+- Launch the stack from the link below and click *Next* on the Create stack page.
 
-[![Launch Stack: L4MLiveDetector](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?templateURL=null&stackName=L4MLiveDetector) (To be updated)
+[![Launch Stack: L4MLiveDetector](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MLiveDetector&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/1-L4MLiveDetector.yaml)
  
 - On the Specify stack details page, add the values from above to the parameters and give it a Stack name (ex. L4MLiveDetector), and click *Next*.
 - On the Configure stack options page, leave everything as-is and click *Next*.
 - On the Review page, leave everything as-is and click *Create Stack*.
 
-### Create the Live Detector SMS Alert
+### Create the Live Detector SMS Alert Using CloudFormation
 This step is optional. The alert is presented as an example, with no impact on the dataset creation. The [*L4MLiveDetectorAlert.yaml*](src/2-L4MLiveDetectorAlert.yaml) CloudFormation script creates the Lookout for Metrics Anomaly Detector Alert resource with an SMS target. 
-- Launch the stack from the link below and update the parameters.
+- Launch the stack from the link below and click Next on the Create stack page.
 
-[![Launch Stack: L4MLiveDetectorAlert](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?templateURL=null&stackName=L4MLiveDetectorAlert) (To be updated)
+[![Launch Stack: L4MLiveDetectorAlert](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MLiveDetectorAlert&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/2-L4MLiveDetectorAlert.yaml)
 
-- On the Specify stack details page, add the parameter value, give it a Stack name (ex. L4MLiveDetectorAlert), and click *Next*.
+- On the Specify stack details page, update the SMS phone number, give it a Stack name (ex. L4MLiveDetectorAlert), and click *Next*
 - On the Configure stack options page, leave everything as-is and click *Next*.
 - On the Review page, check the IAM Role creation acknowledgement, leave everything else as-is, and click *Create Stack*.
 
@@ -78,20 +80,10 @@ Before proceeding to Step 1, stop your SageMaker notebook instance to ensure no 
 ## Step 1: Setting up the AWS Lambda function
 
 ### Create the AWS Lambda Function and Alert Using CloudFormation
-First, download the latest version of the Lambda function code, [*L4MVersion3.zip*](src/L4MVersion3.zip), and upload it to the S3 bucket where it can be accessed by the CloudFormation code.
-
-Open the S3 Console and choose the bucket.
-
-![S3 Bucket Screenshot](images/s3-bucket.png)
-
-Create a new folder, lambdaCode, and upload the lambda code archive file.
-
-![S3 Upload Screenshot](images/s3-upload-lambda-code.png)
-
-The [*L4MLambdaFunction.yaml*](src/3-L4MLambdaFunction.yaml) CloudFormation script creates the Lambda Function and Alert resources using the code archive stored in the S3 bucket.
+The [*L4MLambdaFunction.yaml*](src/3-L4MLambdaFunction.yaml) CloudFormation script creates the Lambda Function and Alert resources as well as the using the function code archive stored in the same S3 bucket.
 - Launch the stack from the link below and update the parameters.
 
-[![Launch Stack: L4MLambdaFunction](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create/review?templateURL=null&stackName=L4MLambdaFunction) (To be updated)
+[![Launch Stack: L4MLambdaFunction](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MLambdaFunction&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/3-L4MLambdaFunction.yaml)
  
 - On the Specify stack details page give it a Stack name (ex. L4MLambdaFunction), and click *Next*
 - On the Configure stack options page, leave everything as-is and click *Next*
