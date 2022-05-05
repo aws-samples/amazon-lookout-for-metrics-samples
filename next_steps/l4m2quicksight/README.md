@@ -85,7 +85,7 @@ The [*L4MLambdaFunction.yaml*](src/3-L4MLambdaFunction.yaml) CloudFormation scri
 
 [![Launch Stack: L4MLambdaFunction](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MLambdaFunction&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/3-L4MLambdaFunction.yaml)
  
-- On the Specify stack details page give it a Stack name (ex. L4MLambdaFunction), and click *Next*
+- On the Specify stack details page update the pandas Lambda Layer ARN, give it a Stack name (ex. L4MLambdaFunction), and click *Next*
 - On the Configure stack options page, leave everything as-is and click *Next*
 - On the Review page, check the IAM Role creation acknowledgement, leave everything else as-is, and click *Create Stack*
 
