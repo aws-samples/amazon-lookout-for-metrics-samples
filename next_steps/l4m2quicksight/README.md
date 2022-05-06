@@ -18,7 +18,7 @@ The solution created is a combination of AWS services, primarily: [Amazon Lookou
 This solution will expand on the resources created in the **getting_started** section from [AWS Samples Repository, Amazon Lookout for Metrics](https://github.com/aws-samples/amazon-lookout-for-metrics-samples).
 1. Create the Amazon SageMaker notebook instance (ALFMTestNotebook) and notebooks using the stack provided in the **Initial Setup** section of from [AWS Samples Repository, Amazon Lookout for Metrics](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/tree/main/getting_started).
 2. Once the Notebook instance has been created (~5 min.), open it from the [SageMaker console page](https://us-east-1.console.aws.amazon.com/sagemaker/home?#/notebook-instances) and select the **amazon-lookout-for-metrics-samples/getting_started** folder.
-3. Create the S3 bucket and complete the data preparation using the first [notebook](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/getting_started/1.PrereqSetupData.ipynb), **1.PrereqSetupData.ipynb)**. Open the notebook with the **conda_python3** kernel, if prompted.
+3. Create the S3 bucket and complete the data preparation using the first [notebook](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/getting_started/1.PrereqSetupData.ipynb), **1.PrereqSetupData.ipynb**. Open the notebook with the **conda_python3** kernel, if prompted.
 4. We will skip the second [notebook](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/getting_started/2.BacktestingWithHistoricalData.ipynb) as it is focused on backtesting data.
 5. If you will be using the provided CloudFormation stacks, the third [notebook](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/getting_started/3.GettingStartedWithLiveData.ipynb) isn’t required. The detector and its alert will be created using the **Launch Stack** link in the steps below.
 6. Once the L4M live detector is created, you will need to activate it from the console. This can take up to 2 hours to initialize the model and detect anomalies.
@@ -30,30 +30,28 @@ This solution will expand on the resources created in the **getting_started** se
 The CloudFormation scripts below would be typically be run as a set of nested stacks in a production environment. They are provided individually to facilitate a step-by-step walk through.
 
 ## Prerequisites
-To go through this blog, you need an AWS account where the solution will be deployed and ensure that all the resources you deploy are in the same region. You need a running L4M detector built from the notebooks 1 and 3 from the AWS Sample. If you do not have the running L4M detector, you have 2 options:
-1. The first is to run the two notebooks mentioned above and continue from the step 1 of this blog (blog link TBD). 
-2. The second is to run the notebook 1 and then use the cloud formation below to generate the L4M detector.
+To go through this blog, you need an AWS account where the solution will be deployed and ensure that all resources you deploy are in the same region. You need a running L4M detector built from the notebook found on the notebook instance created in the next step.
 
 ### Create the Amazon SageMaker Notebook Instance
-Create the Amazon SageMaker notebook instance and notebooks using the CloudFormation Stack (ALFMDemo) provided in the [getting_started, Initial Setup](https://github.com/troiano01/amazon-lookout-for-metrics-samples/tree/l4m2quicksight/getting_started#initial-setup) section.
+Create the Amazon SageMaker notebook instance and notebooks using the CloudFormation Stack, **ALFMDemo**, provided in the [getting_started, Initial Setup](https://github.com/troiano01/amazon-lookout-for-metrics-samples/tree/l4m2quicksight/getting_started#initial-setup) section.
 
 ### Create the S3 Bucket and Prepare the Data Using the Amazon SageMaker Notebook
-Open the [Amazon SageMaker console](https://console.aws.amazon.com/sagemaker/), and open the notebook instance created by the ALFMDemo stack (ALFMTestNotebook). Create the Amazon S3 Bucket and complete the data preparation using the first notebook (located at amazon-lookout-for-metrics-samples/getting_started/1.PrereqSetupData.ipynb).
+Open the [SageMaker console](https://console.aws.amazon.com/sagemaker/), and open the notebook instance created by the **ALFMDemo** stack, **ALFMTestNotebook**. Create the S3 bucket and complete the data preparation using the first notebook, **amazon-lookout-for-metrics-samples/getting_started/1.PrereqSetupData.ipynb**.
 
 ### Create the Live Detector
 From the objects created in the above steps, you will need:
-- S3 Bucket: `<Account Number>-lookoutmetrics-lab` 
+- S3 bucket: `<Account Number>-lookoutmetrics-lab` 
 - Role ARN: `arn:aws:iam::<Account Number>:role/L4MTestRole`
 - The anomaly detection frequency: choose `PT1H` (hourly)
 
-The [*L4MLiveDetector.yaml*](src/1-L4MLiveDetector.yaml) CloudFormation script creates the Lookout for Metrics Anomaly Detector resource with its source pointing to the live data in the S3 bucket created above.
-- Launch the stack from the link below and click *Next* on the Create stack page.
+The [**L4MLiveDetector.yaml**](src/1-L4MLiveDetector.yaml) CloudFormation script creates the Lookout for Metrics anomaly detector resource with its source pointing to the live data in the S3 bucket created above.
+- Launch the stack from the link below and click **Next** on the **Create stack** page.
 
 [![Launch Stack: L4MLiveDetector](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MLiveDetector&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/1-L4MLiveDetector.yaml)
  
-- On the Specify stack details page, add the values from above to the parameters and give it a Stack name (ex. L4MLiveDetector), and click *Next*.
-- On the Configure stack options page, leave everything as-is and click *Next*.
-- On the Review page, leave everything as-is and click *Create Stack*.
+- On the **Specify stack details** page, add the values from above to the parameters and give it a **Stack name** (ex. L4MLiveDetector), and click **Next**.
+- On the **Configure stack options** page, leave everything as-is and click **Next**.
+- On the **Review** page, leave everything as-is and click **Create Stack**.
 
 ### Create the Live Detector SMS Alert Using CloudFormation
 This step is optional. The alert is presented as an example, with no impact on the dataset creation. The [*L4MLiveDetectorAlert.yaml*](src/2-L4MLiveDetectorAlert.yaml) CloudFormation script creates the Lookout for Metrics Anomaly Detector Alert resource with an SMS target. 
