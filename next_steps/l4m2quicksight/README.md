@@ -18,17 +18,16 @@ The solution created is a combination of AWS services, primarily: [Amazon Lookou
 This solution will expand on the resources created in the **getting_started** section from [AWS Samples Repository, Amazon Lookout for Metrics](https://github.com/aws-samples/amazon-lookout-for-metrics-samples).
 1. Create the Amazon SageMaker notebook instance (ALFMTestNotebook) and notebooks using the stack provided in the **Initial Setup** section of from [AWS Samples Repository, Amazon Lookout for Metrics](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/tree/main/getting_started).
 2. Once the Notebook instance has been created (~5 min.), open it from the [SageMaker console page](https://us-east-1.console.aws.amazon.com/sagemaker/home?#/notebook-instances) and select the **amazon-lookout-for-metrics-samples/getting_started** folder.
-3. Create the Amazon S3 Bucket and complete the data preparation using the first [notebook](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/getting_started/1.PrereqSetupData.ipynb) (1.PrereqSetupData.ipynb). Open the notebook with the conda_python3 kernel, if prompted.
+3. Create the S3 bucket and complete the data preparation using the first [notebook](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/getting_started/1.PrereqSetupData.ipynb), **1.PrereqSetupData.ipynb)**. Open the notebook with the **conda_python3** kernel, if prompted.
 4. We will skip the second [notebook](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/getting_started/2.BacktestingWithHistoricalData.ipynb) as it is focused on backtesting data.
-5. If you will be walking through the example using the AWS Console, create the Amazon Lookout for Metrics live detector and its alert using the third [notebook](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/getting_started/3.GettingStartedWithLiveData.ipynb) (3.GettingStartedWithLiveData.ipynb).
-6. If you will be using the provided CloudFormation stacks, the third [notebook](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/getting_started/3.GettingStartedWithLiveData.ipynb) isn’t required. The detector and its alert will be created using the Launch Stack link in the steps below.
-7. Once the L4M live detector is created, you will need to activate it from the console. This can take up to 2 hours to initialize the model and detect anomalies.
-8. Deploy an Amazon Lambda function, using Python with a Pandas library layer, and create an alert attached to the live detector to launch it.
-9. Use the combination of Amazon Athena and AWS Glue to discover and prepare the data for Amazon QuickSight.
-10. Create the Amazon QuickSight Data Source and Datasets.
-11. Finally, create an Amazon QuickSight Analysis for visualization, using the datasets.
+5. If you will be using the provided CloudFormation stacks, the third [notebook](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/getting_started/3.GettingStartedWithLiveData.ipynb) isn’t required. The detector and its alert will be created using the **Launch Stack** link in the steps below.
+6. Once the L4M live detector is created, you will need to activate it from the console. This can take up to 2 hours to initialize the model and detect anomalies.
+7. Deploy an Lambda function, using python with a pandas library layer, and create an alert attached to the live detector to launch it.
+8. Use the combination of Athena and Glue to discover and prepare the data for QuickSight.
+9. Create the QuickSight data source and datasets.
+10. Finally, create a QuickSight analysis for visualization, using the datasets.
 
-The CloudFormation scripts, below would be typically be run as a set of nested stacks in a production environment. They are provided individually here to facilitate a step-by-step walk through.
+The CloudFormation scripts below would be typically be run as a set of nested stacks in a production environment. They are provided individually to facilitate a step-by-step walk through.
 
 ## Prerequisites
 To go through this blog, you need an AWS account where the solution will be deployed and ensure that all the resources you deploy are in the same region. You need a running L4M detector built from the notebooks 1 and 3 from the AWS Sample. If you do not have the running L4M detector, you have 2 options:
