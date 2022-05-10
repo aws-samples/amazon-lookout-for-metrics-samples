@@ -55,13 +55,13 @@ The [**L4MLiveDetector.yaml**](src/1-L4MLiveDetector.yaml) CloudFormation script
 
 ### Create the Live Detector SMS Alert Using CloudFormation
 This step is optional. The alert is presented as an example, with no impact on the dataset creation. The [*L4MLiveDetectorAlert.yaml*](src/2-L4MLiveDetectorAlert.yaml) CloudFormation script creates the Lookout for Metrics Anomaly Detector Alert resource with an SMS target. 
-- Launch the stack from the link below and click Next on the Create stack page.
+- Launch the stack from the link below and click **Next** on the **Create stack** page.
 
 [![Launch Stack: L4MLiveDetectorAlert](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MLiveDetectorAlert&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/2-L4MLiveDetectorAlert.yaml)
 
-- On the Specify stack details page, update the SMS phone number, give it a Stack name (ex. L4MLiveDetectorAlert), and click *Next*
-- On the Configure stack options page, leave everything as-is and click *Next*.
-- On the Review page, check the IAM Role creation acknowledgement, leave everything else as-is, and click *Create Stack*.
+- On the **Specify stack details** page, update the **SMS phone number**, give it a **Stack name** (ex. L4MLiveDetectorAlert), and click **Next**
+- On the **Configure stack options** page, leave everything as-is and click **Next**.
+- On the **Review** page, check the IAM Role creation acknowledgement, leave everything else as-is, and click **Create Stack**.
 
 ### Resource Cleanup
 Before proceeding to Step 1, stop your SageMaker notebook instance to ensure no unnecessary costs are incurred. It is no longer needed.
