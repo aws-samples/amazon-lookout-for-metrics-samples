@@ -54,7 +54,7 @@ The [**L4MLiveDetector.yaml**](src/1-L4MLiveDetector.yaml) CloudFormation script
 - On the **Review** page, leave everything as-is and click **Create Stack**.
 
 ### Create the Live Detector SMS Alert Using CloudFormation
-This step is optional. The alert is presented as an example, with no impact on the dataset creation. The [*L4MLiveDetectorAlert.yaml*](src/2-L4MLiveDetectorAlert.yaml) CloudFormation script creates the Lookout for Metrics Anomaly Detector Alert resource with an SMS target. 
+This step is optional. The alert is presented as an example, with no impact on the dataset creation. The [L4MLiveDetectorAlert.yaml](src/2-L4MLiveDetectorAlert.yaml) CloudFormation script creates the Lookout for Metrics Anomaly Detector Alert resource with an SMS target. 
 - Launch the stack from the link below and click **Next** on the **Create stack** page.
 
 [![Launch Stack: L4MLiveDetectorAlert](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MLiveDetectorAlert&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/2-L4MLiveDetectorAlert.yaml)
@@ -69,37 +69,37 @@ Before proceeding to Step 1, stop your SageMaker notebook instance to ensure no 
 ## Step 1: Setting up the AWS Lambda function
 
 ### Create the AWS Lambda Function and Alert Using CloudFormation
-The [*L4MLambdaFunction.yaml*](src/3-L4MLambdaFunction.yaml) CloudFormation script creates the Lambda Function and Alert resources as well as the using the function code archive stored in the same S3 bucket.
-- Launch the stack from the link below and update the parameters.
+The [**L4MLambdaFunction.yaml**](src/3-L4MLambdaFunction.yaml) CloudFormation script creates the Lambda function and Alert resources. The Lambda function uses the code archive stored in the same S3 bucket.
+- Launch the stack from the link below and click **Next** on the **Create stack** page.
 
 [![Launch Stack: L4MLambdaFunction](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MLambdaFunction&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/3-L4MLambdaFunction.yaml)
  
-- On the Specify stack details page update the pandas Lambda Layer ARN, give it a Stack name (ex. L4MLambdaFunction), and click *Next*
-- On the Configure stack options page, leave everything as-is and click *Next*
-- On the Review page, check the IAM Role creation acknowledgement, leave everything else as-is, and click *Create Stack*
+- On the **Specify stack details** page add the pandas Lambda Layer ARN, give it a **Stack name** (ex. L4MLambdaFunction), and click **Next**
+- On the **Configure stack options** page, leave everything as-is and click **Next**
+- On the **Review** page, check the IAM role creation acknowledgement, leave everything else as-is, and click **Create Stack**
 
 ### Activate the Detector
 Before proceeding to Step 2, the Detector needs to be activated from the console.
-- Open the [Amazon Lookout for Metrics console](https://console.aws.amazon.com/lookoutmetrics) and expand the menu on the left.
-- Choose Detectors from the menu and click on the name of the newly created Detector.
-- Click *Activate* in the upper left and then click *Activate* again on the dialog that opens.
+- Open the [**Amazon Lookout for Metrics console**](https://console.aws.amazon.com/lookoutmetrics) and expand the menu on the left.
+- Choose **Detectors** from the menu and click on the name of the newly created Detector.
+- Click **Activate** in the upper right and then click **Activate** again on the dialog that opens.
 - Activation initializes the detector and will be ready after the model has completed its learning cycle. This can take up to 2 hours.
 
 ## Step 2: Preparing the data for Amazon QuickSight
 
 ### Create the AWS Glue Crawler
-The [*L4MGlueCrawler.yaml*](src/4-L4MGlueCrawler.yaml) CloudFormation script creates the AWS Glue Crawler, its associated IAM Role, and the output Athena database.
-- Launch the stack from the link below and click *Next* on the Create stack page.
+The [**L4MGlueCrawler.yaml**](src/4-L4MGlueCrawler.yaml) CloudFormation script creates the AWS Glue crawler, its associated IAM role, and the output Athena database.
+- Launch the stack from the link below and click **Next** on the **Create stack** page.
 
 [![Launch Stack: L4MGlueCrawler](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MGlueCrawler&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/4-L4MGlueCrawler.yaml)
  
-- On the Specify stack details page give it a Stack name (ex. L4MGlueCrawler) and click *Next*.
-- On the Configure stack options page, leave everything as-is and click *Next*.
-- On the Review page, check the IAM Role creation acknowledgement, leave everything else as-is, and click *Create Stack*.
-- Once the AWS Glue Crawler has been created, it will need to be run from the console (or AWS CLI) before moving on to the next steps.
+- On the **Specify stack details** page give it a Stack name (ex. L4MGlueCrawler) and click **Next**.
+- On the **Configure stack options** page, leave everything as-is and click **Next**.
+- On the **Review** page, check the IAM role creation acknowledgement, leave everything else as-is, and click **Create Stack**.
+- Once the AWS Glue crawler has been created, it will need to be run from the console (or AWS CLI) before moving on to the next steps.
 
 ### Run the AWS Glue Crawler
-Open the [AWS Glue Console](https://console.aws.amazon.com/glue/) and choose Crawlers from the left menu. Click the checkbox next to your crawler (L4MCrawler) and then the *Run Crawler* button above the list. It will run for a few minutes and then show a *Ready* status when completed.
+Open the [**AWS Glue Console**](https://console.aws.amazon.com/glue/) and choose **Crawlers** from the left menu. Click the checkbox next to your crawler (L4MCrawler) and then the **Run Crawler** button, above the list. It will run for a few minutes and then show a **Ready** status when completed.
 
 ![Run Glue Crawler Screenshot](images/run-glue-crawler.png)
 
