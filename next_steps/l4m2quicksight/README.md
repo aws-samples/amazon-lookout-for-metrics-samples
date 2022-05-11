@@ -54,14 +54,14 @@ The [**L4MLiveDetector.yaml**](src/1-L4MLiveDetector.yaml) CloudFormation script
 - On the **Review** page, leave everything as-is and click **Create Stack**.
 
 ### Create the Live Detector SMS Alert Using CloudFormation
-This step is optional. The alert is presented as an example, with no impact on the dataset creation. The [*L4MLiveDetectorAlert.yaml*](src/2-L4MLiveDetectorAlert.yaml) CloudFormation script creates the Lookout for Metrics Anomaly Detector Alert resource with an SMS target. 
-- Launch the stack from the link below and click Next on the Create stack page.
+This step is optional. The alert is presented as an example, with no impact on the dataset creation. The [L4MLiveDetectorAlert.yaml](src/2-L4MLiveDetectorAlert.yaml) CloudFormation script creates the Lookout for Metrics Anomaly Detector Alert resource with an SMS target. 
+- Launch the stack from the link below and click **Next** on the **Create stack** page.
 
 [![Launch Stack: L4MLiveDetectorAlert](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MLiveDetectorAlert&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/2-L4MLiveDetectorAlert.yaml)
 
-- On the Specify stack details page, update the SMS phone number, give it a Stack name (ex. L4MLiveDetectorAlert), and click *Next*
-- On the Configure stack options page, leave everything as-is and click *Next*.
-- On the Review page, check the IAM Role creation acknowledgement, leave everything else as-is, and click *Create Stack*.
+- On the **Specify stack details** page, update the **SMS phone number**, give it a **Stack name** (ex. L4MLiveDetectorAlert), and click **Next**
+- On the **Configure stack options** page, leave everything as-is and click **Next**.
+- On the **Review** page, check the IAM Role creation acknowledgement, leave everything else as-is, and click **Create Stack**.
 
 ### Resource Cleanup
 Before proceeding to Step 1, stop your SageMaker notebook instance to ensure no unnecessary costs are incurred. It is no longer needed.
@@ -69,83 +69,83 @@ Before proceeding to Step 1, stop your SageMaker notebook instance to ensure no 
 ## Step 1: Setting up the AWS Lambda function
 
 ### Create the AWS Lambda Function and Alert Using CloudFormation
-The [*L4MLambdaFunction.yaml*](src/3-L4MLambdaFunction.yaml) CloudFormation script creates the Lambda Function and Alert resources as well as the using the function code archive stored in the same S3 bucket.
-- Launch the stack from the link below and update the parameters.
+The [**L4MLambdaFunction.yaml**](src/3-L4MLambdaFunction.yaml) CloudFormation script creates the Lambda function and Alert resources. The Lambda function uses the code archive stored in the same S3 bucket.
+- Launch the stack from the link below and click **Next** on the **Create stack** page.
 
 [![Launch Stack: L4MLambdaFunction](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MLambdaFunction&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/3-L4MLambdaFunction.yaml)
  
-- On the Specify stack details page update the pandas Lambda Layer ARN, give it a Stack name (ex. L4MLambdaFunction), and click *Next*
-- On the Configure stack options page, leave everything as-is and click *Next*
-- On the Review page, check the IAM Role creation acknowledgement, leave everything else as-is, and click *Create Stack*
+- On the **Specify stack details** page add the pandas Lambda Layer ARN, give it a **Stack name** (ex. L4MLambdaFunction), and click **Next**
+- On the **Configure stack options** page, leave everything as-is and click **Next**
+- On the **Review** page, check the IAM role creation acknowledgement, leave everything else as-is, and click **Create Stack**
 
 ### Activate the Detector
 Before proceeding to Step 2, the Detector needs to be activated from the console.
-- Open the [Amazon Lookout for Metrics console](https://console.aws.amazon.com/lookoutmetrics) and expand the menu on the left.
-- Choose Detectors from the menu and click on the name of the newly created Detector.
-- Click *Activate* in the upper left and then click *Activate* again on the dialog that opens.
+- Open the [**Amazon Lookout for Metrics console**](https://console.aws.amazon.com/lookoutmetrics) and expand the menu on the left.
+- Choose **Detectors** from the menu and click on the name of the newly created Detector.
+- Click **Activate** in the upper right and then click **Activate** again on the dialog that opens.
 - Activation initializes the detector and will be ready after the model has completed its learning cycle. This can take up to 2 hours.
 
 ## Step 2: Preparing the data for Amazon QuickSight
 
 ### Create the AWS Glue Crawler
-The [*L4MGlueCrawler.yaml*](src/4-L4MGlueCrawler.yaml) CloudFormation script creates the AWS Glue Crawler, its associated IAM Role, and the output Athena database.
-- Launch the stack from the link below and click *Next* on the Create stack page.
+The [**L4MGlueCrawler.yaml**](src/4-L4MGlueCrawler.yaml) CloudFormation script creates the AWS Glue crawler, its associated IAM role, and the output Athena database.
+- Launch the stack from the link below and click **Next** on the **Create stack** page.
 
 [![Launch Stack: L4MGlueCrawler](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MGlueCrawler&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/4-L4MGlueCrawler.yaml)
  
-- On the Specify stack details page give it a Stack name (ex. L4MGlueCrawler) and click *Next*.
-- On the Configure stack options page, leave everything as-is and click *Next*.
-- On the Review page, check the IAM Role creation acknowledgement, leave everything else as-is, and click *Create Stack*.
-- Once the AWS Glue Crawler has been created, it will need to be run from the console (or AWS CLI) before moving on to the next steps.
+- On the **Specify stack details** page give it a Stack name (ex. L4MGlueCrawler) and click **Next**.
+- On the **Configure stack options** page, leave everything as-is and click **Next**.
+- On the **Review** page, check the IAM role creation acknowledgement, leave everything else as-is, and click **Create Stack**.
+- Once the AWS Glue crawler has been created, it will need to be run from the console (or AWS CLI) before moving on to the next steps.
 
 ### Run the AWS Glue Crawler
-Open the [AWS Glue Console](https://console.aws.amazon.com/glue/) and choose Crawlers from the left menu. Click the checkbox next to your crawler (L4MCrawler) and then the *Run Crawler* button above the list. It will run for a few minutes and then show a *Ready* status when completed.
+Open the [**AWS Glue Console**](https://console.aws.amazon.com/glue/) and choose **Crawlers** from the left menu. Click the checkbox next to your crawler (L4MCrawler) and then the **Run Crawler** button, above the list. It will run for a few minutes and then show a **Ready** status when completed.
 
 ![Run Glue Crawler Screenshot](images/run-glue-crawler.png)
 
 ## Step 3: Visualize your data in Amazon QuickSight
-Before starting this step, [navigate to Amazon QuickSight](https://quicksight.aws.amazon.com/) and create an account if you do not have one. Ensure you have access to the corresponding services (Athena and S3 bucket) by clicking on your account name on the top right, manage QuickSight, and click on Security and Permissions where you can add the necessary services. 
+Before starting this step, navigate to [**Amazon QuickSight**](https://quicksight.aws.amazon.com/) and create an account if you do not have one. Ensure you have access to the corresponding services (Athena and S3) by clicking on your account name on the top right. Choose **manage QuickSight**, and click on **Security and Permissions** where you can add the necessary services. 
 
 ![QuickSight Security & Permissions Screenshot](images/amazon-quicksight.png)
 
 ### Create the Amazon QuickSight Data Source
-The [*L4MQuickSightDataSource.yaml*](src/5-L4MQuickSightDataSource.yaml) CloudFormation script creates the Amazon QuickSight Athena Data Source.
-- Launch the stack from the link below and click *Next* on the Create stack page.
+The [**L4MQuickSightDataSource.yaml**](src/5-L4MQuickSightDataSource.yaml) CloudFormation script creates the Amazon QuickSight Athena data source.
+- Launch the stack from the link below and click **Next** on the **Create stack** page.
 
 [![Launch Stack: L4MQuickSightDataSource](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MQuickSightDataSource&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/5-L4MQuickSightDataSource.yaml)
  
-- On the Specify stack details page, add your QuickSight username, give it a Stack name (ex. L4MQuickSightDataSource), and click *Next*.
-- On the Configure stack options page, leave everything as-is and click *Next*.
-- On the Review page leave everything as-is and click *Create Stack*.
+- On the **Specify stack details** page, add your **QuickSight username**, give it a **Stack name** (ex. L4MQuickSightDataSource), and click **Next**.
+- On the **Configure stack options** page, leave everything as-is and click **Next**.
+- On the **Review** page leave everything as-is and click **Create Stack**.
 
 ### Create the First Amazon QuickSight Dataset
-The [*L4MQuickSightDataSet1.yaml*](src/6-L4MQuickSightDataSet1.yaml) CloudFormation script creates an Amazon QuickSight Dataset that joins the dimensions table with the anomaly table.
-- Launch the stack from the link below and update the parameter value.
+The [**L4MQuickSightDataSet1.yaml**](src/6-L4MQuickSightDataSet1.yaml) CloudFormation script creates an Amazon QuickSight Dataset that joins the dimensions table with the anomaly table.
+- Launch the stack from the link below and click **Next** on the **Create stack** page.
 
 [![Launch Stack: L4MQuickSightDataSet1](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MQuickSightDataSet1&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/6-L4MQuickSightDataSet1.yaml)
 
-- On the Specify stack details page, add your QuickSight username, give it a Stack name (ex. L4MQuickSightDataSet1), and click *Next*.
-- On the Configure stack options page, leave everything as-is and click *Next*.
-- On the Review page leave everything as-is and click *Create Stack*.
+- On the **Specify stack details** page, add your **QuickSight username**, give it a **Stack name** (ex. L4MQuickSightDataSet1), and click **Next**.
+- On the **Configure stack options** page, leave everything as-is and click **Next**.
+- On the **Review** page leave everything as-is and click **Create Stack**.
 
 ### Create the Second Amazon QuickSight Dataset
 The [*L4MQuickSightDataSet2.yaml*](src/6-L4MQuickSightDataSet2.yaml) CloudFormation script creates the Amazon QuickSight Dataset that joins the anomaly table with the live data table.
-- aunch the stack from the link below and click Next on the Create stack page.
+- Launch the stack from the link below and click **Next** on the **Create stack** page.
 
 [![Launch Stack: L4MQuickSightDataSet2](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MQuickSightDataSet2&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/7-L4MQuickSightDataSet2.yaml)
 
-- On the Specify stack details page, add your QuickSight username, give it a Stack name (ex. L4MQuickSightDataSet2), and click *Next*.
-- On the Configure stack options page, leave everything as-is and click *Next*.
-- On the Review page leave everything as-is and click *Create Stack*.
+- On the **Specify stack details** page, add your **QuickSight username**, give it a **Stack name** (ex. L4MQuickSightDataSet2), and click **Next**.
+- On the **Configure stack options** page, leave everything as-is and click **Next**.
+- On the **Review** page leave everything as-is and click **Create Stack**.
 
 ### Create the Amazon QuickSight Analysis for Dashboard Creation
-With the two Amazon QuickSight datasets created, open the [Amazon QuickSight console](https://quicksight.aws.amazon.com/), and choose Analysis from the left menu. Click on New analysis in the upper right. Select the first of the two datasets created, L4MQuickSightDataSetWithLiveData, and click Create analysis in the small dialog window that opened.
+With the two Amazon QuickSight datasets created, open the [**Amazon QuickSight console**](https://quicksight.aws.amazon.com/), and choose **Analysis** from the left menu. Click on **New analysis** in the upper right. Select the first of the two datasets created, **L4MQuickSightDataSetWithLiveData**, and click **Create analysis** in the small dialog window that opened.
 
 ![Create Analysis Screenshot](images/create-analysis.png)
 
 ![Choose Dataset Screenshot](images/choose-dataset.png)
 
-The QuickSight Analysis was initially created with only the first dataset. To add the second, click the pencil icon next to *Dataset* in the upper left, and choose *Add dataset* from the dialog window that opened. Choose the second dataset and click *Select*. You will then be able to use either dataset for creating charts by choosing the dropdown under *Dataset*.
+The QuickSight analysis was initially created with only the first dataset. To add the second, click the **pencil** icon next to **Dataset** in the upper left, and choose **Add dataset** from the dialog window that opens. Choose the second dataset and click **Select**. You will then be able to use either dataset for creating charts by choosing the dropdown under **Dataset**.
 
 ![Add Second Dataset Screenshot](images/add-second-dataset.png)
 
@@ -154,33 +154,33 @@ The QuickSight Analysis was initially created with only the first dataset. To ad
 ![Show Datasets Screenshot](images/show-datasets.png)
 
 ## Conclusion
-You have successfully created a QuickSight analysis from L4M inference results and the live data. Two datasets are in QuickSight for you to use: The *L4M_Visualization_dataset_with_liveData* dataset and the *L4M_Visualization_dataset_with_dimensionContribution* dataset.
+You have successfully created a QuickSight analysis from L4M inference results and the live data. Two datasets are in QuickSight for you to use: The **L4M_Visualization_dataset_with_liveData** dataset and the **L4M_Visualization_dataset_with_dimensionContribution** dataset.
 
-The *L4M_Visualization_dataset_with_liveData* dataset includes the following metrics:
-- The *timestamp* is the date + time of the live data passed to L4M.
-- The *views* is the value of the views metric.
-- The *revenue* is the value of the revenue metric.
-- The *platform, marketplace, revenueAnomalyMetricValue, viewsAnomalyMetricValue, revenueGroupScore and viewsGroupScore* are explained below. These metrics are part of the two datasets. 
+The **L4M_Visualization_dataset_with_liveData** dataset includes the following metrics:
+- The **timestamp** is the date + time of the live data passed to L4M.
+- The **views** is the value of the views metric.
+- The **revenue** is the value of the revenue metric.
+- The **platform, marketplace, revenueAnomalyMetricValue, viewsAnomalyMetricValue, revenueGroupScore, and viewsGroupScore** are explained below. These metrics are part of the two datasets. 
 
-The *L4M_Visualization_dataset_with_dimensionContribution* dataset includes the following metrics:
-- The *timestamp* is the date + time of when the anomaly was detected.
-- The *metricName* is the metric(s) you are monitoring. 
-- The *dimensionName* is the dimension within the metric.
-- The *dimensionValue* is the value of the dimension.
-- The *valueContribution* is the percentage on how much is the dimensionValue affecting the anomaly when detected.
+The **L4M_Visualization_dataset_with_dimensionContribution** dataset includes the following metrics:
+- The **timestamp** is the date + time of when the anomaly was detected.
+- The **metricName** is the metric(s) you are monitoring. 
+- The **dimensionName** is the dimension within the metric.
+- The **dimensionValue** is the value of the dimension.
+- The **valueContribution** is the percentage on how much the dimensionValue affects the anomaly, when detected.
 
 The following image shows these 5 metrics together. It is an example from the Anomaly dashboard of the L4M detector.
 ![Anomaly Dashboard Example](images/anomaly-dashboard-ex.png)
 
 The following metrics are part of the two datasets:
-- The *platform* is the platform where the anomaly happened. 
-- The *marketplace* is the marketplace where the anomaly happened.
-- The *revenueAnomalyMetricValue and the viewsAnomalyMetricValue* are the corresponding values of the metric when the anomaly was detected (in this situation, the metrics are revenue or views).
-- The *revenueGroupScore and the viewsGroupScore* are the severity scores for each metric for the detected anomaly. 
+- The **platform** is the platform where the anomaly happened. 
+- The **marketplace** is the marketplace where the anomaly happened.
+- The **revenueAnomalyMetricValue** and **viewsAnomalyMetricValue** are the corresponding values of the metric when the anomaly was detected (in this situation, the metrics are revenue or views).
+- The **revenueGroupScore** and **viewsGroupScore** are the severity scores for each metric for the detected anomaly. 
 
-Note: To better understand these last metrics, please go have a look on the csv files created by the Lambda function in your S3 bucket where you saved the anomalyResults/metricValue_AnomalyScore
+Note: To better understand these last metrics, have a look on the .csv files created by the Lambda function in your S3 bucket where you saved the **anomalyResults/metricValue_AnomalyScore**.
 
-The next step is to build the dashboards for the data you would like to see. This blog will not go through an explanation on creating Amazon QuickSight charts. If you are new to QuickSight, you can walk through the [Getting Started with Data Analysis in Amazon QuickSight documentation](https://docs.aws.amazon.com/quicksight/latest/user/getting-started.html) for an introduction. As an example, the images below show basic dashboards. For further information there is an [official workshop on Amazon QuickSight](https://learnquicksight.workshop.aws/en/).
+The next step is to build dashboards for the data you would like to see. This blog will not go through an explanation on creating Amazon QuickSight charts. If you are new to QuickSight, you can walk through the [**Getting Started with Data Analysis in Amazon QuickSight documentation**](https://docs.aws.amazon.com/quicksight/latest/user/getting-started.html) for an introduction. As an example, the images below show basic dashboards. For further information there is an [**official workshop on Amazon QuickSight**](https://learnquicksight.workshop.aws/en/).
 
 ![Sample Chart 1](images/sample-chart1.png)
 

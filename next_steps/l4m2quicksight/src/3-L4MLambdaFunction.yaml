@@ -9,11 +9,9 @@ Parameters:
 
   LambdaLayerPandasArn:
     Description: >
-      pandas layer ARN from https://github.com/keithrozario/Klayers/tree/master/deployments/python3.8. Select your 
-      region and then choose the latest pandas ARN. You must use the ARN from the same region as your deployment. The 
-      us-east-1 ARN is provided below.
+      Retrieve the latest pandas layer ARN from https://github.com/keithrozario/Klayers/tree/master/deployments/python3.8.
+      Select your region and then choose the latest pandas ARN. You must use the ARN from the same region as your deployment.
     Type: String
-    Default: "arn:aws:lambda:us-east-1:770693421928:layer:Klayers-p38-pandas:3"
 
   CodeS3BucketName:
     Description: S3 Bucket location for related code
