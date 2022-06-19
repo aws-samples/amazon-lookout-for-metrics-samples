@@ -129,7 +129,7 @@ The [**L4MQuickSightDataSet1.yaml**](src/6-L4MQuickSightDataSet1.yaml) CloudForm
 - On the **Review** page leave everything as-is and click **Create Stack**.
 
 ### Create the Second Amazon QuickSight Dataset
-The [*L4MQuickSightDataSet2.yaml*](src/6-L4MQuickSightDataSet2.yaml) CloudFormation script creates the Amazon QuickSight Dataset that joins the anomaly table with the live data table.
+The [**L4MQuickSightDataSet2.yaml**](src/6-L4MQuickSightDataSet2.yaml) CloudFormation script creates the Amazon QuickSight Dataset that joins the anomaly table with the live data table.
 - Launch the stack from the link below and click **Next** on the **Create stack** page.
 
 [![Launch Stack: L4MQuickSightDataSet2](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MQuickSightDataSet2&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/7-L4MQuickSightDataSet2.yaml)
