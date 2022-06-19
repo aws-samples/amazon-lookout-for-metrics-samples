@@ -17,25 +17,25 @@ Resources:
       Type: AWS::QuickSight::DataSource
       Properties: 
          AwsAccountId: !Ref AWS::AccountId
-         DataSourceId: "L4MQuickSightDataSource"
+         DataSourceId: 'L4MQuickSightDataSource'
          Name: L4MQuickSightDataSource
-         Type: "ATHENA"
+         Type: 'ATHENA'
          DataSourceParameters:
             AthenaParameters:
                WorkGroup: primary #primary is the default workgroup
          Permissions:
-            - Principal: !Sub "arn:aws:quicksight:us-east-1:${AWS::AccountId}:user/default/${UserName}"
+            - Principal: !Sub 'arn:aws:quicksight:us-east-1:${AWS::AccountId}:user/default/${UserName}'
               Actions:
-                - "quicksight:DescribeDataSource"
-                - "quicksight:DescribeDataSourcePermissions"
-                - "quicksight:UpdateDataSource"
-                - "quicksight:UpdateDataSourcePermissions"
-                - "quicksight:DeleteDataSource"
-                - "quicksight:PassDataSource"
+                - 'quicksight:DescribeDataSource'
+                - 'quicksight:DescribeDataSourcePermissions'
+                - 'quicksight:UpdateDataSource'
+                - 'quicksight:UpdateDataSourcePermissions'
+                - 'quicksight:DeleteDataSource'
+                - 'quicksight:PassDataSource'
 Outputs:
 
    L4MQuickSightDataSourceArn:
-      Description: "L4M QuickSight DataSource ARN"
+      Description: 'L4M QuickSight DataSource ARN'
       Value: !GetAtt L4MQuickSightDataSource.Arn
       Export:
-         Name: "L4MQuickSightDataSourceArn"
+         Name: 'L4MQuickSightDataSourceArn'

@@ -21,39 +21,57 @@ Parameters:
   CodeS3BucketKey:
     Description: S3 Bucket Key for related code
     Type: String
-    Default: "next_steps/l4m2quicksight/src/L4MVersion3.zip"
+    Default: 'next_steps/l4m2quicksight/src/L4MVersion3.zip'
  
 Resources:
 
   L4MLambdaExecutionRole: 
     Type: AWS::IAM::Role
     Properties:
-      RoleName: L4MLambdaExecutionRole
       AssumeRolePolicyDocument: 
-        Version: "2012-10-17"
+        Version: '2012-10-17'
         Statement: 
           - Effect: Allow
             Principal: 
               Service: lambda.amazonaws.com
             Action: sts:AssumeRole
-      Path: "/"
+      Path: /
       ManagedPolicyArns:
-        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
       Policies: 
-        - PolicyName: L4MTest
+        - PolicyName: L4MLambdaAccess
           PolicyDocument: 
-            Version: "2012-10-17"
-            Statement: 
-              - 
-                Effect: Allow
-                Action: lookoutmetrics:*
-                Resource: "*"
-
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: lookoutmetrics:DescribeMetricSet
+                Resource: 
+                  - !ImportValue L4MLiveDetectorArn
+                  - !ImportValue L4MDetectorMetricSetArn
+              - Effect: Allow
+                Action:
+                  - s3:ListBucket
+                  - s3:GetBucketLocation
+                Resource:
+                  - Fn::Sub:
+                    - 'arn:aws:s3:::${BucketName}'
+                    - BucketName: !ImportValue L4MS3BucketName
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                Resource:
+                  - Fn::Sub:
+                    - 'arn:aws:s3:::${BucketName}/anomalyResults/dimensionContributions/*'
+                    - BucketName: !ImportValue L4MS3BucketName
+                  - Fn::Sub: 
+                    - 'arn:aws:s3:::${BucketName}/anomalyResults/metricValue_AnomalyScore/*'
+                    - BucketName: !ImportValue L4MS3BucketName
+                  
   L4MLambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
-      Handler: "L4MVersion3/lambda_function.lambda_handler"
+      Handler: 'L4MVersion3/lambda_function.lambda_handler'
       Role: !GetAtt L4MLambdaExecutionRole.Arn
       PackageType: Zip
       Code:
@@ -62,6 +80,7 @@ Resources:
       Layers:
         - !Ref LambdaLayerPandasArn
       Runtime: python3.8
+      MemorySize: 512
       Timeout: 5
       TracingConfig:
         Mode: Active
@@ -69,19 +88,18 @@ Resources:
   L4MDetectorLambdaAlertRole: 
     Type: AWS::IAM::Role
     Properties:
-      RoleName: L4MDetectorLambdaAlertRole
       AssumeRolePolicyDocument: 
-        Version: "2012-10-17"
+        Version: '2012-10-17'
         Statement: 
           - Effect: Allow
             Principal: 
               Service: lookoutmetrics.amazonaws.com
             Action: sts:AssumeRole
-      Path: "/"
+      Path: /
       Policies: 
-        - PolicyName: L4MTest
+        - PolicyName: AllowLambdaInvocation
           PolicyDocument: 
-            Version: "2012-10-17"
+            Version: '2012-10-17'
             Statement: 
               - Effect: Allow
                 Action: lambda:InvokeFunction
@@ -94,7 +112,6 @@ Resources:
         LambdaConfiguration: 
           LambdaArn: !GetAtt L4MLambdaFunction.Arn
           RoleArn: !GetAtt L4MDetectorLambdaAlertRole.Arn
-      AlertDescription: "Detector Lambda Alert"
-      AlertName: L4MDetectorLambdaAlert
+      AlertDescription: 'Detector Lambda Alert'
       AlertSensitivityThreshold: 70
       AnomalyDetectorArn: !ImportValue L4MLiveDetectorArn

@@ -18,6 +18,7 @@ Resources:
     Type: AWS::SNS::Topic
     Properties:
       DisplayName: L4MLiveDetectorSnsTopic
+      KmsMasterKeyId: 'aws/sns'
       Subscription: 
         - Protocol: sms
           Endpoint: !Ref SmsPhoneNumber  
@@ -25,9 +26,8 @@ Resources:
   L4MLiveDetectorAlertRole: 
     Type: AWS::IAM::Role
     Properties:
-      RoleName: L4MLiveDetectorAlertRole
       AssumeRolePolicyDocument: 
-        Version: "2012-10-17"
+        Version: '2012-10-17'
         Statement: 
           - Effect: Allow
             Principal: 
@@ -36,7 +36,7 @@ Resources:
       Policies:
         - PolicyName: L4MLiveDetectorAlertPolicy
           PolicyDocument:
-            Version: "2012-10-17"
+            Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action: sns:Publish
@@ -49,7 +49,6 @@ Resources:
         SNSConfiguration:
           RoleArn: !GetAtt L4MLiveDetectorAlertRole.Arn
           SnsTopicArn: !Ref L4MLiveDetectorSnsTopic
-      AlertDescription: "L4M Live Detector Test SMS Alert"
-      AlertName: L4MLiveDetectorAlert
+      AlertDescription: 'L4M Live Detector Test SMS Alert'
       AlertSensitivityThreshold: 50
       AnomalyDetectorArn: !ImportValue L4MLiveDetectorArn

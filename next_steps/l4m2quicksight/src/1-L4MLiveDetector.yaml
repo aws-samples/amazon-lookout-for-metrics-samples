@@ -58,7 +58,7 @@ Resources:
                 CsvFormatDescriptor:
                   Charset: UTF-8
                   ContainsHeader: true
-                  Delimiter: ","
+                  Delimiter: ','
                   FileCompression: NONE
                   QuoteSymbol: '"'
               # Backtest option is commented out, below. You can modify this to run in 
@@ -66,9 +66,9 @@ Resources:
               #HistoricalDataPathList: !Sub "s3://${L4MS3BucketName}/ecommerce/backtest/"
               RoleArn: !Ref L4MRoleArn
               TemplatedPathList: 
-                - !Sub "s3://${L4MS3BucketName}/ecommerce/live/{{yyyyMMdd}}/{{HHmm}}"
+                - !Sub 's3://${L4MS3BucketName}/ecommerce/live/{{yyyyMMdd}}/{{HHmm}}'
           TimestampColumn: 
-            ColumnFormat: "yyyy-MM-dd HH:mm:ss"
+            ColumnFormat: 'yyyy-MM-dd HH:mm:ss'
             ColumnName: timestamp
 
 Outputs:
@@ -78,6 +78,12 @@ Outputs:
     Value: !GetAtt L4MLiveDetector.Arn
     Export:
       Name: L4MLiveDetectorArn
+
+  L4MDetectorMetricSetArn:
+    Description: Live Detector Metric Set ARN
+    Value: !Sub 'arn:${AWS::Partition}:lookoutmetrics:${AWS::Region}:${AWS::AccountId}:MetricSet/L4MLiveDetector/L4MLiveDetectorMetricSet'
+    Export:
+      Name: L4MDetectorMetricSetArn
 
   L4MS3BucketName:
     Description: S3 Bucket for the live and backtest data
