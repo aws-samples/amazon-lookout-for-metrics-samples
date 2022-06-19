@@ -5,12 +5,6 @@ Description: >
    From the blog post, Visualize your Amazon Lookout for Metrics Anomaly Results, this script will
    create an Amazon QuickSight Dataset.
 
-Parameters:
-
-   UserName:
-      Description: Enter your Amazon QuickSight username.
-      Type: String
-
 Resources:
 
    L4MQuickSightDataSetWithLiveData:
@@ -110,7 +104,7 @@ Resources:
                         - "viewsgroupscore"
          ImportMode: DIRECT_QUERY
          Permissions:
-            - Principal: !Sub "arn:aws:quicksight:us-east-1:${AWS::AccountId}:user/default/${UserName}"
+            - Principal: !ImportValue L4MQuickSightPrincipalArn
               Actions: # Used default Actions from describe-data-set-permissions
                   - "quicksight:UpdateDataSetPermissions"
                   - "quicksight:DescribeDataSet"
@@ -122,11 +116,3 @@ Resources:
                   - "quicksight:DeleteDataSet"
                   - "quicksight:CreateIngestion"
                   - "quicksight:CancelIngestion"
-
-Outputs:
-
-   L4MQuickSightDataSetWithLiveDataArn:
-      Description: "L4M QuickSight DataSet ARN"
-      Value: !GetAtt L4MQuickSightDataSetWithLiveData.Arn
-      Export:
-         Name: "L4MQuickSightDataSetWithLiveDataArn"

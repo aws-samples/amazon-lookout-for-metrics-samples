@@ -25,13 +25,18 @@ Resources:
         - PolicyName: L4MCrawlerRoleInlinePolicy
           PolicyDocument: 
             Version: '2012-10-17'
-            Statement: 
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:ListBucket
+                Resource:
+                  - Fn::Sub:
+                    - 'arn:aws:s3:::${BucketName}'
+                    - BucketName: !ImportValue L4MS3BucketName
               - Effect: Allow
                 Action:
                   - s3:GetObject
                   - s3:PutObject
-                  - s3:GetBucketLocation
-                  - s3:ListBucket
                 Resource:
                   - Fn::Sub:
                     - 'arn:aws:s3:::${BucketName}/ecommerce/live/*'
