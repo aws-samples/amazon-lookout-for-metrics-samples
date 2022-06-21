@@ -93,7 +93,7 @@ The [**L4MGlueCrawler.yaml**](src/4-L4MGlueCrawler.yaml) CloudFormation script c
 
 [![Launch Stack: L4MGlueCrawler](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MGlueCrawler&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/4-L4MGlueCrawler.yaml)
  
-- On the **Specify stack details** page give it a Stack name (ex. L4MGlueCrawler) and click **Next**.
+- On the **Specify stack details** page give it a **Stack name** (ex. L4MGlueCrawler) and click **Next**.
 - On the **Configure stack options** page, leave everything as-is and click **Next**.
 - On the **Review** page, check the IAM role creation acknowledgement, leave everything else as-is, and click **Create Stack**.
 - Once the AWS Glue crawler has been created, it will need to be run from the console (or AWS CLI) before moving on to the next steps.
@@ -124,17 +124,17 @@ The [**L4MQuickSightDataSet1.yaml**](src/6-L4MQuickSightDataSet1.yaml) CloudForm
 
 [![Launch Stack: L4MQuickSightDataSet1](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MQuickSightDataSet1&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/6-L4MQuickSightDataSet1.yaml)
 
-- On the **Specify stack details** page, add your **QuickSight username**, give it a **Stack name** (ex. L4MQuickSightDataSet1), and click **Next**.
+- On the **Specify stack details** page give it a **Stack name** (ex. L4MQuickSightDataSet1), and click **Next**.
 - On the **Configure stack options** page, leave everything as-is and click **Next**.
 - On the **Review** page leave everything as-is and click **Create Stack**.
 
 ### Create the Second Amazon QuickSight Dataset
-The [*L4MQuickSightDataSet2.yaml*](src/6-L4MQuickSightDataSet2.yaml) CloudFormation script creates the Amazon QuickSight Dataset that joins the anomaly table with the live data table.
+The [**L4MQuickSightDataSet2.yaml**](src/6-L4MQuickSightDataSet2.yaml) CloudFormation script creates the Amazon QuickSight Dataset that joins the anomaly table with the live data table.
 - Launch the stack from the link below and click **Next** on the **Create stack** page.
 
 [![Launch Stack: L4MQuickSightDataSet2](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MQuickSightDataSet2&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/7-L4MQuickSightDataSet2.yaml)
 
-- On the **Specify stack details** page, add your **QuickSight username**, give it a **Stack name** (ex. L4MQuickSightDataSet2), and click **Next**.
+- On the **Specify stack details** page give it a **Stack name** (ex. L4MQuickSightDataSet2), and click **Next**.
 - On the **Configure stack options** page, leave everything as-is and click **Next**.
 - On the **Review** page leave everything as-is and click **Create Stack**.
 
