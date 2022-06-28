@@ -13,15 +13,21 @@ Parameters:
       Select your region and then choose the latest pandas ARN. You must use the ARN from the same region as your deployment.
     Type: String
 
-  CodeS3BucketName:
-    Description: S3 Bucket location for related code
-    Type: String
-    Default: "lookoutformetricsbucket"
+Metadata:
 
-  CodeS3BucketKey:
-    Description: S3 Bucket Key for related code
-    Type: String
-    Default: 'next_steps/l4m2quicksight/src/L4MVersion3.zip'
+  AWS::CloudFormation::Interface:
+
+    ParameterGroups:
+    
+      - Label: 
+          default: "AWS Lambda Layer Configuration"
+        Parameters:
+          - LambdaLayerPandasArn
+
+    ParameterLabels:
+
+      LambdaLayerPandasArn: 
+        default: "The pandas ARN to be included as a Lambda Layer:"
  
 Resources:
 
@@ -75,8 +81,8 @@ Resources:
       Role: !GetAtt L4MLambdaExecutionRole.Arn
       PackageType: Zip
       Code:
-        S3Bucket: !Ref CodeS3BucketName
-        S3Key: !Ref CodeS3BucketKey
+        S3Bucket: !ImportValue L4MS3BucketName
+        S3Key: 'lambda-code/L4MVersion3.zip'
       Layers:
         - !Ref LambdaLayerPandasArn
       Runtime: python3.8

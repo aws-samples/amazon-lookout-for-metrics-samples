@@ -59,7 +59,7 @@ This step is optional. The alert is presented as an example, with no impact on t
 
 [![Launch Stack: L4MLiveDetectorAlert](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MLiveDetectorAlert&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/2-L4MLiveDetectorAlert.yaml)
 
-- On the **Specify stack details** page, update the **SMS phone number**, give it a **Stack name** (ex. L4MLiveDetectorAlert), and click **Next**
+- On the **Specify stack details** page, update the **SMS phone number**, give it a **Stack name** (ex. L4MLiveDetectorAlert), and click **Next**.
 - On the **Configure stack options** page, leave everything as-is and click **Next**.
 - On the **Review** page, check the IAM Role creation acknowledgement, leave everything else as-is, and click **Create Stack**.
 
@@ -69,14 +69,21 @@ Before proceeding to Step 1, stop your SageMaker notebook instance to ensure no 
 ## Step 1: Setting up the AWS Lambda function
 
 ### Create the AWS Lambda Function and Alert Using CloudFormation
-The [**L4MLambdaFunction.yaml**](src/3-L4MLambdaFunction.yaml) CloudFormation script creates the Lambda function and Alert resources. The Lambda function uses the code archive stored in the same S3 bucket.
+The [**L4MLambdaFunction.yaml**](src/3-L4MLambdaFunction.yaml) CloudFormation script creates the Lambda function and Alert resources. Similar to the above console instructions, the next step is to [download the zip file containing the necessary code for the Lambda](https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/L4MVersion3.zip). However, in this case it needs to be uploaded to the S3 bucket in order for the CloudFormation code to load it during function creation. 
+
+In the S3 bucket specified in the Amazon L4M Detector creation, create a folder, lambda-code, and upload the zip file. The Lambda function will load this as its code during creation.
+
+![Create the lambda-code folder in S3](images/s3-create-lambda-code-folder.png)
+
+![Show the lambda-code folder contents](images/s3-lambda-code.png)
+
 - Launch the stack from the link below and click **Next** on the **Create stack** page.
 
 [![Launch Stack: L4MLambdaFunction](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MLambdaFunction&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/3-L4MLambdaFunction.yaml)
  
-- On the **Specify stack details** page add the pandas Lambda Layer ARN, give it a **Stack name** (ex. L4MLambdaFunction), and click **Next**
-- On the **Configure stack options** page, leave everything as-is and click **Next**
-- On the **Review** page, check the IAM role creation acknowledgement, leave everything else as-is, and click **Create Stack**
+- On the **Specify stack details** page add the pandas Lambda Layer ARN, give it a **Stack name** (ex. L4MLambdaFunction), and click **Next**. You can find the [Lambda Layer ARN on this github link](https://github.com/keithrozario/Klayers). In the github, click the **python 3.8** link under the **List of ARNs**, select your region, and copy the latest pandas ARN.
+- On the **Configure stack options** page, leave everything as-is and click **Next**.
+- On the **Review** page, check the IAM role creation acknowledgement, leave everything else as-is, and click **Create Stack**.
 
 ### Activate the Detector
 Before proceeding to Step 2, the Detector needs to be activated from the console.
@@ -84,6 +91,8 @@ Before proceeding to Step 2, the Detector needs to be activated from the console
 - Choose **Detectors** from the menu and click on the name of the newly created Detector.
 - Click **Activate** in the upper right and then click **Activate** again on the dialog that opens.
 - Activation initializes the detector and will be ready after the model has completed its learning cycle. This can take up to 2 hours.
+
+**Note** that if you run the Glue Crawler in step 2 prior to anomalies being generated, the anomaly tables will not exist when QuickSight tries to access them and will generate a SQL error. This could take a couple hours. If you go ahead and create everything, go back and rerun the crawler after the anomaly data is present, prior to creating a new analysis in QuickSight.
 
 ## Step 2: Preparing the data for Amazon QuickSight
 
@@ -114,7 +123,7 @@ The [**L4MQuickSightDataSource.yaml**](src/5-L4MQuickSightDataSource.yaml) Cloud
 
 [![Launch Stack: L4MQuickSightDataSource](images/launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/new?stackName=L4MQuickSightDataSource&templateURL=https://lookoutformetricsbucket.s3.amazonaws.com/next_steps/l4m2quicksight/src/5-L4MQuickSightDataSource.yaml)
  
-- On the **Specify stack details** page, add your **QuickSight username**, give it a **Stack name** (ex. L4MQuickSightDataSource), and click **Next**.
+- On the **Specify stack details** page, add your **QuickSight username**, **QuickSight account region** (specified when creating the QuickSight account), give it a **Stack name** (ex. L4MQuickSightDataSource), and click **Next**.
 - On the **Configure stack options** page, leave everything as-is and click **Next**.
 - On the **Review** page leave everything as-is and click **Create Stack**.
 
