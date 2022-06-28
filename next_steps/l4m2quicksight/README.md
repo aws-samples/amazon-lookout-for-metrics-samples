@@ -92,7 +92,7 @@ Before proceeding to Step 2, the Detector needs to be activated from the console
 - Click **Activate** in the upper right and then click **Activate** again on the dialog that opens.
 - Activation initializes the detector and will be ready after the model has completed its learning cycle. This can take up to 2 hours.
 
-**Note** that if you run the Glue Crawler in step 2 prior to anomalies being generated, the anomaly tables will not exist when QuickSight tries to access them and generate a SQL error. This could take a couple hours. If you go ahead and create everything, you go back and rerun the crawler afterward, prior to creating a new analysis in QuickSight.
+**Note** that if you run the Glue Crawler in step 2 prior to anomalies being generated, the anomaly tables will not exist when QuickSight tries to access them and will generate a SQL error. This could take a couple hours. If you go ahead and create everything, you go back and rerun the crawler afterward, prior to creating a new analysis in QuickSight.
 
 ## Step 2: Preparing the data for Amazon QuickSight
 
