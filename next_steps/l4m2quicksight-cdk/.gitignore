@@ -13,3 +13,6 @@ cdk.out
 
 # MacOS files
 .DS_Store
+
+# Ignore upstream rule
+!lib/
