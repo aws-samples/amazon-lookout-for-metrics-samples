@@ -4,7 +4,7 @@
 ## Step-by-step guide to connect Amazon Lookout for Metrics to Amazon QuickSight 
 *by Benoît de Patoul and Paul Troiano*
 
-**This is the CloudFormation-based version. See [L4M2QuickSight-CDK](../l4m2quicksight-cdk/) for the CDK-based example.**
+**This is the CloudFormation-based version. See [L4M2QuickSight-CDK](../l4m2quicksight-cdk/) for the AWS CDK-based example.**
 
 One of the challenges encountered by teams using Amazon Lookout for Metrics is quickly and efficiently connecting it to data visualization. The anomalies are presented as individuals in the console, each with their own graph, making it difficult to view the set as a whole. An automated, integrated solution is needed for deeper analysis.
 
