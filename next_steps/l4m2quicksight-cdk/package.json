@@ -1,0 +1,23 @@
+{
+  "name": "l4m2quicksight-cdk",
+  "version": "0.1.0",
+  "bin": {
+    "l4m2quicksight-cdk": "bin/l4m2quicksight-cdk.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/node": "10.17.27",
+    "aws-cdk": "2.35.0",
+    "ts-node": "^10.7.0",
+    "typescript": "~3.9.7"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.35.0",
+    "constructs": "^10.0.0"
+  }
+}
