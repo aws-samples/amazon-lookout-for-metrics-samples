@@ -4,6 +4,8 @@
 ## Step-by-step guide to connect Amazon Lookout for Metrics to Amazon QuickSight 
 *by Benoît de Patoul and Paul Troiano*
 
+**This is the CloudFormation-based version. See [L4M2QuickSight-CDK](../l4m2quicksight-cdk/) for the CDK-based example.**
+
 One of the challenges encountered by teams using Amazon Lookout for Metrics is quickly and efficiently connecting it to data visualization. The anomalies are presented as individuals in the console, each with their own graph, making it difficult to view the set as a whole. An automated, integrated solution is needed for deeper analysis.
 
 In this example we will use an Amazon Lookout for Metrics live detector built following the **getting_started** section from [AWS Samples Repository, Amazon Lookout for Metrics](https://github.com/aws-samples/amazon-lookout-for-metrics-samples). Once that detector is active and anomalies are generated from the dataset, we will continue the steps to connect Amazon Lookout for Metrics to Amazon QuickSight. Two datasets will be created, one by joining the dimensions table with the anomaly table and another by joining the anomaly table with the live data. These two datasets can then be added to an Amazon QuickSight Analysis where charts can be added in a single dashboard. 
