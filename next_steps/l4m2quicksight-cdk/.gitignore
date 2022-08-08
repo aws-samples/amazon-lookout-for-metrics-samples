@@ -14,5 +14,5 @@ cdk.out
 # MacOS files
 .DS_Store
 
-# Ignore upstream rule
+# Ignore upstream rule; want local /lib for CDK
 !lib/
