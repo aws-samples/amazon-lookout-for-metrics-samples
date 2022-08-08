@@ -1,0 +1,27 @@
+{
+  "app": "npx ts-node --prefer-ts-exts bin/l4m2quicksight-cdk.ts",
+
+  "context": {
+    "detector-stack-dev": {
+      "bucketPrefix": "ecommerce/live",
+      "pandasLayerArn": "arn:aws:lambda:us-east-1:770693421928:layer:Klayers-p39-pandas:3",
+      "smsSubscriptionNumber": "",
+      "glueCatalogName": "AwsDataCatalog",
+      "glueCatalogDbName": "l4m-crawler-output-db",
+      "detectorFrequency": "PT1H",
+      "lambdaHandlerName": "L4MVersion3/lambda_function.lambda_handler",
+      "lambdaRelativePath": "../function/lambda.zip",
+      "lambdaMemorySize": 128,
+      "lambdaDuration": 5,
+      "metrics": ["views", "revenue"],
+      "dimensions": ["platform", "marketplace"],
+      "timestampFormat": "yyyy-MM-dd HH:mm:ss",
+      "timestampColumn": "timestamp",
+      "timezone": "UTC"
+    },
+
+    "quicksight-stack-dev": {
+      "quickSightRegion": "us-east-1"
+    }
+  }
+}
