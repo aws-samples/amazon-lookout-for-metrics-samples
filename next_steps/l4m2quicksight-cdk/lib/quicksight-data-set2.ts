@@ -92,7 +92,7 @@ export class QuickSightDataSet2Stack extends NestedStack {
         }
       },
       dataTransforms: [{
-        /* Currently, this commenred section generates an invalid transform error error when creating 
+        /* Currently, this commented section generates an invalid transform error error when creating 
         the transform via code. Added a manual step to the README until this is resolved.
         createColumnsOperation: {
           columns: [{
