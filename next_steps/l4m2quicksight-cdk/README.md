@@ -80,26 +80,17 @@ The instructions below assume familiarity with AWS CDK. If you need to set these
 
 #### Download the l4m2quicksight-cdk folder from the Lookout For Metrics AWS Smaples Repository
 
-[test](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/tree/main/next_steps/l4m2quicksight-cdk)
-
-
-https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/aws-samples/amazon-lookout-for-metrics-samples/tree/main/next_steps/l4m2quicksight-cdk&fileName=l4m2quicksight-cdk&rootDirectory=l4m2quicksight-cdk
-
-1. Browse to [the DownGit Repository URL](https://github.com/MinhasKamal/DownGit).
-2. Review the docs and click the link to [the DownGit web site](https://downgit.github.io).
-2. Paste [the l4m2quicksight-cdk folder](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/next_steps/l4m2quicksight-cdk) URL in the **GitHub Directory or File** text box.
-```
-https://github.com/aws-samples/amazon-lookout-for-metrics-samples/next_steps/l4m2quicksight-cdk
-```
+This step uses [the DownGit utility](https://github.com/MinhasKamal/DownGit) to simplify the download of the directory without having to clone the entire AWS Samples L4M repsository.
+Download only [the l4m2quicksight-cdk folder] using [this DownGit link](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/aws-samples/amazon-lookout-for-metrics-samples/tree/main/next_steps/l4m2quicksight-cdk&fileName=l4m2quicksight-cdk&rootDirectory=l4m2quicksight-cdk).
 
 #### Create a new project folder, copy the example repository folder, and set it as your working directory.
 
 ```bash
 $ mkdir <project directory>
 $ cd <project directory>
-$ cp <download path>/amazon-lookout-for-metrics-samples-l4m2quicksight-cdk.zip .
-$ unzip amazon-lookout-for-metrics-samples-l4m2quicksight-cdk.zip
-$ cd amazon-lookout-for-metrics-samples-l4m2quicksight-cdk
+$ cp <download path>/l4m2quicksight-cdk.zip .
+$ unzip l4m2quicksight-cdk.zip
+$ cd l4m2quicksight-cdk
 ```
 
 ## V. Set the Environment Parameters in the cdk.json
