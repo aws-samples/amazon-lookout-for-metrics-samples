@@ -80,6 +80,11 @@ The instructions below assume familiarity with AWS CDK. If you need to set these
 
 #### Download the l4m2quicksight-cdk folder from the Lookout For Metrics AWS Smaples Repository
 
+[test](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/tree/main/next_steps/l4m2quicksight-cdk)
+
+
+https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/aws-samples/amazon-lookout-for-metrics-samples/tree/main/next_steps/l4m2quicksight-cdk&fileName=l4m2quicksight-cdk&rootDirectory=l4m2quicksight-cdk
+
 1. Browse to [the DownGit Repository URL](https://github.com/MinhasKamal/DownGit).
 2. Review the docs and click the link to [the DownGit web site](https://downgit.github.io).
 2. Paste [the l4m2quicksight-cdk folder](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/next_steps/l4m2quicksight-cdk) URL in the **GitHub Directory or File** text box.
