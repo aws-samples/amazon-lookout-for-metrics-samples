@@ -76,14 +76,25 @@ Open the [SageMaker console](https://console.aws.amazon.com/sagemaker/), and ope
 ## III. CDK Prerequisites
 The instructions below assume familiarity with AWS CDK. If you need to set these up, start with [the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html) and [the AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html) documentation. The instructions below reference using named profiles. If you use more than one AWS environment, it is recommended to [setup named profiles on your system](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html).
 
-## IV. Clone the repository
+## IV. Download the GitHub Repository Folder
 
-#### Create a new project folder and clone the example repository.
+#### Download the l4m2quicksight-cdk folder from the Lookout For Metrics AWS Smaples Repository
+
+1. Browse to [the DownGit Repository URL](https://github.com/MinhasKamal/DownGit).
+2. Review the docs and click the link to [the DownGit web site](https://downgit.github.io).
+2. Paste [the l4m2quicksight-cdk folder](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/next_steps/l4m2quicksight-cdk) URL in the **GitHub Directory or File** text box.
+```
+https://github.com/aws-samples/amazon-lookout-for-metrics-samples/next_steps/l4m2quicksight-cdk
+```
+
+#### Create a new project folder, copy the example repository folder, and set it as your working directory.
 
 ```bash
 $ mkdir <project directory>
 $ cd <project directory>
-$ git clone https://github.com/troiano01/l4m2quicksight-cdk.git
+$ cp <download path>/amazon-lookout-for-metrics-samples-l4m2quicksight-cdk.zip .
+$ unzip amazon-lookout-for-metrics-samples-l4m2quicksight-cdk.zip
+$ cd amazon-lookout-for-metrics-samples-l4m2quicksight-cdk
 ```
 
 ## V. Set the Environment Parameters in the cdk.json
