@@ -59,7 +59,7 @@ Lookout for Metrics allows you to quickly see the list of all of the anomalies t
 
 Additionally you may want to surface the results of all the anomalies into another dashboarding system, we have an example in our workshop below that ports your findings to QuickSight.
 
-## Visualize Anomoly Results Using Amazon QuickSight
+## Visualize Anomaly Results Using Amazon QuickSight
 One of the challenges encountered by teams using Amazon lookout for Metrics is quickly and efficiently connecting it to data visualization. The anomalies are presented as individuals in the console, each with their own graph, making it difficult to view the set as a whole. An automated, integrated solution is needed for deeper analysis. The [next_steps/l4m2quicksight/](next_steps/l4m2quicksight/) folder contains the CloudFormation-based instructions related to the corresponding blog post, providing an example for connecting Lookout for Metrics output to Amazon QuickSight. An AWS CDK-based version of the instructions is also provided in the [next_steps/l4m2quicksight-cdk/](next_steps/l4m2quicksight-cdk/) folder.
 
 ## Workshops
