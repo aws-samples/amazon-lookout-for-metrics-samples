@@ -197,6 +197,6 @@ Lookout for Metrics examines data in your specified interval to look for and det
 
 ## Resources
 1. [Getting Started Guide](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/tree/main/getting_started) - After reading this doc and the getting started guide, you'll know how to work with Lookout for Metrics from end to end.
-2. [Cost Calculator](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/next_steps/cost_calculator/) - Run this notebook to instantly calculate the monthly cost for your dataset. There's also a spreadhsheet there if you prefer that approach.
+2. [Cost Calculator](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/blob/main/next_steps/cost_calculator/) - Run this notebook to instantly calculate the monthly cost for your dataset. There's also a spreadsheet there if you prefer that approach.
 3. [Re:Invent 2021 Workshop](https://github.com/aws-samples/amazon-lookout-for-metrics-samples/tree/main/workshops/RI2021) - Getting started and how to push anomalies into custom dashboards.
 4. [Custom Connectors](https://github.com/aws-samples/amazon-lookout-for-metrics-custom-connectors) - A simple way to provide complex data from your database into Lookout for Metrics.
